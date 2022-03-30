@@ -4,7 +4,8 @@ const db = require('../db');
 
 router.get("/", (request, response) => {
    
-    response.render('')
+    response.render('layout', {title: 'Scrabble',
+block: ' play game '})
 });
 
 module.exports = router;

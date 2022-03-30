@@ -4,7 +4,8 @@ const db = require('../db');
 
 router.get("/", (request, response) => {
    //   res.render('index', { title: 'Team Websters Scrabble' });
-    response.render('login', { title: 'login  ' , block: 'hey hey hey ' });
+    response.render('login', { title: 'login  ' , 
+    block: '' });
     
 });
 
