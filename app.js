@@ -12,6 +12,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var testRouter = require('./routes/test');
 var lobbyRouter = require('./routes/lobby');
+var browseLobbyRouter = require('./routes/browseLobby');
 var loginRouter = require('./routes/login');
 var gameRouter = require('./routes/game');
 
@@ -31,8 +32,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/test', testRouter);
+// app.use('/test', testRouter);
 app.use('/lobby', lobbyRouter); 
+app.use('./browseLobby', browseLobbyRouter);
 app.use('/login', loginRouter); 
 app.use('/game', gameRouter);
 
