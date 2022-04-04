@@ -10,10 +10,55 @@ a {
 p {
   color: #814be7
 }
+
+#foo{
+  border: darkviolet;
+  border-style: solid;
+  text-align:  center;
+}
+
+
 #welcome{
   color: red;
 }
 
 #password {
   color: green;
+}
+
+
+#outer-box{
+  background-color: beige ;
+  
+  color: red;
+  width: 100%;
+  /* display: block;
+  margin-left: auto;
+  margin-right: auto;
+  border-style: solid;
+  border-color: black; */
+  height: 85vh;
+  background-color:#0dc600;width:90%;text-align:center;padding:7px;float:left;
+}
+
+
+
+#tile_rack{
+  
+  text-align:  center;
+  color: white;
+  border-style: solid;
+  background-color:#a8cc33;
+  width:50%;
+position:absolute;
+bottom: 5px; 
+left:70%;
+margin-left:-50%;
+
+}
+#play_game{
+  justify-content: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto
 }
