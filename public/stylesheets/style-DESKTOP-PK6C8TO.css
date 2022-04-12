@@ -1,8 +1,7 @@
-html{
-   background-color:rgb(153, 153, 153);
-}
+
 
 body {
+  color:black;/* rgba(200, 196, 196, 0.796); */
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
@@ -10,7 +9,6 @@ body {
 a {
   color: #00B7FF;
 }
-
 
 .board-container{
   display:grid;
@@ -44,13 +42,12 @@ a {
 }
 
 .auth-container{
-  display:absolute;
+  display:flex;
   align-self:center;
   justify-self: center;
-  justify-content: center;
-  width:23%;
-  /* height: 90%; */
-  margin-left: 35%;
+  width:20%;
+  height: 60%;
+  margin-left: 40%;
   margin-right:40%;
   margin-top:5%;
   overflow:hidden;
@@ -63,9 +60,7 @@ a {
   display: flex;
   flex-direction: column;
   align-items:flex-start;
-  align-self:center;
-  justify-self: center;
-  background-color: rgb(200,156,84);
+  background-color: darkgray;
   border-radius:5px;
   border-color:rgba(0, 0, 0, 0.3);   
   margin:1vh;
@@ -75,83 +70,66 @@ a {
 .form-field{
   display:flex;
   flex-direction:row;
-  justify-content: space-around;
 }
 
-.form-name{   
-   width: 30%;
-   min-width: 100px;
+.form-name{
+  width: 25%;
+  min-width: 100px;
 }
 
 .form-input{
-  width: 70%;
+  width: 75%;
   min-width: 100px;
 }
 
 .button-container{
-  background-color:rgb(200,156,84);
+  background-color:darkgrey;
   display:flex;
   flex-direction:row;
   justify-self: center;
   align-items: center;
-  margin-left: 20%;
-  margin-right: 20%;
-  border-radius:5px;
   justify-content:space-around;
   margin-bottom: 1vh;
 }
 
 .form-button{
-  width:80%;
+  width:40%;
   border:0px;
-  margin: 0.5vh;
-  box-shadow: 0 0 10px 2px rgba(0,0,0,0.2);
+  margin: 0.1vh;
   border-radius:2px;
 }
 
 /*********************/
 /* Lobby page style  */
 /*********************/
-
-.lobby-chat-container{
-   display:flex;
-   flex-direction:row;
-   gap:5%;
-   width: 100%;
-   height:90%;
-   margin:0;
-
-}
-
-.lobby-window {
-    justify-content: space-evenly;
-    /* align-items: center; */
-    /* float: left; */
+#left {
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    float: left;
     display: flex;
-
-    width:75%;
     height: 90vh;
-    /* width: 65vw; */
-    background-color:rgb(225, 225, 225);
+    width: 65vw;
+    background-color: transparent;
     color: white;
     border: 1px solid black;
  }
   
- .inner-lobby{
+ #inner {
     justify-content: center;
     align-items: center;
     align-self: center;
  }
   
- .player {
+ #player {
     justify-content: center;
     align-items: center;
     align-self: center;
     height: 10vh;
     width: 20vw;
-    margin-left: 15%;
-    margin-top: 5%;
-    margin-bottom: 5%;
+    margin-left: 300px;
+    margin-top: 50px;
+    margin-bottom: 50px;
     background-color: transparent;
     color: white;
     border: 1px solid black;
@@ -166,10 +144,10 @@ a {
     float: right;
     height: 10vh;
     width: 7vw;
-    margin-left: 5%;
-    margin-top: 5%;
-    margin-bottom: 5%;
-    margin-right: 20%;
+    margin-left: 10px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-right: 350px;
     background-color: transparent;
     color: white;
     border: 1px solid green;
@@ -182,89 +160,56 @@ a {
     float: right;
     height: 10vh;
     width: 7vw;
-    margin-left: 5%;
-    margin-top: 5%;
-    margin-bottom: 5%;
-    margin-right: 20%;
+    margin-left: 10px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-right: 350px;
     background-color: transparent;
     color: white;
     border: 1px solid red;
  }
-
-   
- #player-text {
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   text-align:center;
-   font-family: Arial, sans-serif;
-   color:black;
-   font-size: 24px;
-}
- 
-#ready-text {
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   text-align:center;
-   font-family: Arial, sans-serif;
-   color:black;
-   font-size: 20px;
-}
   
- .chat-window {
-    /* justify-content: space-evenly; */
-    /* align-items: right;
-    align-self: right; */
-    /* float:none; */
-    display:flex;
-
-    width:20%;
+ #right {
+    justify-content: right;
+    align-items: right;
+    align-self: right;
+    float: right;
     height: 90vh;
-    /* width: 30vw; */
-    background-color:rgb(225, 225, 225);
-    color: white;
-    border: 1px solid black;
- }
-
- .chat-inner{
-   display:flex;
-   flex-direction: column-reverse;
-   align-items: flex-end;
-   
- }
-  
- #chat-bar {
-    /* justify-content: center;
-    align-items: center;
-    align-self: center; */
-    display: flex;
-    flex-direction:row;
-    float:left;
-    height: 10%;
-    width: 75%;
+    width: 30vw;
     background-color: transparent;
     color: white;
     border: 1px solid black;
+ }
+  
+ #chat-bar {
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    float: left;
+    display: flex;
+    height: 10vh;
+    width: 25vw;
+    background-color: transparent;
+    color: white;
+    border: 1px solid black;
+    position: absolute;
     bottom: 0px;
     margin-bottom: -40px;
  }
   
  #chat-send {
-    /* justify-content: right;
+    justify-content: right;
     align-items: right;
-    align-self: right; */
-    display: flex;
-    flex-direction:row;
-    float:right;
-    height: 10%;
-    width: 15%;
+    align-self: right;
+    height: 10vh;
+    width: 4vw;
     background-color: transparent;
     color: white;
     border: 1px solid green;
-    /* position: absolute; */
-    /* margin-bottom: -40px;
-    margin-left: 490px; */
+    position: absolute;
+    bottom: 0px;
+    margin-bottom: -40px;
+    margin-left: 490px;
  }
   
  #send-text {
@@ -303,24 +248,24 @@ a {
     color:black;
     font-size: 18px;
  }
-
+  
+ #player-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align:center;
+    font-family: Arial, sans-serif;
+    color:black;
+    font-size: 24px;
+ }
+  
+ #ready-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align:center;
+    font-family: Arial, sans-serif;
+    color:black;
+    font-size: 20px;
+ }
  
- .player-one-glow{
-  /* green ->  rgb(85,115,21) */
-  box-shadow:0px 0px 10px rgb(115, 21, 21);
- }
-
- .player-two-glow{
-   /* blue - > rgb(51,86,109) */
-   box-shadow:0px 0px 10px rgb(51,86,109);
- }
-
- .player-three-glow{
-   /*  green ->  rgb(85,115,21) */
-   box-shadow:0px 0px 10px rgb(85,115,21)
- }
-
- .player-four-glow{
-   /*  yellow ->  rgb(85,115,21) */
-   box-shadow:0px 0px 10px  rgb(184, 173, 17);
- }

@@ -4,7 +4,7 @@ var router = express.Router();
 /* LANDING PAGE . */
 
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Team Websters Scrabble' });
+  res.render('register', { title: 'Team Websters Scrabble' });
 });
 
 module.exports = router;
