@@ -48,6 +48,7 @@ a {
   align-self:center;
   justify-self: center;
   justify-content: center;
+  background-color: rgb(225, 225, 225);
   width:23%;
   /* height: 90%; */
   margin-left: 35%;
@@ -159,7 +160,7 @@ a {
     display: flex;
  }
   
- #ready {
+ .ready {
     justify-content: center;
     align-items: center;
     align-self: center;
@@ -175,7 +176,7 @@ a {
     border: 1px solid green;
  }
   
- #not-ready {
+ .not-ready {
     justify-content: center;
     align-items: center;
     align-self: center;
@@ -192,7 +193,7 @@ a {
  }
 
    
- #player-text {
+ .player-text {
    display: flex;
    justify-content: center;
    align-items: center;
@@ -202,7 +203,7 @@ a {
    font-size: 24px;
 }
  
-#ready-text {
+.ready-text {
    display: flex;
    justify-content: center;
    align-items: center;
@@ -230,41 +231,38 @@ a {
  .chat-inner{
    display:flex;
    flex-direction: column-reverse;
-   align-items: flex-end;
-   
+   align-items: flex-start;
  }
   
  #chat-bar {
     /* justify-content: center;
-    align-items: center;
-    align-self: center; */
+    align-items: center;*/
+    align-self: flex-start ; 
     display: flex;
-    flex-direction:row;
-    float:left;
+    flex-direction:column;
+    flex-wrap:nowrap;
+    order: 1;
     height: 10%;
     width: 75%;
     background-color: transparent;
     color: white;
     border: 1px solid black;
     bottom: 0px;
-    margin-bottom: -40px;
  }
   
  #chat-send {
     /* justify-content: right;
-    align-items: right;
-    align-self: right; */
+    align-items: right;*/
+    /* align-self:flex-end; */
     display: flex;
-    flex-direction:row;
-    float:right;
+    flex-direction:column;
+    flex-wrap:nowrap;
+    order: 2;
     height: 10%;
     width: 15%;
     background-color: transparent;
     color: white;
     border: 1px solid green;
-    /* position: absolute; */
-    /* margin-bottom: -40px;
-    margin-left: 490px; */
  }
   
  #send-text {
