@@ -223,40 +223,38 @@ a {
     height: 90vh;
     /* width: 30vw; */
     background-color:rgb(225, 225, 225);
-    color: white;
     border: 1px solid black;
  }
 
  .chat-inner{
    display:flex;
-   flex-direction: column-reverse;
-   align-items: flex-start;
+   flex-direction: row;
+   align-items: justify;
+   justify-content: space-between;
+   margin-block-start:auto;
+   height: 10%;
+   /* Justify is the main axis, default  X 
+   align is cross axis, default Y  */
  }
   
  #chat-bar {
-    /* justify-content: center;
-    align-items: center;*/
     align-self: flex-start ; 
     display: flex;
-    flex-direction:column;
     flex-wrap:nowrap;
     order: 1;
-    height: 10%;
+    height: 100%;
     width: 75%;
     background-color: rgb(255, 255, 255);
     border: 1px solid black;
-    /* bottom: 0px; */
+
  }
   
  #chat-send {
-    /* justify-content: right;
-    align-items: right;*/
-    /* align-self:flex-end; */
     display: flex;
     flex-direction:column;
     flex-wrap:nowrap;
     order: 2;
-    height: 10%;
+    height: 100%;
     width: 15%;
     background-color: rgb(255, 255, 255);
     border: 1px solid green;
