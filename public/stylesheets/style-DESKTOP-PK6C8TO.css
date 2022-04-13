@@ -1,0 +1,271 @@
+
+
+body {
+  color:black;/* rgba(200, 196, 196, 0.796); */
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.board-container{
+  display:grid;
+  grid-template-columns: repeat(15, 5px);
+  grid-template-rows: repeat(15, 5px);
+  gap:10px;
+}
+
+.board-square{
+  background-color:#814be7;
+}
+
+
+#tile_rack{
+  text-align:  center;
+  color: white;
+  border-style: solid;
+  background-color:#a8cc33;
+  width:50%;
+  position:absolute;
+  bottom: 5px; 
+  left:70%;
+  margin-left:-50%;
+}
+
+#play_game{
+  justify-content: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
+.auth-container{
+  display:flex;
+  align-self:center;
+  justify-self: center;
+  width:20%;
+  height: 60%;
+  margin-left: 40%;
+  margin-right:40%;
+  margin-top:5%;
+  overflow:hidden;
+  text-shadow:0 0 1px darkgray;
+  border-radius:5px;
+  box-shadow: 0 0 10px 2px rgba(0,0,0,0.6);
+}
+
+.form-container{
+  display: flex;
+  flex-direction: column;
+  align-items:flex-start;
+  background-color: darkgray;
+  border-radius:5px;
+  border-color:rgba(0, 0, 0, 0.3);   
+  margin:1vh;
+}
+
+
+.form-field{
+  display:flex;
+  flex-direction:row;
+}
+
+.form-name{
+  width: 25%;
+  min-width: 100px;
+}
+
+.form-input{
+  width: 75%;
+  min-width: 100px;
+}
+
+.button-container{
+  background-color:darkgrey;
+  display:flex;
+  flex-direction:row;
+  justify-self: center;
+  align-items: center;
+  justify-content:space-around;
+  margin-bottom: 1vh;
+}
+
+.form-button{
+  width:40%;
+  border:0px;
+  margin: 0.1vh;
+  border-radius:2px;
+}
+
+/*********************/
+/* Lobby page style  */
+/*********************/
+#left {
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    float: left;
+    display: flex;
+    height: 90vh;
+    width: 65vw;
+    background-color: transparent;
+    color: white;
+    border: 1px solid black;
+ }
+  
+ #inner {
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+ }
+  
+ #player {
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    height: 10vh;
+    width: 20vw;
+    margin-left: 300px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    background-color: transparent;
+    color: white;
+    border: 1px solid black;
+    float: left;
+    display: flex;
+ }
+  
+ #ready {
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    float: right;
+    height: 10vh;
+    width: 7vw;
+    margin-left: 10px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-right: 350px;
+    background-color: transparent;
+    color: white;
+    border: 1px solid green;
+ }
+  
+ #not-ready {
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    float: right;
+    height: 10vh;
+    width: 7vw;
+    margin-left: 10px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-right: 350px;
+    background-color: transparent;
+    color: white;
+    border: 1px solid red;
+ }
+  
+ #right {
+    justify-content: right;
+    align-items: right;
+    align-self: right;
+    float: right;
+    height: 90vh;
+    width: 30vw;
+    background-color: transparent;
+    color: white;
+    border: 1px solid black;
+ }
+  
+ #chat-bar {
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    float: left;
+    display: flex;
+    height: 10vh;
+    width: 25vw;
+    background-color: transparent;
+    color: white;
+    border: 1px solid black;
+    position: absolute;
+    bottom: 0px;
+    margin-bottom: -40px;
+ }
+  
+ #chat-send {
+    justify-content: right;
+    align-items: right;
+    align-self: right;
+    height: 10vh;
+    width: 4vw;
+    background-color: transparent;
+    color: white;
+    border: 1px solid green;
+    position: absolute;
+    bottom: 0px;
+    margin-bottom: -40px;
+    margin-left: 490px;
+ }
+  
+ #send-text {
+    justify-content: center;
+    align-items: center;
+    text-align:center;
+    font-family: Arial, sans-serif;
+    color:black;
+    font-size: 18px;
+ }
+  
+ #title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align:center;
+    font-family: Arial, sans-serif;
+    color:black;
+ }
+  
+ #chat-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align:center;
+    font-family: Arial, sans-serif;
+    color:black;
+    font-size: 24px;
+ }
+  
+ #chat-text {
+    justify-content: left;
+    align-items: left;
+    text-align: left;
+    font-family: Arial, sans-serif;
+    color:black;
+    font-size: 18px;
+ }
+  
+ #player-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align:center;
+    font-family: Arial, sans-serif;
+    color:black;
+    font-size: 24px;
+ }
+  
+ #ready-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align:center;
+    font-family: Arial, sans-serif;
+    color:black;
+    font-size: 20px;
+ }
+ 
