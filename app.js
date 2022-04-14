@@ -1,5 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
+var handlebars = require('express-handlebars');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -19,8 +20,15 @@ var gameRouter = require('./routes/game');
 var app = express();
 
 // view engine setup
+const hbs = handlebars.create({
+  layoutsDir: path.join(__dirname,'views/layouts'),
+  partialsDir: path.join(__dirname,'views/partials'),
+  extname:'.hbs',
+  defaultLayout: 'layout' });
+
+app.engine('hbs', hbs.engine );
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+app.set('view engine', 'hbs');
 
 app.use(logger('dev'));
 app.use(express.json());
