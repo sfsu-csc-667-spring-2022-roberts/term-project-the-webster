@@ -213,28 +213,20 @@ a {
 }
   
  .chat-window {
-    /* justify-content: space-evenly; */
-    /* align-items: right;
-    align-self: right; */
-    /* float:none; */
     display:flex;
-
     width:20%;
     height: 90vh;
-    /* width: 30vw; */
     background-color:rgb(225, 225, 225);
     border: 1px solid black;
  }
 
- .chat-inner{
+ .chat-outgoing{
    display:flex;
    flex-direction: row;
    align-items: justify;
    justify-content: space-between;
    margin-block-start:auto;
    height: 10%;
-   /* Justify is the main axis, default  X 
-   align is cross axis, default Y  */
  }
   
  #chat-bar {
@@ -246,7 +238,6 @@ a {
     width: 75%;
     background-color: rgb(255, 255, 255);
     border: 1px solid black;
-
  }
   
  #chat-send {
