@@ -37,14 +37,6 @@ module.exports = {
         gameUser: {
           type: Sequelize.BOOLEAN,
           defaultValue: false
-        },
-        gameReady: {
-          type: Sequelize.BOOLEAN,
-          defaultValue: false
-        },
-        gameScore: {
-          type: Sequelize.INTEGER,
-          defaultValue: 0
         }
       }
     );
