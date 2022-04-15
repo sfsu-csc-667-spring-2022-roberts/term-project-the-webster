@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require('../db');
 
 router.get("/", (request, response) => {
-    response.render('', {title: 'lobby'});
+    response.render('lobby', {title: 'lobby'});
    
 });
 
