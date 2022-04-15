@@ -16,6 +16,7 @@ var lobbyRouter = require('./routes/lobby');
 var browseLobbyRouter = require('./routes/browseLobby');
 var loginRouter = require('./routes/login');
 var gameRouter = require('./routes/game');
+var registerRouter = require('./routes/register');
 
 var app = express();
 
@@ -40,11 +41,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-// app.use('/test', testRouter);
+app.use('/test', testRouter);
 app.use('/lobby', lobbyRouter); 
 app.use('/browseLobby', browseLobbyRouter);
 app.use('/login', loginRouter); 
 app.use('/game', gameRouter);
+app.use('/register', registerRouter);
 
 
 // catch 404 and forward to error handler
