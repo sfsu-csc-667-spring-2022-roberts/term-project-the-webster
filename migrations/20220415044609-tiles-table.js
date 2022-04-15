@@ -11,8 +11,10 @@ module.exports = {
         gameID: {
           type: Sequelize.INTEGER,
           primaryKey: true, 
-          references : "gameBoard", 
-          referencesKey: "gameID"
+          references: {
+            model: "gameBoard",
+            key: "gameID"
+          },
         },
         letter: {
           type: Sequelize.STRING

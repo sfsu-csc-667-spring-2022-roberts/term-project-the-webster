@@ -11,20 +11,26 @@ module.exports = {
         senderID: {
           type: Sequelize.INTEGER,
           primaryKey: true,
-          references : "user", 
-          referencesKey: "userID"
+          references: {
+            model: "user",
+            key: "userID"
+          },
         },
         recieverID: {
           type: Sequelize.INTEGER,
           primaryKey: true,
-          references : "user", 
-          referencesKey: "userID"
+          references: {
+            model: "user",
+            key: "userID"
+          },
         },
         gameID: {
           type: Sequelize.INTEGER,
           primaryKey: true,
-          references : "gameBoard", 
-          referencesKey: "gameID"
+          references: {
+            model: "gameBoard",
+            key: "gameID"
+          },
         },
         text: {
           type: Sequelize.TEXT

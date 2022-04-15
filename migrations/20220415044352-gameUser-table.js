@@ -7,15 +7,18 @@ module.exports = {
         gameID: {
           type: Sequelize.INTEGER,
           primaryKey: true,
-          references: "gameBoard",
-          referencesKey: "gameID"
-
+          references: {
+            model: "gameBoard",
+            key: "gameID"
+          },
         },
         userID: {
           type: Sequelize.INTEGER,
           primaryKey: true,
-          references : "user", 
-          referencesKey: "userID"
+          references: {
+            model: "user",
+            key: "userID"
+          },
         },
         order: {
           type: Sequelize.INTEGER,
