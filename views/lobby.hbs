@@ -32,13 +32,20 @@
   <div class="chat-window">
       {{!-- div <- handlebars partial for incoming chat --}}
       {{!-- Likely going to need a wrapper like chat-outgoing, call it chat-incoming --}}
+     <div class="chat-incoming"> 
+    {{> chatMessages messageArray=messages}}
+    </div>
+
       <div class="chat-outgoing">
-      <div id="chat-bar">
-        <p id="chat-text">Hello here is some text I'm gonna send soon</p>
-      </div>
-      <div id="chat-send">
+       
+
+       {{> outgoingMessages}}
+       
+      <div class="chat-send">
         <p id="send-text">Send</p>
       </div>
     </div>
   </div>
 </div>
+
+
