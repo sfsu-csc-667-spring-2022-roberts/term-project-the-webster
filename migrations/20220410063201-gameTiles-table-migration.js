@@ -6,7 +6,9 @@ module.exports = {
       {
         gameID: {
           type: Sequelize.INTEGER,
-          primaryKey: true
+          primaryKey: true,
+          references : "gameBoard", 
+          referencesKey: "gameID"
         },
         discarded: {
           type: Sequelize.BOOLEAN,
@@ -19,6 +21,8 @@ module.exports = {
         ownerID: {
           type: Sequelize.INTEGER,
           primaryKey: true, 
+          references : "gameUser", 
+          referencesKey: "userID"
         },
         order: {
           type: Sequelize.INTEGER
