@@ -1,10 +1,12 @@
 var express = require('express');
 var router = express.Router();
+const db = require('../db');
 
 /* LANDING PAGE . */
 
-router.get('/', function(req, res, next) {
-  res.render('register', { title: 'Team Websters Scrabble' });
+
+router.get("/", (request, response) => {
+   response.render('register');
 });
 
 module.exports = router;
