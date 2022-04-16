@@ -1,9 +1,13 @@
+<ul class="chat-logs">
+    {{#each this.messageArray}}
+    <div class="message">
 
-    <ul class="chat-logs"> 
-        {{#each this.messageArray}}
-       <div id="message">
-        sender_id: {{this.id}} | @  {{this.timestamp}} <br>
-         > {{this.content}}
-        </div>
-        {{/each}}
-    </ul>
+        <p class="message-header"> {{this.id}} | @ {{this.timestamp}} </p>
+
+        <p class="message-content"> {{this.content}} </p>
+    </div>
+
+    <br class="message-break">
+    {{/each}}
+</ul>
+

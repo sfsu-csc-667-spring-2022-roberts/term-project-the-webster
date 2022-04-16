@@ -1,5 +1,5 @@
 html{
-   background-color:rgb(153, 153, 153);
+   background-color:rgb(78, 78, 78);
 }
 
 body {
@@ -217,7 +217,7 @@ a {
     flex-direction: column;
     width:20%;
     height: 90vh;
-    background-color:rgb(225, 225, 225);
+    background-color:rgb(149, 146, 146);
     border: 1px solid black;
  }
 
@@ -230,6 +230,7 @@ a {
    height: 10%;
    padding-left: 3%;
    padding-right: 3%;
+   overflow: scroll;
  }
  .chat-incoming{
   display:flex;
@@ -244,6 +245,7 @@ a {
   height: 90%;
   width: 100%;
   padding-left: 3%;
+  padding: 20px;
  
 }
 
@@ -257,7 +259,7 @@ a {
     background-color: rgb(255, 255, 255);
     border: 1px solid black;
     margin: auto;
-    overflow: hidden;
+    overflow: scroll;
  }
 
  .chat-text{
@@ -266,6 +268,8 @@ a {
     height: 90%;
     float: center;
     margin: auto;
+    overflow: scroll;
+    border-style: none;
  }
   
  .chat-send {
@@ -288,8 +292,17 @@ a {
     font-family: Arial, sans-serif;
     color:black;
     font-size: 18px;
+    margin: auto;
+    height: 100%;
+    background-color: rgba(0, 128, 8, .10 );
+   
  }
+
+ #send-text:hover {
+  cursor: pointer;
   
+}
+    
  #title {
     display: flex;
     justify-content: center;
@@ -318,7 +331,31 @@ a {
     font-size: 18px;
  }
 
- 
+ .message{
+   border-radius: 5px;
+   border-style: solid;
+   border-width: 1px;
+   margin: auto;
+ }
+
+ .message-break{
+   height: 20%;
+ }
+
+.message-header{
+   padding-left: 5px;
+   padding-top: 0%;
+   padding-bottom: 0%;
+   margin: 0%;     
+
+}
+
+ .message-content{
+   padding-left: 10px;
+   padding-top: 0%;
+   padding-bottom: 0%;
+   margin: 0%;
+ }
  .player-one-glow{
   /* green ->  rgb(85,115,21) */
   box-shadow:0px 0px 15px rgb(115, 21, 21);

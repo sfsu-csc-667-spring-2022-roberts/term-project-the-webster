@@ -21,6 +21,11 @@ router.get("/", (request, response) => {
             id: 3,
             timestamp: `21:05 `,
             content: "yo",
+          },
+          {
+            id: 4,
+            timestamp: `21:05 `,
+            content: "dfjsafkjslfjsalfjs;fjsfjsl sjfklsjflsd sdjfklsjflk sjflks fljs sdjklf slfkj  sjdklf sdl :)",
           }
         ]
       });
