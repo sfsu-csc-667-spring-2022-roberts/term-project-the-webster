@@ -379,3 +379,32 @@ a {
    box-shadow:0px 0px 15px  rgb(184, 173, 17);
    border: 1px solid rgb(184, 173, 17);
  }
+
+ /*********************/
+/* Lobby Search page style  */
+/*********************/
+
+.page-container {
+  display: flex;
+  justify-content: center;
+}
+
+.options-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width:50%;
+  height: 15vh;
+  background-color:rgb(230, 230, 230);
+  border: 1px solid black;
+}
+
+.lobby-search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width:50%;
+  height: 15vh;
+  background-color:rgb(230, 230, 230);
+  border: 1px solid black;
+}
