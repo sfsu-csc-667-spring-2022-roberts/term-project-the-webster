@@ -8,9 +8,9 @@
         </form>
     </div>
     <div class="lobby-search-header">
-        <div class="inner-lobby">Lobby Name</div>
-        <div class="inner-lobby">Host</div>
-        <div class="inner-lobby">Players</div>
+        <div class="lobby-section">Lobby Name</div>
+        <div class="lobby-section">Host</div>
+        <div class="lobby-section">Players</div>
     </div>
     <div class="lobby-search">
         <script>
@@ -46,9 +46,9 @@
                 var hostDiv = document.createElement('div');
                 var playersDiv = document.createElement('div');
 
-                nameDiv.className = "inner-lobby";
-                hostDiv.className = "inner-lobby";
-                playersDiv.className = "inner-lobby";
+                nameDiv.className = "lobby-section";
+                hostDiv.className = "lobby-section";
+                playersDiv.className = "lobby-section";
 
                 nameDiv.textContent = lobbies[i].name;
                 hostDiv.textContent = lobbies[i].host;
