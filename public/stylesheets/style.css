@@ -423,6 +423,10 @@ a {
   border: 1px solid black;
 }
 
+.lobby:hover {
+  background-color: gray;
+}
+
 .inner-lobby {
   display: flex;
   flex: 30%;
