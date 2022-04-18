@@ -384,27 +384,46 @@ a {
 /* Lobby Search page style  */
 /*********************/
 
-.page-container {
-  display: flex;
+.page-container{
   justify-content: center;
+  align-items: center;
+  align-self: center;
+  width: 100%;
+  height: 100%;
 }
 
 .options-container {
   display: flex;
   justify-content: center;
   align-items: center;
+  align-self: center;
   width:50%;
   height: 15vh;
   background-color:rgb(230, 230, 230);
   border: 1px solid black;
 }
 
-.lobby-search-container {
+.lobby-search {
+  width:50%;
+  height: 50vh;
+  background-color:rgb(230, 230, 230);
+  border: 1px solid black;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.lobby {
   display: flex;
   justify-content: center;
   align-items: center;
-  width:50%;
-  height: 15vh;
+  align-self: center;
+  width:100%;
+  height: 10vh;
   background-color:rgb(230, 230, 230);
   border: 1px solid black;
+}
+
+.inner-lobby {
+  display: flex;
+  flex: 30%;
 }
