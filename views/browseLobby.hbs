@@ -13,40 +13,51 @@
         <div class="inner-lobby">Players</div>
     </div>
     <div class="lobby-search">
-        <div class="lobby">
-            <div class="inner-lobby">Test</div>
-            <div class="inner-lobby">Bob Jones</div>
-            <div class="inner-lobby">2/4</div>
-        </div>
-        <div class="lobby">
-            <div class="inner-lobby">Test2</div>
-            <div class="inner-lobby">Damon</div>
-            <div class="inner-lobby">1/4</div>
-        </div>
-        <div class="lobby">
-            <div class="inner-lobby">Test3</div>
-            <div class="inner-lobby">Johnson</div>
-            <div class="inner-lobby">3/4</div>
-        </div>
-        <div class="lobby">
-            <div class="inner-lobby">Test4</div>
-            <div class="inner-lobby">Alex1231</div>
-            <div class="inner-lobby">4/4</div>
-        </div>
-        <div class="lobby">
-            <div class="inner-lobby">Test5</div>
-            <div class="inner-lobby">Epicscrabbler</div>
-            <div class="inner-lobby">2/4</div>
-        </div>
-        <div class="lobby">
-            <div class="inner-lobby">Test6</div>
-            <div class="inner-lobby">TestPlayer</div>
-            <div class="inner-lobby">1/4</div>
-        </div>
-        <div class="lobby">
-            <div class="inner-lobby">Test6</div>
-            <div class="inner-lobby">TestPlayer</div>
-            <div class="inner-lobby">1/4</div>
-        </div>
+        <script>
+            console.log("Running browse lobby script...");
+
+            var lobbies = [
+                {
+                    id: 1,
+                    name: "Test Lobby",
+                    host: "Bob Jones",
+                    players: 4
+                },
+                {
+                    id: 2,
+                    name: "Come play Scrabble",
+                    host: "Damon",
+                    players: 2
+                },
+                {
+                    id: 3,
+                    name: "Fun times",
+                    host: "Johnson",
+                    players: 3
+                }
+            ]
+
+            for (i = 0; i < lobbies.length; i++) {
+                var lobbyDiv = document.createElement('div');
+                lobbyDiv.className = "lobby";
+                lobbyDiv.body = "test";
+                document.getElementsByClassName("lobby-search")[0].appendChild(lobbyDiv);
+                var nameDiv = document.createElement('div');
+                var hostDiv = document.createElement('div');
+                var playersDiv = document.createElement('div');
+
+                nameDiv.className = "inner-lobby";
+                hostDiv.className = "inner-lobby";
+                playersDiv.className = "inner-lobby";
+
+                nameDiv.textContent = lobbies[i].name;
+                hostDiv.textContent = lobbies[i].host;
+                playersDiv.textContent = lobbies[i].players;
+                console.log("Lobby name: " + nameDiv.text + ", Host: " + hostDiv.text + ", players: " + playersDiv.text);
+                lobbyDiv.appendChild(nameDiv);
+                lobbyDiv.appendChild(hostDiv);
+                lobbyDiv.appendChild(playersDiv);
+            }
+        </script>
     </div>
 </div>
