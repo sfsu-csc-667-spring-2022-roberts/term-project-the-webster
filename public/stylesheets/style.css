@@ -385,6 +385,8 @@ a {
 /*********************/
 
 .page-container{
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   align-self: center;
@@ -403,9 +405,24 @@ a {
   border: 1px solid black;
 }
 
+.button {
+  margin: 50px;
+}
+
+.lobby-search-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  width:50%;
+  height: 5vh;
+  background-color:rgb(230, 230, 230);
+  border: 1px solid black;
+}
+
 .lobby-search {
   width:50%;
-  height: 50vh;
+  height: 60vh;
   background-color:rgb(230, 230, 230);
   border: 1px solid black;
   overflow-y: auto;
