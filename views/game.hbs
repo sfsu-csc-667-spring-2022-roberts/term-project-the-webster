@@ -1,1 +1,8 @@
-<div> sending </div>
+
+<div class="game-board"> 
+    {{#each boardSquares}}
+        <div class="{{type}}" id="{{x}},{{y}}">
+            <p>{{text}}</p>
+        </div>
+    {{/each}}
+</div>
