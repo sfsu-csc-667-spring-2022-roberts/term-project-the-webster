@@ -2,9 +2,6 @@ const express = require("express");
 const router = express.Router();
 const db = require('../db');
 
-<<<<<<< HEAD
-
-=======
 router.get("/", (request, response) => {
   
     response.render('lobby', {
@@ -36,5 +33,4 @@ router.get("/", (request, response) => {
     });
 
 module.exports = router;
->>>>>>> development
 

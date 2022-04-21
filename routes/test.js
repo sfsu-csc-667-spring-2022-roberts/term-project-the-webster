@@ -14,8 +14,9 @@ router.get("/", (request, response) => {
 //         })
 // });
 
-db.any(`INSERT INTO user ("username", "password") VALUES ('tst', '123')`)
-        .then(_ => db.any(`SELECT * FROM user`))
+db.any(`INSERT INTO users ("username", "password") VALUES ('tst2', '12345')`)
+        .then(_ => 
+        db.any(`SELECT * FROM users`))
         .then(results => response.json(results))
         .catch(error => {
             console.log(error)

@@ -3,9 +3,6 @@ const express = require("express");
 const router = express.Router();
 const db = require('../db');
 
-<<<<<<< HEAD
-
-=======
 router.get("/", (request, response) => {
     let squares = [];                        
     const doubleLetter = new Set();
@@ -115,7 +112,6 @@ router.get("/", (request, response) => {
     }
     response.render('game', {title: 'Scrabble', boardSquares: squares })
 });
->>>>>>> development
 
 module.exports = router;
 
