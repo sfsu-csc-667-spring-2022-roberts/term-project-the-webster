@@ -14,10 +14,8 @@ router.post("/register", (req, res, next)=> {
     //TODO make this not insert to DB if it does not match
     console.log("passwords do not match");
   }
-  const CREATE_USER_QUERY = 
-  'INSERT INTO users ("username", "password") VALUES ($username, $password)';
-  db.any(CREATE_USER_QUERY, {username, password });
-
+  UserModel.create(username, password);
+  res.redirect('/login');
 
 });
 
