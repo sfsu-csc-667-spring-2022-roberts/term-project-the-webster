@@ -567,11 +567,31 @@ a {
   margin-left: 0%;
 
 } 
+.tile-wrapper{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:-8px;
+  width:40vw; 
+  z-index:1; 
+  gap:5px;
+}
+.tile{
+  display:flex;
+  background-color:rgb(201, 145, 57);
+  width:45px;
+  height:45px;
+  border-radius:5px;
+  /* transform:translate(-500%); */
+}
 
-
-.left-spacer{
+.tile-letter{
+  display:flex; 
+  align-self:center;
+  justify-self:center;
+  transform:translate(150%);
 
 }
-.right-spacer{
-
+.tile-value{
+  transform:translate(220% , 70%);
 }

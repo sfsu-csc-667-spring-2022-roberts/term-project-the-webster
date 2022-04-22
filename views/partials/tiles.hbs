@@ -1,1 +1,5 @@
-<div class="tile"> <p class="tile-letter"> {{this.letter}} </p> <p="tile-value"> {{this.value}} </p></div>
+<div class="tile-wrapper"> 
+{{#each tiles}}
+<div class="tile"> <p class="tile-letter"> {{this.letter}} </p> <p class="tile-value"> {{this.value}} </p></div>
+{{/each}}
+</div>

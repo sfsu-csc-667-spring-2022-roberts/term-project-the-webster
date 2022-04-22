@@ -100,17 +100,11 @@ router.get("/", (request, response) => {
             else{
                 squares.push({x:xPos, y:yPos, type:"single"});
             }
-            
-            
-            //not working, but we should use a string to manipulate here 
-            //so we can pick a name to work inside the handlebars forloop 
-            // it will be single, double, triple, center and have a 4 piece 
-            //conditional here.
-            //we are going to create a list of coordinates for each type 
-            //we should move this to a backend route and make it async 
         }
     }
-    response.render('game', {title: 'Scrabble', boardSquares: squares })
+    let gameTiles = [{letter:"A", value:1}, {letter:"B", value:1},{letter:"C", value:1},
+    {letter:"D", value:1},{letter:"E", value:1},{letter:"F", value:1},{letter:"G", value:1}]
+    response.render('game', {title: 'Scrabble', boardSquares: squares, tiles:gameTiles })
 });
 
 module.exports = router;
