@@ -6,7 +6,9 @@ const db = require('../db');
 
 
 router.get("/", (request, response) => {
-   response.render('register');
+   response.render('register', {
+      style: 'style'
+      });
 });
 
 module.exports = router;

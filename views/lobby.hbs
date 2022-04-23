@@ -1,6 +1,6 @@
-<h1 id="title">Game Lobby</h1>
-<h1 id="title">Room Code AE25</h1>
-<div class="lobby-chat-container">
+<h1 class="lobby-title">Game Lobby</h1>
+<h1 class="lobby-title">Room Code AE25</h1>
+<section class="lobby-chat-container">
   <div class="lobby-window">
     <div class="inner-lobby">
       <div class="player player-one-glow">
@@ -29,23 +29,7 @@
       </div>
     </div>
   </div>
-  <div class="chat-window">
-      {{!-- div <- handlebars partial for incoming chat --}}
-      {{!-- Likely going to need a wrapper like chat-outgoing, call it chat-incoming --}}
-     <div class="chat-incoming"> 
     {{> chatMessages messageArray=messages}}
-    </div>
-
-      <div class="chat-outgoing">
-       
-
-       {{> outgoingMessages}}
-       
-      <div class="chat-send">
-        <button id="send-text" onsubmit="">Send</button>
-      </div>
-    </div>
-  </div>
-</div>
+</section>
 
 

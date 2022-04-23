@@ -1,5 +1,10 @@
-
-{{!-- <div class="left-spacer"></div>  --}}
+<div class="tile-wrapper"> 
+{{#each tiles}}
+<div class="tile"> 
+    <p class="tile-letter"> {{this.letter}} </p> 
+    <p class="tile-value"> {{this.value}} </p>
+</div>
+{{/each}}
+</div>
 <div class="tile-rack"></div>
 <div class="tile-rack-bottom-buffer"> </div>
-{{!-- <div class="right-spacer"></div>  --}}

@@ -1,13 +1,22 @@
-<ul class="chat-logs">
-    {{#each this.messageArray}}
-    <div class="message">
+<section class="chat-messages">
+    <ul class="chat-logs">
+        {{#each this.messageArray}}
+        <div class="message">
+            <p class="message-header"> {{this.id}} | @ {{this.timestamp}} </p>
+            <p class="message-content"> {{this.content}} </p>
+        </div>
 
-        <p class="message-header"> {{this.id}} | @ {{this.timestamp}} </p>
-
-        <p class="message-content"> {{this.content}} </p>
+        <br class="message-break">
+        {{/each}}
+    </ul>
+    <div class="chat-incoming">
+        <div class="chat-outgoing">
+            <div class="chat-bar">
+            <input type="text" class="chat-text" placeholder="Hello here is some text I'm gonna send soon"> </input>
+            </div>
+            <div class="chat-send">
+                <button id="send-text" onsubmit="">Send</button>
+            </div>
+        </div>
     </div>
-
-    <br class="message-break">
-    {{/each}}
-</ul>
-
+</section>>

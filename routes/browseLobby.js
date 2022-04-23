@@ -4,7 +4,7 @@ const db = require('../db');
 
 router.get("/", (request, response) => {
     response.render('browseLobby', {
-        title: 'browse',
+        style: 'style',
     });
 });
 

@@ -84,27 +84,62 @@ router.get("/", (request, response) => {
 
     for (let xPos = 0; xPos < 15; xPos++){
         for (let yPos = 0;  yPos < 15; yPos++){
-            
             if (doubleLetter.has(`${xPos},${yPos}`) ) {
                 squares.push({x:xPos, y:yPos, type:"double-letter", text:"L-x2"});
-            }
-            else if(doubleWord.has(`${xPos},${yPos}`) ) {
+
+            }else if(doubleWord.has(`${xPos},${yPos}`) ) {
                 squares.push({x:xPos, y:yPos, type:"double-word", text:"W-x2"}); 
+
             }else if(tripleLetter.has(`${xPos},${yPos}`) ) {
                 squares.push({x:xPos, y:yPos, type:"triple-letter", text:"L-x3"});
+
             }else if(tripleWord.has(`${xPos},${yPos}`) ) {
                 squares.push({x:xPos, y:yPos, type:"triple-word", text:"W-x3"});
+
             }else if(center.has(`${xPos},${yPos}`) ) {
                 squares.push({x:xPos, y:yPos, type:"center", text:"*"});
-            }
-            else{
+
+            }else{
                 squares.push({x:xPos, y:yPos, type:"single"});
             }
         }
     }
-    let gameTiles = [{letter:"A", value:1}, {letter:"B", value:1},{letter:"C", value:1},
-    {letter:"D", value:1},{letter:"E", value:1},{letter:"F", value:1},{letter:"G", value:1}]
-    response.render('game', {title: 'Scrabble', boardSquares: squares, tiles:gameTiles })
+
+    let gameTiles =[{letter:"A", value:1}, 
+                    {letter:"B", value:1},
+                    {letter:"C", value:1},
+                    {letter:"D", value:1},
+                    {letter:"E", value:1},
+                    {letter:"F", value:1},
+                    {letter:"G", value:1}]
+
+    response.render('game', {style: 'gameStyle', boardSquares: squares, tiles:gameTiles,
+        title: 'lobby',
+        messages: [
+          {
+            id: 1,
+            timestamp: " 21:03",
+            content: 'hello',
+          },
+          {
+            id: 2,
+            timestamp: ` 21:05 `,
+            content: "hey",
+          },
+          {
+            id: 3,
+            timestamp: `21:05 `,
+            content: "yo",
+          },
+          {
+            id: 4,
+            timestamp: `21:05 `,
+            content: "I'm a shooting star leaping through the sky Like a tiger defying the" +
+            " laws of gravity I'm a racing car passing by like Lady Godiva I'm gonna go go go" +
+            "There's no stopping me:)",
+          }
+        ]
+     })
 });
 
 module.exports = router;

@@ -1,0 +1,273 @@
+html{
+    background-color:rgb(78, 78, 78);
+ }
+ 
+ body {
+   margin:0;
+   padding:0;
+   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+ }
+
+/****************************/
+/*     Game Board style    */
+/****************************/
+
+.board-tiles-messages{
+    display: grid;;
+    width: 100%;
+    height:100%;
+    grid-template-areas:
+    "board board board board chat" 
+    "board board board board chat"
+    "board board board board chat"
+    "board board board board chat"
+    "tiles tiles tiles tiles chat"
+    ;
+} 
+  
+.game-board{
+    grid-area:board;
+    display:grid;
+    grid-template-columns: repeat(15, 4vw);
+    grid-template-rows: repeat(15, 4.8vh); 
+    gap:0.33vh;
+    justify-content:center;
+    align-content:center;
+}
+  
+.single{
+    background-color:rgb(200,156,84);
+}
+  
+.double-letter{
+    background-color:orangered;
+}
+  
+.double-letter > p{
+    display:flex;
+    align-self:center;
+    justify-content:center;
+  
+}
+  
+.double-word{
+    background-color:red;
+    align-content:center;
+}
+  
+.double-word > p{
+    display:flex;
+    align-self:center;
+    justify-content:center;
+  
+}
+  
+.triple-letter{
+    background-color:plum;
+}
+  
+.triple-letter > p{
+    display:flex;
+    align-self:center;
+    justify-content:center;
+}
+  
+.triple-word{
+    background-color:purple;
+}
+  
+.triple-word > p{
+    display:flex;
+    align-self:center;
+    justify-content:center;
+}
+  
+.center{
+    background-color:lightseagreen;
+    display:flex;
+    align-self:center;
+    justify-content:center;
+}
+  
+.center > p{
+    display:flex;
+    align-self:center;
+    justify-content:center;
+    overflow:hidden;
+}
+  
+  
+  /****************************/
+  /*    Tile Rack Style       */
+  /****************************/
+  
+.tile-rack{
+    align-self: center;
+    justify-self:center;
+    background-color: black;
+    transform:translate(90%);
+    height: 2vh;
+    width: 25vw;
+    border-radius: 10px;
+}
+  
+.tile-rack-bottom-buffer{
+    padding: 20px;
+}
+  
+.tile-wrapper{
+    grid-area:tiles;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transform:translate(40%,35%);
+    width:40vw; 
+    z-index:1; 
+    gap:5px;
+}
+  
+  
+.tile{
+    display:flex;
+    background-color:rgb(201, 145, 57);
+    width:6vh;
+    height:6vh;
+    border-radius:5px;
+}
+  
+.tile-letter{
+    display:flex; 
+    align-self:center;
+    justify-self:center;
+    transform:translate(230%);
+}
+.tile-value{
+    transform:translate(350% , 70%);
+}
+
+
+/****************************/
+/*    Chat partial style    */
+/****************************/
+
+.chat-messages {
+    grid-area:chat;
+    display:flex;
+    flex-direction: column;
+    width:20%;
+    height: 90vh;
+    background-color:rgb(149, 146, 146);
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.chat-incoming{
+    display:flex;
+    flex-direction: row;
+    align-items: justify;
+    width: 100%;
+    height: 90%;
+}
+
+.chat-logs{
+    height: 90%;
+    width: 100%;
+    padding-left: 3%;
+    padding: 20px;
+}
+
+.chat-outgoing{
+    display:flex;
+    flex-direction: row;
+    align-items: justify;
+    justify-content: space-between;
+    margin-block-start:auto;
+    height: 10%;
+    padding-left: 3%;
+    padding-right: 3%;
+}
+  
+.chat-bar {
+    align-self: flex-start ; 
+    display: flex;
+    flex-wrap:nowrap;
+    order: 1;
+    height: 90%;
+    width: 75%;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: auto;
+}
+
+.chat-text{
+    font-size: medium;
+    width: 90%;
+    height: 90%;
+    float: center;
+    margin: auto;
+    overflow: scroll;
+    border-style: none;
+    }
+    
+.chat-send {
+    display: flex;
+    flex-direction:column;
+    flex-wrap:nowrap;
+    order: 2;
+    height: 90%;
+    width: auto;
+    margin: auto;
+    background-color: rgb(31, 194, 39);
+    border: 1px solid black; 
+}
+    
+#send-text {
+    justify-content: center;
+    align-items: center;
+    text-align:center;
+    font-family: Arial, sans-serif;
+    color:black;
+    font-size: 18px;
+    margin: auto;
+    height: 100%;
+    background-color: rgba(0, 128, 8, .10 );
+}
+  
+#send-text:hover {
+    cursor: pointer;
+}
+    
+#chat-text {
+    justify-content: left;
+    align-items: left;
+    text-align: left;
+    font-family: Arial, sans-serif;
+    color:black;
+    font-size: 18px;
+}
+  
+.message{
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 1px;
+    margin: auto;
+}
+  
+.message-break{
+    height: 20%;
+}
+
+.message-header{
+    padding-left: 5px;
+    padding-top: 0%;
+    padding-bottom: 0%;
+    margin: 0%;     
+}
+
+.message-content{
+    padding-left: 10px;
+    padding-top: 0%;
+    padding-bottom: 0%;
+    margin: 0%;
+}

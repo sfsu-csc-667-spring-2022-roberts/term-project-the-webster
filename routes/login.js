@@ -3,9 +3,10 @@ const router = express.Router();
 const db = require('../db');
 
 router.get("/", (request, response) => {
-   //   res.render('index', { title: 'Team Websters Scrabble' });
-    response.render('login', { title: 'login  ' , 
-    block: '' });
+    response.render('login', {
+        style: 'style' , 
+        block: '' 
+        });
     
 });
 

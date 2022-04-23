@@ -1,13 +1,13 @@
-<div class="board-and-tiles"> 
-<div class="game-board"> 
+<div class="board-tiles-messages"> 
+
+<section class="game-board"> 
     {{#each boardSquares}}
         <div class="{{type}}" id="{{x}},{{y}}">
             <p>{{text}}</p>
         </div>
     {{/each}}
   
-</div>
-{{> tiles}}
+</section>
 {{> tileRack}}
-
+{{> chatMessages messageArray=messages}}
 </div>
