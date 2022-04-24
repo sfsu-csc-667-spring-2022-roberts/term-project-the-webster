@@ -6,7 +6,7 @@ var router = express.Router();
 const UserModel = require('../models/Users');
 
 
-
+//TODO verify if username already in DB
 router.post("/register", async (req, res, next)=> {
   let username = req.body.username;
   let password = req.body.password;
@@ -18,21 +18,6 @@ router.post("/register", async (req, res, next)=> {
     console.log("passwords do not match");
   }
   console.log("HERE");
-
-  // let encryptedPass = bcrypt.hash(password, 15).;
-  // console.log(encryptedPass);
-
-  // const CREATE_USER_QUERY = 
-  // `INSERT INTO users ("username", "password") VALUES ($1,$2)`;
-  // return db.any(CREATE_USER_QUERY,[username, password ])
-  // .then ( () => {
-  //   console.log("AHERE");
-  //   res.redirect('/login');
-  // })
-  // .catch(error => {
-  //   console.log("THERE");
-  //   console.log(error);
-  // })
 
   UserModel.create(username, password)
   .then(results => {
