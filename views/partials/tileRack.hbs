@@ -1,12 +1,16 @@
-<div class="tile-rack-wrapper">
-    <div class="tile-wrapper"> 
-    {{#each tiles}}
-    <div class="tile"> 
-        <p class="tile-letter"> {{this.letter}} </p> 
-        <p class="tile-value"> {{this.value}} </p>
-    </div>
-    {{/each}}
-    </div>
-    <div class="tile-rack"></div>
-    <div class="tile-rack-bottom-buffer"> </div>
-</div> 
+<div class="tile-rack-bag-wrapper">
+    <div class="tile-rack-wrapper">
+        <div class="tile-wrapper"> 
+        {{#each tiles}}
+        <div class="tile"> 
+            <p class="tile-letter"> {{this.letter}} </p> 
+            <p class="tile-value"> {{this.value}} </p>
+        </div>
+        {{/each}}
+        </div>
+        <div class="tile-rack"></div>
+    </div> 
+    <svg width="90" height="90">
+        <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
+    </svg>
+</div>

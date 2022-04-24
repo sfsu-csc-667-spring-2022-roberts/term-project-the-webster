@@ -105,13 +105,13 @@ router.get("/", (request, response) => {
         }
     }
 
-    let gameTiles =[{letter:"A", value:1}, 
-                    {letter:"B", value:1},
-                    {letter:"C", value:1},
-                    {letter:"D", value:1},
-                    {letter:"E", value:1},
-                    {letter:"F", value:1},
-                    {letter:"G", value:1}]
+    let gameTiles =[{letter:"A", value:1, order:1}, 
+                    {letter:"B", value:1, order:2},
+                    {letter:"C", value:1, order:3},
+                    {letter:"D", value:1, order:4},
+                    {letter:"E", value:1, order:5},
+                    {letter:"F", value:1, order:6},
+                    {letter:"G", value:1, order:7}]
 
     response.render('game', {style: 'gameStyle', boardSquares: squares, tiles:gameTiles,
         title: 'lobby',

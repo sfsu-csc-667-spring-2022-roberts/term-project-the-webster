@@ -18,7 +18,7 @@ html{
 /****************************/
 
 .board-tiles-messages{
-    display: grid;;
+    display: grid;
     width: 100%;
     height:100%;
     grid-template-areas:
@@ -34,8 +34,6 @@ html{
     grid-area:board;
     display:grid;
     transform:translate(0%, 5%);
-    /* grid-template-columns: repeat(15, 4vw);
-    grid-template-rows: repeat(15, 4.8vh);  */
     grid-template-columns: repeat(15, 2.5vw);
     grid-template-rows: repeat(15, 2.5vw); 
     gap:0.2vw;
@@ -108,7 +106,12 @@ html{
   /****************************/
   /*    Tile Rack Style       */
   /****************************/
-  
+
+.tile-rack-bag-wrapper{
+    display:flex;
+    flex-direction:row;
+    width:100%;
+}
 
 .tile-rack-wrapper{
     transform:translate(0%, 35%);
@@ -155,7 +158,7 @@ html{
     align-self: center;
     justify-self:center;
     background-color: black;
-    transform:translate(12vw, 1vh);
+    transform:translate(16vw, 1vh);
     height: 2vh;
     width: 50vh;
     max-height: 2vh;
@@ -164,10 +167,7 @@ html{
     min-width: 50vh;
     border-radius: 10px;
 }
-  
-.tile-rack-bottom-buffer{
-    padding: 20px;
-}
+
 
 /****************************/
 /*    Chat partial style    */
