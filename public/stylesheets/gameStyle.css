@@ -303,3 +303,33 @@ html{
     font-size: 18px;
 }
 
+ 
+
+.scoreboard{
+   background-color: rgb(78, 78, 78);
+   padding: auto;
+   display: grid;
+   height: auto;
+   gap:0.2vw;
+   grid-template-columns: repeat(4,auto);
+   grid-auto-rows:  2.5vw;
+}
+
+
+.player-name{
+   grid-column-start: 2;
+   grid-column-end: 3;
+   text-align: center;
+   text-justify: center;
+   margin: auto;
+   color: orangered;
+}
+
+
+.player-score{
+   grid-column-start: 3;
+   grid-column-end: 4;
+   margin: auto;
+   margin-left: 0%;
+}
+
