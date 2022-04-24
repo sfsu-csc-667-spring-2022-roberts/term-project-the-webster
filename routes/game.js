@@ -138,6 +138,24 @@ router.get("/", (request, response) => {
             " laws of gravity I'm a racing car passing by like Lady Godiva I'm gonna go go go" +
             "There's no stopping me:)",
           }
+        ], 
+        isReady: true, 
+        players: [
+          {
+          name: "jack",
+          id: 1, 
+          score: 90
+          }, 
+          {
+            name: "kris", 
+            id: 2, 
+            score: 99
+          },
+          {
+            name: "jack1",
+            id: 11, 
+            score: 90
+            }
         ]
      })
 });

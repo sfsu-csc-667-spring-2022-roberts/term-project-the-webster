@@ -1,4 +1,9 @@
+
+
 <section class="chat-messages">
+    {{#if ready}}
+        {{> scoreboard}}
+    {{/if}}
     <ul class="chat-logs">
         {{#each this.messageArray}}
         <div class="message">
