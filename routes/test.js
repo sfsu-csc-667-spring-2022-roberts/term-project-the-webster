@@ -13,8 +13,10 @@ router.get("/", (request, response) => {
 //             response.json({ error })
 //         })
 // });
+let name = 'wat';
+let pass = 'watt'
 
-db.any(`INSERT INTO users ("username", "password") VALUES ('tst2', '12345')`)
+db.any(`INSERT INTO users ("username", "password") VALUES ($1,$2)`,[name, pass] )
         .then(_ => 
         db.any(`SELECT * FROM users`))
         .then(results => response.json(results))
