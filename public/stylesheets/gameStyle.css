@@ -181,7 +181,7 @@ html{
     height: 90vh;
     transform:translate(0%, 5%);
     background-color:rgb(149, 146, 146);
-    border: 1px solid black;
+   
     border-radius: 5px;
 }
 
@@ -191,6 +191,12 @@ html{
     align-items: justify;
     width: 100%;
     height: 90%;
+    border: 1px solid black;
+    border-top: 0;
+    border-radius: 5px;
+    border-top-left-radius: 0%;
+    border-top-right-radius: 0%;
+
 }
 
 .chat-logs{
@@ -199,6 +205,15 @@ html{
     margin:auto;
     padding:auto;
     padding-top:1vh;
+    border: 1px solid black;
+    border-bottom: 0;
+   
+}
+.chat-wrapper{
+    height: auto;
+    border: 1px solid black;
+    width: auto;
+    display: flex;
 }
   
 .message{
@@ -239,6 +254,7 @@ html{
     padding-left: 1vh;
     padding-right: 1vh;
     padding-bottom:1vh;
+   
 }
   
 .chat-text{
@@ -274,8 +290,8 @@ html{
     margin: auto;
     margin-left:1vh;
     background-color: rgb(31, 194, 39);
-    border: 1px solid black; 
-    border-radius:7px;
+    
+    
 }
     
 #send-text {
@@ -313,9 +329,18 @@ html{
    gap:0.2vw;
    grid-template-columns: repeat(4,auto);
    grid-auto-rows:  2.5vw;
+   border: 1px solid black;
+   padding-bottom: 10px;
+   border-radius: 5px;
+   border-bottom-left-radius: 0;
+   border-bottom-right-radius: 0;
 }
 
-
+.scoreboard-buffer{
+    padding: 5px;
+   
+    background-color: rgb(78, 78, 78);
+}
 .player-name{
    grid-column-start: 2;
    grid-column-end: 3;
