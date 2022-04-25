@@ -3,29 +3,75 @@
 <section class="lobby-chat-container">
   <div class="lobby-window">
     <div class="inner-lobby">
-      <div class="player player-one-glow">
-        <p class="player-text">Player 1</p>
+      {{!--
+      <script>
+        console.log("Running browse lobby script...");
+
+        var players = [
+          {
+            id: 1,
+            name: "Bob Jones",
+            ready: false
+          },
+          {
+            id: 2,
+            name: "Kyle",
+            ready: true
+          },
+          {
+            id: 3,
+            name: "Johnny Johnson",
+            ready: true
+          }
+        ]
+
+        for (i = 0; i < 4; i++) {
+          playerDiv = document.createElement('div');
+          playerDiv.className = "player";
+          playerDiv.body = "test";
+          playerDiv.textContent = players[i].name;
+          playerText = document.createElement('p');
+          playerText.className = "player-text";
+          playerText.textContent = players[i].name;
+          playerDiv.appendChild(playerText);
+          document.getElementsByClassName("inner-lobby")[0].appendChild(playerDiv);
+          /*readyDiv = document.createElement('div');
+          readyText = document.createElement('p');
+          readyText.className = "ready-text";*/
+          readyButton = document.createElement('button');
+          //readyButton.className = "ready-text";
+          if (players[i].ready === true) {
+            /*readyDiv.className = "ready";
+            readyDiv.textContent = "Ready";
+            readyText.textContent = "Ready";*/
+            //readyButton.className = "ready";
+          } else {
+            /*readyDiv.className = "not-ready";
+            readyDiv.textContent = "Not Ready";
+            readyText.textContent = "Not Ready";*/
+            //readyButton.className = "not-ready";
+          }
+          // readyDiv.body = "test";
+          //readyDiv.appendChild(readyText);
+          //document.getElementsByClassName("inner-lobby")[0].appendChild(readyDiv);
+          document.getElementsByClassName("inner-lobby")[0].appendChild(readyButton);
+        }
+      </script>--}}
+      <div class="player-container">
+        <div class="player-section">
+          <p class="player-text"> Johnny Johnson</p>
+        </div>
+        <button class="button-section">
+          Ready
+        </button>
       </div>
-      <div class="ready">
-        <p class="ready-text">Ready</p>
-      </div>
-      <div class="player player-two-glow">
-        <p class="player-text">Player 2</p>
-      </div>
-      <div class="ready">
-        <p class="ready-text">Ready</p>
-      </div>
-      <div class="player player-three-glow">
-        <p class="player-text">Player 3</p>
-      </div>
-      <div class="not-ready">
-        <p class="ready-text">Not Ready</p>
-      </div>
-      <div class="player player-four-glow">
-        <p class="player-text">Player 4</p>
-      </div>
-      <div class="not-ready">
-        <p class="ready-text">Not Ready</p>
+      <div class="player-container">
+        <div class="player-section">
+          <p class="player-text">Kyle Gilbert</p>
+        </div>
+        <button class="button-section">
+          Ready
+        </button>
       </div>
     </div>
   </div>
