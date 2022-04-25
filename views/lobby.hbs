@@ -3,7 +3,6 @@
 <section class="lobby-chat-container">
   <div class="lobby-window">
     <div class="inner-lobby">
-      {{!--
       <script>
         console.log("Running browse lobby script...");
 
@@ -15,7 +14,7 @@
           },
           {
             id: 2,
-            name: "Kyle",
+            name: "Kyle Gilbert",
             ready: true
           },
           {
@@ -26,38 +25,31 @@
         ]
 
         for (i = 0; i < 4; i++) {
-          playerDiv = document.createElement('div');
-          playerDiv.className = "player";
-          playerDiv.body = "test";
-          playerDiv.textContent = players[i].name;
-          playerText = document.createElement('p');
-          playerText.className = "player-text";
-          playerText.textContent = players[i].name;
-          playerDiv.appendChild(playerText);
-          document.getElementsByClassName("inner-lobby")[0].appendChild(playerDiv);
-          /*readyDiv = document.createElement('div');
-          readyText = document.createElement('p');
-          readyText.className = "ready-text";*/
-          readyButton = document.createElement('button');
-          //readyButton.className = "ready-text";
-          if (players[i].ready === true) {
-            /*readyDiv.className = "ready";
-            readyDiv.textContent = "Ready";
-            readyText.textContent = "Ready";*/
-            //readyButton.className = "ready";
+          containerDiv = document.createElement('div');
+          containerDiv.className = "player-container";
+          document.getElementsByClassName("inner-lobby")[0].appendChild(containerDiv);
+          playerSection = document.createElement('div');
+          playerSection.className = "player-section";
+
+          playerSectionText = document.createElement('p');
+          playerSectionText.className = "player-text";
+          playerSectionText.textContent = players[i].name;
+
+          playerSection.appendChild(playerSectionText);
+
+          buttonSection = document.createElement('button');
+          buttonSection.className = "button-section";
+          isReady = players[i].ready;
+          if (isReady) {
+            buttonSection.textContent = "Ready";
           } else {
-            /*readyDiv.className = "not-ready";
-            readyDiv.textContent = "Not Ready";
-            readyText.textContent = "Not Ready";*/
-            //readyButton.className = "not-ready";
+            buttonSection.textContent = "Not Ready";
           }
-          // readyDiv.body = "test";
-          //readyDiv.appendChild(readyText);
-          //document.getElementsByClassName("inner-lobby")[0].appendChild(readyDiv);
-          document.getElementsByClassName("inner-lobby")[0].appendChild(readyButton);
+          containerDiv.appendChild(playerSection);
+          containerDiv.appendChild(buttonSection);
         }
-      </script>--}}
-      <div class="player-container">
+      </script>
+      {{!--<div class="player-container">
         <div class="player-section">
           <p class="player-text"> Johnny Johnson</p>
         </div>
@@ -72,7 +64,7 @@
         <button class="button-section">
           Ready
         </button>
-      </div>
+      </div>--}}
     </div>
   </div>
     {{> chatMessages messageArray=messages}}

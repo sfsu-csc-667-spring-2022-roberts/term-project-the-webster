@@ -96,17 +96,6 @@ html{
     border: 1px solid red;
     border-radius: 5px;
 }
- 
-    
-.player-text {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align:center;
-    font-family: Arial, sans-serif;
-    color:black;
-    font-size: 24px;
-}
   
 .ready-text {
     display: flex;
@@ -297,3 +286,13 @@ html{
     align-self: center;
     margin-left: 300px;
   }
+
+  .player-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align:center;
+    font-family: Arial, sans-serif;
+    color:black;
+    font-size: 24px;
+}
