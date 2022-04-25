@@ -42,11 +42,15 @@
           isReady = players[i].ready;
           if (isReady) {
             buttonSection.textContent = "Ready";
+            buttonSection.style.backgroundColor = "green";
           } else {
             buttonSection.textContent = "Not Ready";
+            buttonSection.style.backgroundColor = "red";
           }
+          // buttonSection.addEventListener('click', readyToggle);
           containerDiv.appendChild(playerSection);
           containerDiv.appendChild(buttonSection);
+          // document.querySelectorAll('.button-section').addEventListener('click', readyToggle);
         }
       </script>
       {{!--<div class="player-container">
@@ -67,7 +71,5 @@
       </div>--}}
     </div>
   </div>
-    {{> chatMessages messageArray=messages}}
+  {{> chatMessages messageArray=messages}}
 </section>
-
-
