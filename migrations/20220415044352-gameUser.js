@@ -2,14 +2,14 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable("game_users", {
-      gameId: {
+      game_id: {
         type: Sequelize.INTEGER,
         references: {
           model: "games",
           key: "id",
         },
       },
-      userId: {
+      user_id: {
         type: Sequelize.INTEGER,
         references: {
           model: "users",

@@ -33,11 +33,11 @@ module.exports = {
         y: {
           type: Sequelize.INTEGER,
         },
-        wordMultiplier: {
+        word_multiplier: {
           type: Sequelize.INTEGER,
           defaultValue: 1,
         },
-        letterMultiplier: {
+        letter_multiplier: {
           type: Sequelize.INTEGER,
           defaultValue: 1,
         },
