@@ -3,33 +3,79 @@
 <section class="lobby-chat-container">
   <div class="lobby-window">
     <div class="inner-lobby">
-      <div class="player player-one-glow">
-        <p class="player-text">Player 1</p>
+      <script>
+        console.log("Running browse lobby script...");
+
+        var players = [
+          {
+            id: 1,
+            name: "Bob Jones",
+            ready: false
+          },
+          {
+            id: 2,
+            name: "Kyle Gilbert",
+            ready: true
+          },
+          {
+            id: 3,
+            name: "Johnny Johnson",
+            ready: true
+          },
+          {
+            id: 4,
+            name: "Testing test",
+            ready: false
+          }
+        ]
+
+        for (i = 0; i < 4; i++) {
+          containerDiv = document.createElement('div');
+          containerDiv.className = "player-container";
+          document.getElementsByClassName("inner-lobby")[0].appendChild(containerDiv);
+          playerSection = document.createElement('div');
+          playerSection.className = "player-section";
+
+          playerSectionText = document.createElement('p');
+          playerSectionText.className = "player-text";
+          playerSectionText.textContent = players[i].name;
+
+          playerSection.appendChild(playerSectionText);
+
+          buttonSection = document.createElement('button');
+          buttonSection.className = "button-section";
+          isReady = players[i].ready;
+          if (isReady) {
+            buttonSection.textContent = "Ready";
+            buttonSection.style.backgroundColor = "green";
+          } else {
+            buttonSection.textContent = "Not Ready";
+            buttonSection.style.backgroundColor = "red";
+          }
+          // buttonSection.addEventListener('click', readyToggle);
+          containerDiv.appendChild(playerSection);
+          containerDiv.appendChild(buttonSection);
+          // document.querySelectorAll('.button-section').addEventListener('click', readyToggle);
+        }
+      </script>
+      {{!--<div class="player-container">
+        <div class="player-section">
+          <p class="player-text"> Johnny Johnson</p>
+        </div>
+        <button class="button-section">
+          Ready
+        </button>
       </div>
-      <div class="ready">
-        <p class="ready-text">Ready</p>
-      </div>
-      <div class="player player-two-glow">
-        <p class="player-text">Player 2</p>
-      </div>
-      <div class="ready">
-        <p class="ready-text">Ready</p>
-      </div>
-      <div class="player player-three-glow">
-        <p class="player-text">Player 3</p>
-      </div>
-      <div class="not-ready">
-        <p class="ready-text">Not Ready</p>
-      </div>
-      <div class="player player-four-glow">
-        <p class="player-text">Player 4</p>
-      </div>
-      <div class="not-ready">
-        <p class="ready-text">Not Ready</p>
-      </div>
+      <div class="player-container">
+        <div class="player-section">
+          <p class="player-text">Kyle Gilbert</p>
+        </div>
+        <button class="button-section">
+          Ready
+        </button>
+      </div>--}}
+      <button class="leave-button">Leave</button>
     </div>
   </div>
-    {{> chatMessages messageArray=messages}}
+  {{> chatMessages messageArray=messages}}
 </section>
-
-
