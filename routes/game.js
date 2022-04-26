@@ -1,5 +1,4 @@
 const express = require("express");
-
 const router = express.Router();
 const db = require('../db');
 
@@ -114,7 +113,7 @@ router.get("/", (request, response) => {
                     {letter:"G", value:1, order:7}]
 
     response.render('game', {style: 'gameStyle', boardSquares: squares, tiles:gameTiles,
-        title: 'lobby',
+        title: 'lobby',  tilesInBag:70,
         messages: [
           {
             id: 1,

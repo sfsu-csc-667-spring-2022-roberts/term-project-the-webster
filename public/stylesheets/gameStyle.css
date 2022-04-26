@@ -124,7 +124,7 @@ html{
     display:flex;
     align-items:center;
     justify-content:center;
-    transform:translate(40%,35%);
+    transform:translate(30%,35%);
     width:40vw; 
     z-index:1; 
     gap:5px;
@@ -158,7 +158,7 @@ html{
     align-self: center;
     justify-self:center;
     background-color: black;
-    transform:translate(16vw, 1vh);
+    transform:translate(12vw, 1vh);
     height: 2vh;
     width: 50vh;
     max-height: 2vh;
@@ -168,6 +168,19 @@ html{
     border-radius: 10px;
 }
 
+.bag-icon-wrapper{
+    display:flex;
+    transform:translate(16vh, 4vh);
+    background-color:rgb(78, 78, 78);
+    border:0;
+}
+
+.bag-icon-wrapper > p{
+    display:flex;
+    transform:translate(-5.5vh, 2.5vh);
+    color:white;
+    font-size:25px;
+}
 
 /****************************/
 /*    Chat partial style    */
@@ -181,10 +194,63 @@ html{
     height: 90vh;
     transform:translate(0%, 5%);
     background-color:rgb(149, 146, 146);
-   
     border-radius: 5px;
 }
 
+
+.scoreboard{
+    background-color:rgb(200, 200, 200);
+    padding: auto;
+    display: grid;
+    height: auto;
+    padding-top:1vh;
+    gap:0.2vw;
+    grid-template-columns: repeat(3,auto);
+    grid-auto-rows:  2.5vw;
+    border: 1px solid black;
+    padding-bottom: 10px;
+    border-radius: 5px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+ }
+
+ .player-data{
+    grid-column-start: 2;
+    grid-column-end: 3;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows:1fr;
+    flex-direction:row;
+    border: 1px solid #000;
+	grid-gap: 1px;
+    border-color:black;
+    border-radius:20px;
+ }
+
+ .player-name{
+    grid-area:name;
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    justify-content:flex-start;
+    text-align: center;
+    text-justify: center;
+    margin: auto;
+ }
+ 
+ .player-score{
+    grid-area:score;
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    text-align: center;
+    text-justify: center;
+    margin: auto;
+ }
+   
+ .scoreboard-buffer{
+    padding: 5px;
+    background-color: rgb(78, 78, 78);
+ }
+ 
 .chat-incoming{
     display:flex;
     flex-direction: row;
@@ -196,7 +262,6 @@ html{
     border-radius: 5px;
     border-top-left-radius: 0%;
     border-top-right-radius: 0%;
-
 }
 
 .chat-logs{
@@ -207,8 +272,8 @@ html{
     padding-top:1vh;
     border: 1px solid black;
     border-bottom: 0;
-   
 }
+
 .chat-wrapper{
     height: auto;
     border: 1px solid black;
@@ -290,8 +355,6 @@ html{
     margin: auto;
     margin-left:1vh;
     background-color: rgb(31, 194, 39);
-    
-    
 }
     
 #send-text {
@@ -317,44 +380,5 @@ html{
     font-family: Arial, sans-serif;
     color:black;
     font-size: 18px;
-}
-
- 
-
-.scoreboard{
-   background-color: rgb(78, 78, 78);
-   padding: auto;
-   display: grid;
-   height: auto;
-   gap:0.2vw;
-   grid-template-columns: repeat(4,auto);
-   grid-auto-rows:  2.5vw;
-   border: 1px solid black;
-   padding-bottom: 10px;
-   border-radius: 5px;
-   border-bottom-left-radius: 0;
-   border-bottom-right-radius: 0;
-}
-
-.scoreboard-buffer{
-    padding: 5px;
-   
-    background-color: rgb(78, 78, 78);
-}
-.player-name{
-   grid-column-start: 2;
-   grid-column-end: 3;
-   text-align: center;
-   text-justify: center;
-   margin: auto;
-   color: orangered;
-}
-
-
-.player-score{
-   grid-column-start: 3;
-   grid-column-end: 4;
-   margin: auto;
-   margin-left: 0%;
 }
 
