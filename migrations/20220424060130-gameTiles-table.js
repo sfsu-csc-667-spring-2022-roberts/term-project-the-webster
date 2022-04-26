@@ -12,7 +12,7 @@ module.exports = {
             key: "gameID"
           },
         },
-        discarded: {
+        inPlay: {
           type: Sequelize.BOOLEAN,
           defaultValue: false
         },
@@ -24,9 +24,16 @@ module.exports = {
           type: Sequelize.INTEGER,
           primaryKey: true, 
           references: {
-            model: "user",
+            model: "users",
             key: "userID"
           },
+        },
+        coordinates: {
+          type: Sequelize.STRING, 
+          references: {
+            model: "gameBoardTile",
+            key: "coordinates"
+          }
         },
         order: {
           type: Sequelize.INTEGER
