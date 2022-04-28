@@ -7,14 +7,14 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true,
       },
-      senderId: {
+      sender_id: {
         type: Sequelize.INTEGER,
         references: {
           model: "users",
           key: "id",
         },
       },
-      gameId: {
+      game_id: {
         type: Sequelize.INTEGER,
         references: {
           model: "games",

@@ -2,34 +2,41 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable("game_tiles", {
-      gameId: {
+      game_id: {
         type: Sequelize.INTEGER,
         references: {
           model: "games",
           key: "id",
         },
       },
-      userId: {
+      user_id: {
         type: Sequelize.INTEGER,
         references: {
           model: "users",
           key: "id",
         },
       },
-      inPlay: {
+      tile_id :{
+        type: Sequelize.INTEGER,
+        references: {
+          model: "tiles",
+          key: "id"
+        }
+      },
+      in_play: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },
-      inBag: {
+      in_bag: {
         type: Sequelize.BOOLEAN,
         defaultValue: true,
       },
-      xCoordinate: {
+      x_coordinate: {
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: -1,
       },
-      yCoordinate: {
+      y_coordinate: {
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: -1,

@@ -7,7 +7,7 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true,
       },
-      inLobby: {
+      in_lobby: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },

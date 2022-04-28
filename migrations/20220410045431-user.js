@@ -16,7 +16,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      totalGames: {
+      total_games: {
         type: Sequelize.INTEGER,
         defaultValue: 0,
       },
@@ -24,11 +24,11 @@ module.exports = {
         type: Sequelize.INTEGER,
         defaultValue: 0,
       },
-      winStreak: {
+      win_streak: {
         type: Sequelize.INTEGER,
         defaultValue: 0,
       },
-      highScore: {
+      high_score: {
         type: Sequelize.INTEGER,
         defaultValue: 0,
       },
