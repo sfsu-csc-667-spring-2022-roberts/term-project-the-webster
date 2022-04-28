@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 const Game = require("../db/game");
 
-router.get("/create", (request, response) => {
+router.get("/create", async (request, response) => {
   const currentUser = 1; // don't hard code this, get from params
 
   Game.createGame(currentUser)

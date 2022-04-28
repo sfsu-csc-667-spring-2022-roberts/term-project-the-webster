@@ -14,8 +14,10 @@ const createGame = (userId) =>
     .then(({game_id}) => 
       db.any("SELECT * FROM tiles").then((tiles) => {
         // INSERT tiles INTO game_tiles (with default values) RETURNING "gameId" in random order
-        return db.one('INSERT INTO game_tiles ("game_id", "user_id", "order") VALUES (1, 1, 0) RETURNING "game_id"');
+        blah = db.one('INSERT INTO game_tiles ("game_id", "user_id", "tile_id", "order") VALUES (1,1,1, 0) RETURNING "game_id"');
         // console.log("EEE:" + game_id);
+        console.log("blah is:" + {blah});
+        return blah;
       })
     );
 
