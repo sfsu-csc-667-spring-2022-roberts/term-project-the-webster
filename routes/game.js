@@ -7,7 +7,8 @@ router.get("/create", (request, response) => {
   const currentUser = 1; // don't hard code this, get from params
 
   Game.createGame(currentUser)
-    .then(({ gameId }) => {
+    .then(({gameId} ) => {
+      console.log("gameId:" + gameId);
       response.redirect(`/game/${gameId}`);
     })
     .catch((error) => {

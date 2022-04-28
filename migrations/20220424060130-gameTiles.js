@@ -16,6 +16,13 @@ module.exports = {
           key: "id",
         },
       },
+      tile_id :{
+        type: Sequelize.INTEGER,
+        references: {
+          model: "tiles",
+          key: "id"
+        }
+      },
       in_play: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
