@@ -5,7 +5,7 @@ const Game = require("../db/game");
 
 router.get("/create", (request, response) => {
   const currentUser = 1; // don't hard code this, get from params
-
+  console.log("jrob Games");
   Game.createGame(currentUser)
     .then(({ gameId }) => {
         console.log(gameId);
