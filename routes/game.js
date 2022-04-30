@@ -3,12 +3,12 @@ const express = require("express");
 const router = express.Router();
 const Game = require("../db/game");
 
-router.get("/create", (request, response) => {
+router.get("/create", async (request, response) => {
   const currentUser = 1; // don't hard code this, get from params
 
   Game.createGame(currentUser)
-    .then(({ gameId }) => {
-        console.log(gameId);
+    .then((gameId ) => {
+      console.log("gameId:" + gameId);
       response.redirect(`/game/${gameId}`);
     })
     .catch((error) => {
@@ -20,7 +20,7 @@ router.get("/create", (request, response) => {
 router.get("/:id", (request, response) => {
   Game.getEmptyGrid()
     .then((cells) => {
-      response.render("games", {style: "gameStyle", grid: cells });
+      response.render("games", { cells });
     })
     .catch((error) => {
       console.log(">", error);
@@ -29,7 +29,6 @@ router.get("/:id", (request, response) => {
 });
 
 router.get("/:id/join", (request, response) => {
-  const { id: gameId } = request.params;
   const userId = 1; // This should be based on the current logged in user
 
   Game.joinGame(gameId, userId)

@@ -5,12 +5,14 @@
   "scripts": {
     "start": "node ./bin/www",
     "start:dev": "SET \"NODE_ENV=development\" SET DEBUG=myapp:* & nodemon ./bin/www",
+    "start:dev:nix": "NODE_ENV=development DEBUG=myapp:* nodemon ./bin/www",
     "db:create:migration": "npx sequelize migration:generate --name ",
     "db:migrate": "npx sequelize db:migrate",
     "db:rollback": "npx sequelize db:migrate:undo",
     "postinstall": "npx sequelize db:migrate"
   },
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^16.0.0",
