@@ -20,6 +20,7 @@ router.get("/create", async (request, response) => {
 router.get("/:id", (request, response) => {
   Game.getEmptyGrid()
     .then((cells) => {
+      console.log(cells);
       response.render("games", { cells });
     })
     .catch((error) => {
