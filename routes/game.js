@@ -3,13 +3,13 @@ const express = require("express");
 const router = express.Router();
 const Game = require("../db/game");
 
-router.get("/create", async (request, response) => {
+router.get("/create",(request, response) => {
   const currentUser = 1; // don't hard code this, get from params
 
   Game.createGame(currentUser)
-    .then(({gameId} ) => {
-      console.log("gameId:" + gameId);
-      response.redirect(`/game/${gameId}`);
+    .then(({game_id} ) => {
+      console.log("gameId:" + game_id);
+      response.redirect(`/game/${game_id}`);
     })
     .catch((error) => {
       console.log(error);
