@@ -1,11 +1,13 @@
 
 <div class="game-board">
-    {{#each cells}}
-        <div class="cell" data-x="{{this.x}}" data-y="{{this.y}}">
-            <p>x: {{this.x}}</p>
-            <p>y: {{this.y}}</p>
-            <p>l: {{this.letterMultiplier}}</p>
-            <p>w: {{this.wordMultiplier}}</p>
+    {{#each boardSquares}}
+        <div class="l-{{this.letter_multiplier}}-w-{{this.word_multiplier}}" data-x="{{this.x}}" data-y="{{this.y}}" id="square-{{this.x}},{{this.y}}">
+          
+            {{!-- <p>x: {{this.x}} </p>
+            <p>y: {{this.y}}</p> --}}
+            <p> . </p>
+           
         </div>
     {{/each}}
 </div>
+

@@ -21,7 +21,7 @@ router.get("/:id", (request, response) => {
   Game.getEmptyGrid()
     .then((cells) => {
       console.log(cells);
-      response.render("games", { cells });
+      response.render("games", { boardSquares: cells , style: "gameStyle"} );
     })
     .catch((error) => {
       console.log(">", error);

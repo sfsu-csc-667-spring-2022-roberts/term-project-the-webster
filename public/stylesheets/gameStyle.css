@@ -45,50 +45,50 @@ html{
     background-color:rgb(200,156,84);
 }
   
-.double-letter{
+.l-2-w-1{
     background-color:orangered;
 }
   
-.double-letter > p{
+.l-2-w-1 > p{
     display:flex;
     align-self:center;
     justify-content:center;
   
 }
   
-.double-word{
+.l-1-w-2{
     background-color:red;
     align-content:center;
 }
   
-.double-word > p{
+.l-1-w-2 > p{
     display:flex;
     align-self:center;
     justify-content:center;
   
 }
   
-.triple-letter{
+.l-3-w-1{
     background-color:plum;
 }
   
-.triple-letter > p{
+.l-3-w-1 > p{
     display:flex;
     align-self:center;
     justify-content:center;
 }
   
-.triple-word{
+.l-1-w-3{
     background-color:purple;
 }
   
-.triple-word > p{
+.l-1-w-3 > p{
     display:flex;
     align-self:center;
     justify-content:center;
 }
   
-.center{
+.l-2-w-2{
     background-color:lightseagreen;
     display:flex;
     align-self:center;

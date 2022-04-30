@@ -2,8 +2,8 @@
 
 <section class="game-board"> 
     {{#each boardSquares}}
-        <div class="{{type}}" id="{{x}},{{y}}">
-            <p>{{text}}</p>
+        <div class="{{type}}" id="square-{{x}},{{y}}">
+            <p>{{text}}</p> 
         </div>
     {{/each}}
   
@@ -11,3 +11,4 @@
 {{> tileRack}}
 {{> chatMessages messageArray=messages ready=isReady players=players}}
 </div>
+
