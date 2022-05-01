@@ -50,7 +50,6 @@ module.exports = {
             cells.push({ x, y, ...((SPECIAL_COORDINATES[x] || [])[y] || {}) });
           }
         }
-
         queryInterface.bulkInsert("game_grid", cells);
       });
   },
