@@ -33,6 +33,9 @@ router.post("/register", async (req, res, next)=> {
   })
   .then(({user_id}) => {
     //TODO make this get from the create query
+    if (user_id < 0) {
+      throw error;
+    }
     console.log("user_id is:" + user_id);
     res.redirect('/login')
   })
