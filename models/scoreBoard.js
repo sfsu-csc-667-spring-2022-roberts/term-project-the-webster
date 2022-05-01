@@ -27,11 +27,15 @@ const getPlayers = () => {
 };
 
 const getPlayersScore = () => {
-    return Math.random(0, 500);
+    return Math.round( (Math.random() * 1000));
 };
 
+const getPlayersId = (gameId) => {
+  return Math.round( (Math.random() * 1000) );
+};
 
 module.exports = {
   getPlayers,
-  
+  getPlayersScore,
+  getPlayersId,
 };
