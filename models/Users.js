@@ -9,23 +9,9 @@ UserModel.create = (username, password ) =>
     return bcrypt.hash(password, 15)
     .then( (hashedPassword) =>
     {
-        let baseSQL = 'INSERT INTO users ("username", "password") VALUES ($1,$2)';
-        return db.any(baseSQL, [username, hashedPassword]);
+        let baseSQL = 'INSERT INTO users ("username", "password") VALUES ($1,$2) returning id AS user_id';
+        return db.one(baseSQL, [username, hashedPassword])
     })
-    .then(results => {
-        console.log("results from create is:" + results);
-        if(results && results.affectedRows)
-        {
-            console.log("insertID is:" + results.insertId);
-            return Promise.resolve(results.insertId);
-        }
-        else 
-        {
-            console.log("else statement");
-            return Promise.resolve(-1);
-        }
-    })
-    // .catch( (err) => console.log("create error is:" + err));
     .catch( (err) => Promise.reject(err));
 }
 
@@ -41,7 +27,7 @@ UserModel.usernameExists = (username) =>
 UserModel.authenticate = (username, password) => 
 {
     let userId; 
-    let baseSQL = `SELECT "userID", username, password FROM users WHERE username=$1;`;
+    let baseSQL = `SELECT "user_id", username, password FROM users WHERE username=$1;`;
     return db.any(baseSQL, [username])
     .then( ([results, fields]) =>
     {

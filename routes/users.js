@@ -24,15 +24,16 @@ router.post("/register", async (req, res, next)=> {
   .then( (userDoesExist) => {
     if(userDoesExist) {
       console.log("USER EXISTS");
+      throw error;
     }
     else {
       console.log("USER DOES NOT EXISTSS");
       return UserModel.create(username, password);
     }
   })
-  .then((createUserId) => {
+  .then(({user_id}) => {
     //TODO make this get from the create query
-    console.log("AHHHH");
+    console.log("user_id is:" + user_id);
     res.redirect('/login')
   })
   .catch(err =>{
