@@ -1,13 +1,15 @@
-
-<div class="game-board">
-    {{#each boardSquares}}
-        <div class="l-{{this.letter_multiplier}}-w-{{this.word_multiplier}}" data-x="{{this.x}}" data-y="{{this.y}}" id="square-{{this.x}},{{this.y}}">
-          
-            {{!-- <p>x: {{this.x}} </p>
-            <p>y: {{this.y}}</p> --}}
-            <p> . </p>
-           
-        </div>
-    {{/each}}
+<div class="board-tiles-messages"> 
+    <div class="game-board">
+        {{#each boardSquares}}
+            <div class="l-{{this.letter_multiplier}}-w-{{this.word_multiplier}}" data-x="{{this.x}}" data-y="{{this.y}}" id="square-{{this.x}},{{this.y}}">
+            
+                {{!-- <p>x: {{this.x}} </p>
+                <p>y: {{this.y}}</p> --}}
+                <p> . </p>
+            
+            </div>
+        {{/each}}
+    </div>
+    {{> tileRack}}
+    {{> chatMessages messageArray=messages ready=isReady players=players}}
 </div>
-
