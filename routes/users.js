@@ -16,7 +16,7 @@ router.post("/register", async (req, res, next)=> {
   if (password != confirmpassword)
   {
     //TODO make this not insert to DB if it does not match
-    console.log("passwords do not match");
+    throw error;
   }
   console.log("REGISTER IS RUNNING");
 
@@ -41,6 +41,7 @@ router.post("/register", async (req, res, next)=> {
   })
   .catch(err =>{
     console.log(err);
+    Promise.reject(-1);
   });
 });
 
