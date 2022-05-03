@@ -1,11 +1,14 @@
 var express = require('express');
+const { isWordValid } = require('../models/gameBoard');
 var router = express.Router();
 
 /* LANDING PAGE . */
 
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Team Webster Scrabble' });
-});
+  res.render('index', { title: 'Team Webster Scrabble' },
+  // isWordValid("ab"),
+  // isWordValid("ac"),
+)});
 
 router.get("/register", (request, response) => {
   response.render('register');
@@ -20,7 +23,7 @@ router.get("/game", (request, response) => {
 });
 
 router.get("/lobby", (request, response) => {
-  response.render('lobby');
+    response.render('lobby');
 });
 
 module.exports = router;

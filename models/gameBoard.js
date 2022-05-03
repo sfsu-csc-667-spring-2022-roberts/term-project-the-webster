@@ -1,7 +1,18 @@
 const game = require("../db/game");
+const fs = require('fs')
+var parse = require('csv-parse')
 
-const isWordValid = () => {
-    return true;
+const path = "db/scrabble_dictionary.csv"
+var dataArray;
+fs.readFile(path, 'utf8', function (err, data) {
+    dataArray = data.split(/\r?\n/);
+  })
+
+const isWordValid = async (word) => {
+    console.log("path: " + path);
+    var test = dataArray.includes(word);
+    console.log(word + " : " + test);
+    return test;
 };
 
 
@@ -14,4 +25,5 @@ const getEmptyGameBoard = async () => {
 
 module.exports = {
     getEmptyGameBoard,
+    isWordValid
 };
