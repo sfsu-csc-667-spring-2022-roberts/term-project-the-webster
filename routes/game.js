@@ -28,6 +28,7 @@ router.get("/create",(request, response) => {
 router.get("/:id", (request, response) => {
    Game.getEmptyGrid()
     .then((cells) => {
+      //this is where we call the functions from models 
       response.render("games", {
             style: "gameStyle", 
             boardSquares: cells,
@@ -43,12 +44,7 @@ router.get("/:id", (request, response) => {
       response.json({ error });
     });
 });
-    // emptyBoard = gameBoard.getEmptyGameBoard()
-    // console.log(emptyBoard);
-    // response.render("games", {
-    //   style: "gameStyle", 
-    //   boardSquares: emptyBoard,
-    //   });
+
 
 router.get("/:id/join", (request, response) => {
   const userId = 1; // This should be based on the current logged in user
