@@ -49,7 +49,9 @@ router.post("/login", async (req, res, next)=> {
   console.log(req.session)
  
   let userId = -1
-  
+  if(req.session.user_id){
+    res.redirect("/lobby")
+  }else{
   console.log(username);
   console.log(password);
 
@@ -77,6 +79,7 @@ router.post("/login", async (req, res, next)=> {
           req.session.user_id = userId
           console.log(req.session.user_id)
           console.log(req.sessionID)
+          console.log(req.session)
          res.redirect("/lobby")
        }else{
          console.log(req.sessionID)
@@ -89,7 +92,7 @@ router.post("/login", async (req, res, next)=> {
     }
    
    
-  
+   
 
     // db.one('INSERT INTO sessions (user_id, session_id) VALUES ($1,$2) RETURNING session_id AS "id;"', [userId, _session_id])
     // .then(({id}) => {
@@ -107,9 +110,21 @@ router.post("/login", async (req, res, next)=> {
     next(err);
   })
   
-  
+  }
+
 });
 
+router.post("/logout",(req, res, next)=> {
+  console.log(" in post logout ")
+  
+  req.session.destroy((err) => {
+    if(err){
+      next(err)
+    }else{
+      res.redirect("/")
+    }
+  })
+})
 
 
 module.exports = router;
