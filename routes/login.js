@@ -3,9 +3,11 @@ const router = express.Router();
 const db = require('../db');
 
 router.get("/", (request, response) => {
-    response.render('browseLobby', {
-        style: 'style',
-    });
+    response.render('login', {
+        style: 'style' , 
+        block: '' 
+        });
+    
 });
 
 module.exports = router;

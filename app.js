@@ -29,6 +29,7 @@ const hbs = handlebars.create({
 app.engine('hbs', hbs.engine );
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
+app.use(express.static('public/images'));
 
 app.use(logger('dev'));
 app.use(express.json());

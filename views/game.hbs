@@ -1,8 +1,14 @@
+<div class="board-tiles-messages"> 
 
-<div class="game-board"> 
+<section class="game-board"> 
     {{#each boardSquares}}
-        <div class="{{type}}" id="{{x}},{{y}}">
-            <p>{{text}}</p>
+        <div class="{{type}}" id="square-{{x}},{{y}}">
+            <p>{{text}}</p> 
         </div>
     {{/each}}
+  
+</section>
+{{> tileRack}}
+{{> chatMessages messageArray=messages ready=isReady players=players}}
 </div>
+

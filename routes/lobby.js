@@ -3,9 +3,8 @@ const router = express.Router();
 const db = require('../db');
 
 router.get("/", (request, response) => {
-  
     response.render('lobby', {
-        title: 'lobby',
+      style: 'lobbyStyle',
         messages: [
           {
             id: 1,
@@ -25,7 +24,9 @@ router.get("/", (request, response) => {
           {
             id: 4,
             timestamp: `21:05 `,
-            content: "dfjsafkjslfjsalfjs;fjsfjsl sjfklsjflsd sdjfklsjflk sjflks fljs sdjklf slfkj  sjdklf sdl :)",
+            content: "I'm a shooting star leaping through the sky Like a tiger defying the" +
+            " laws of gravity I'm a racing car passing by like Lady Godiva I'm gonna go go go" +
+            "There's no stopping me :)",
           }
         ]
       });
