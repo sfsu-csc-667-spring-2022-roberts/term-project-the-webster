@@ -24,6 +24,23 @@ const db = require("./db/index");
 
 var app = express();
 
+const pgPool = new pg.Pool({
+  database: "scrabble"
+});
+
+app.use(session({
+  store: new pgSession({
+    pool: pgPool,
+    createTableIfMissing: true
+  }),
+  secret: 'blah',
+  resave: false,
+  path: '/',
+  cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
+
+}))
+
+
 // view engine setup
 const hbs = handlebars.create({
   layoutsDir: path.join(__dirname,'views/layouts'),
@@ -51,20 +68,6 @@ app.use('/lobby', lobbyRouter);
 app.use('/browseLobby', browseLobbyRouter);
 app.use('/game', gameRouter);
 
-const pgPool = new pg.Pool({
-  database: "scrabble"
-});
-
-app.use(session({
-  store: new pgSession({
-    pool: pgPool,
-    createTableIfMissing: true
-  }),
-  secret: 'blah',
-  resave: false,
-  cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
-
-}))
 
 //for express flash
 app.use(flash());

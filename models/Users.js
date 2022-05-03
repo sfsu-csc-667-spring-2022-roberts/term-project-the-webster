@@ -9,9 +9,23 @@ UserModel.create = (username, password ) =>
     return bcrypt.hash(password, 15)
     .then( (hashedPassword) =>
     {
-        let baseSQL = 'INSERT INTO users ("username", "password") VALUES ($1,$2) returning id AS user_id';
-        return db.one(baseSQL, [username, hashedPassword])
+        let baseSQL = 'INSERT INTO users ("username", "password") VALUES ($1,$2)';
+        return db.any(baseSQL, [username, hashedPassword]);
     })
+    .then(results => {
+        console.log("results from create is:" + results);
+        if(results && results.affectedRows)
+        {
+            console.log("insertID is:" + results.insertId);
+            return Promise.resolve(results.insertId);
+        }
+        else 
+        {
+            console.log("else statement");
+            return Promise.resolve(-1);
+        }
+    })
+   
     .catch( (err) => Promise.reject(err));
 }
 
@@ -24,40 +38,32 @@ UserModel.usernameExists = (username) =>
     .catch( (err) => Promise.reject(err));
 }
 
-UserModel.authenticate = (username, password) => 
+ UserModel.authenticate = (username, password) => 
 {
     let userId; 
-    let baseSQL = `SELECT "user_id", username, password FROM users WHERE username=$1;`;
+    let baseSQL = `SELECT id, username, password FROM users WHERE username=$1;`;
     return db.any(baseSQL, [username])
     .then( ([results, fields]) =>
     {
         console.log(results);
-        if (results && results.length == 1)
+        if (results)
         {
-            userId = results[0].id;
-            return bcrypt.compare(password, results[0].password);
+            console.log("RESULTS EXIST!")
+            console.log(results)
+            userId = results.id;
+            console.log(userId)
+            console.log(bcrypt.compare(password, results.password))
+            return bcrypt.compare(password, results.password);
         }
         else 
         {
             console.log("cannot find user");
-            return Promise.resolve(-1);
-        }
-    })
-    .then( (passwordsMatch) => 
-    {
-        if(passwordsMatch)
-        {
-            console.log("password matches");
             return Promise.resolve(userId);
-        }
-        else 
-        {
-            console.log("password does not match");
-            return Promise.resolve(-1);
         }
     })
     .catch( (err) => Promise.reject(err));
 };
+
 
 
 module.exports = UserModel;

@@ -3,6 +3,9 @@ const router = express.Router();
 const db = require('../db');
 
 router.get("/", (request, response) => {
+   
+  console.log("HERE ==> " + request.session)
+
     response.render('lobby', {
       style: 'lobbyStyle',
         messages: [
