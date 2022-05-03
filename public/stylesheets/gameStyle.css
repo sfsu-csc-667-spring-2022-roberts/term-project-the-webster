@@ -177,7 +177,7 @@ html{
 
 .bag-icon-wrapper > p{
     display:flex;
-    transform:translate(-5.5vh, 2.5vh);
+    transform:translate(-7vh, 2.5vh);
     color:white;
     font-size:25px;
 }
