@@ -4,6 +4,9 @@ var handlebars = require('express-handlebars');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var pg = require('pg');
+var session = require('express-session');
+var pgSession = require('connect-pg-simple')(session);
 var flash = require('express-flash');
 
 if(process.env.NODE_ENV === 'development') {
@@ -16,6 +19,8 @@ var testRouter = require('./routes/test');
 var lobbyRouter = require('./routes/lobby');
 var browseLobbyRouter = require('./routes/browseLobby');
 var gameRouter = require('./routes/game');
+
+const db = require("./db/index");
 
 var app = express();
 
@@ -45,6 +50,21 @@ app.use('/test', testRouter);
 app.use('/lobby', lobbyRouter); 
 app.use('/browseLobby', browseLobbyRouter);
 app.use('/game', gameRouter);
+
+const pgPool = new pg.Pool({
+  database: "scrabble"
+});
+
+app.use(session({
+  store: new pgSession({
+    pool: pgPool,
+    createTableIfMissing: true
+  }),
+  secret: 'blah',
+  resave: false,
+  cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
+
+}))
 
 //for express flash
 app.use(flash());
