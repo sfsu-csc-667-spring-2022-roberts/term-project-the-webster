@@ -4,14 +4,14 @@ const router = express.Router();
 //temp import, will need to be encapsulated into models/gameboard
 const Game = require("../db/game");
 
+
 //models imoorts 
 const gameBoard = require("../models/gameBoard");
 const scoreBoard = require("../models/scoreBoard");
 const chat = require("../models/chat");
 const gameTiles = require("../models/gameTiles");
 
-
-router.get("/create", async (request, response) => {
+router.get("/create",(request, response) => {
   const currentUser = 1; // don't hard code this, get from params
 
   Game.createGame(currentUser)

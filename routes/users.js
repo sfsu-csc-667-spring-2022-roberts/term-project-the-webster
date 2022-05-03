@@ -16,7 +16,7 @@ router.post("/register", async (req, res, next)=> {
   if (password != confirmpassword)
   {
     //TODO make this not insert to DB if it does not match
-    console.log("passwords do not match");
+    throw error;
   }
   console.log("REGISTER IS RUNNING");
 
@@ -24,19 +24,24 @@ router.post("/register", async (req, res, next)=> {
   .then( (userDoesExist) => {
     if(userDoesExist) {
       console.log("USER EXISTS");
+      throw error;
     }
     else {
       console.log("USER DOES NOT EXISTSS");
       return UserModel.create(username, password);
     }
   })
-  .then((createUserId) => {
+  .then(({user_id}) => {
     //TODO make this get from the create query
-    console.log("AHHHH");
+    if (user_id < 0) {
+      throw error;
+    }
+    console.log("user_id is:" + user_id);
     res.redirect('/login')
   })
   .catch(err =>{
     console.log(err);
+    Promise.reject(-1);
   });
 });
 

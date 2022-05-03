@@ -4,6 +4,7 @@ var handlebars = require('express-handlebars');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var flash = require('express-flash');
 
 if(process.env.NODE_ENV === 'development') {
   require("dotenv").config();
@@ -44,6 +45,9 @@ app.use('/test', testRouter);
 app.use('/lobby', lobbyRouter); 
 app.use('/browseLobby', browseLobbyRouter);
 app.use('/game', gameRouter);
+
+//for express flash
+app.use(flash());
 
 
 // catch 404 and forward to error handler
