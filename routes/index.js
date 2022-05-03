@@ -5,10 +5,17 @@ var router = express.Router();
 /* LANDING PAGE . */
 
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Team Webster Scrabble' },
+  res.render('index', { title: 'Team Webster Scrabble' });
   // isWordValid("ab"),
   // isWordValid("ac"),
-)});
+  if(req.session.user_id){
+    res.redirect("/lobby")
+  } else{
+    // do nothing
+  } 
+
+});
+
 
 router.get("/register", (request, response) => {
   response.render('register');
@@ -24,6 +31,10 @@ router.get("/game", (request, response) => {
 
 router.get("/lobby", (request, response) => {
     response.render('lobby');
+});
+
+router.get("/logout", (request, response) => {
+    response.send(request.session)
 });
 
 module.exports = router;

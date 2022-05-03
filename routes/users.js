@@ -5,6 +5,8 @@ var router = express.Router();
 
 const UserModel = require('../models/Users');
 const e = require('express');
+const { emptyQuery } = require('pg-protocol/dist/messages');
+
 
 
 //TODO verify if username already in DB
@@ -16,7 +18,7 @@ router.post("/register", async (req, res, next)=> {
   if (password != confirmpassword)
   {
     //TODO make this not insert to DB if it does not match
-    throw error;
+    console.log("passwords do not match");
   }
   console.log("REGISTER IS RUNNING");
 
@@ -24,24 +26,19 @@ router.post("/register", async (req, res, next)=> {
   .then( (userDoesExist) => {
     if(userDoesExist) {
       console.log("USER EXISTS");
-      throw error;
     }
     else {
       console.log("USER DOES NOT EXISTSS");
       return UserModel.create(username, password);
     }
   })
-  .then(({user_id}) => {
+  .then((createUserId) => {
     //TODO make this get from the create query
-    if (user_id < 0) {
-      throw error;
-    }
-    console.log("user_id is:" + user_id);
+    console.log("AHHHH");
     res.redirect('/login')
   })
   .catch(err =>{
     console.log(err);
-    Promise.reject(-1);
   });
 });
 
@@ -49,17 +46,85 @@ router.post("/login", async (req, res, next)=> {
   let username = req.body.username;
   let password = req.body.password;
   console.log("LOGIN IS RUNNING");
+  console.log(req.session)
+ 
+  let userId = -1
+  if(req.session.user_id){
+    res.redirect("/lobby")
+  }else{
   console.log(username);
   console.log(password);
 
+  
   UserModel.authenticate(username, password)
-  .then(results => {
-    res.redirect('/lobby');
-  })
+   .then((results => {
+    
+    if(results){
+    
+     return db.one("SELECT id FROM users WHERE username=$1;", [username])
+     .then((result) =>
+     {
+
+      
+      userId = result.id
+      return Promise.resolve(userId > 0);
+
+     })
+     .then((result) => {
+      console.log("user exists? =>  " + result)
+      // user id is valid in db. 
+       if(result){
+         /**  storing userId in cookie. */
+        
+          req.session.user_id = userId
+          console.log(req.session.user_id)
+          console.log(req.sessionID)
+          console.log(req.session)
+         res.redirect("/lobby")
+       }else{
+         console.log(req.sessionID)
+         res.redirect("/register")
+       }
+     })
+    
+    }else{
+      console.log("user id was not valid.")
+    }
+   
+   
+   
+
+    // db.one('INSERT INTO sessions (user_id, session_id) VALUES ($1,$2) RETURNING session_id AS "id;"', [userId, _session_id])
+    // .then(({id}) => {
+    //   console.log("inserting into sessions ")
+    //   console.log(id)
+    // })
+
+     // ##session
+
+
+  }))
   .catch(err => {
     console.log(err);
+    console.log("failed authentication.")
     next(err);
   })
+  
+  }
+
 });
+
+router.post("/logout",(req, res, next)=> {
+  console.log(" in post logout ")
+  
+  req.session.destroy((err) => {
+    if(err){
+      next(err)
+    }else{
+      res.redirect("/")
+    }
+  })
+})
+
 
 module.exports = router;
