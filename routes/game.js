@@ -33,7 +33,7 @@ router.get("/:id", (request, response) => {
             style: "gameStyle", 
             boardSquares: cells,
             tiles: gameTiles.getPlayersHand(),
-            tilesInBag: gameTiles.getNumTilesInBag,
+            tilesInBag: gameTiles.getNumTilesInBag(),
             messages: chat.getMessages(),
             isReady: true,
             players: scoreBoard.getPlayers(),

@@ -104,11 +104,6 @@ module.exports = {
       })
       .then(() => {
         let squares = [];
-        // for (let x = 0; x < GRID_SIDE; x++) {
-        //   for (let y = 0; y < GRID_SIDE; y++) {
-        //     cells.push({ x, y, ...((SPECIAL_COORDINATES[x] || [])[y] || {}) });
-        //   }
-        // }
         for (let x = 0; x< GRID_SIDE; x++){
             for (let y = 0;  y < GRID_SIDE; y++){
                 if (doubleLetter.has(`${x},${y}`) ) {

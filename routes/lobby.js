@@ -1,22 +1,24 @@
 const express = require("express");
 const router = express.Router();
 const db = require('../db');
-const { getMessages, sendMessage } = require("../models/chat");
+const session = require('express-session');
 
-var temp;
+router.get("/", (request, response) => {
+  
+  console.log("inside of lobby page ")
 
-router.get("/", async (request, response) => {
-  console.log("EEEEEE");
-  getMessages(1)
-  .then(results => {
-    console.log(results);
-    temp = results;
+  if(request.session){
+    console.log("valid session")
+
     response.render('lobby', {
       style: 'lobbyStyle',
         messages: results
       });
-  })
-
+  }else{
+    response.send("no session found :(")
+  }
+   
+  
    
     });
 

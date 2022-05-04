@@ -13,16 +13,29 @@ if(process.env.NODE_ENV === 'development') {
   require("dotenv").config();
 }
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var testRouter = require('./routes/test');
-var lobbyRouter = require('./routes/lobby');
-var browseLobbyRouter = require('./routes/browseLobby');
-var gameRouter = require('./routes/game');
 
 const db = require("./db/index");
 
 var app = express();
+
+const pgPool = new pg.Pool({
+  database: "scrabble"
+});
+
+const session_middleware = session({
+  store: new pgSession({
+    pool: pgPool,
+    createTableIfMissing: true
+  }),
+  secret: 'blah',
+  resave: false,
+  path: '/',
+  cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
+
+})
+
+app.use(session_middleware)
+
 
 // view engine setup
 const hbs = handlebars.create({
@@ -43,28 +56,38 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
+app.use(function(req,res,next){
+
+  if(req.session){
+    console.log(req.session)
+    if(req.session.user_id){
+      console.log("user is logged in. ")
+    }else{
+      console.log("user is not logged in.")
+    }
+  }else{
+    console.log("no valid session")
+  }
+
+  next()
+})
+
+
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
+var testRouter = require('./routes/test');
+var lobbyRouter = require('./routes/lobby');
+var browseLobbyRouter = require('./routes/browseLobby');
+var gameRouter = require('./routes/game');
+
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/test', testRouter);
-app.use('/lobby', lobbyRouter); 
+app.use('/lobby', session_middleware, lobbyRouter); 
 app.use('/browseLobby', browseLobbyRouter);
 app.use('/game', gameRouter);
 
-const pgPool = new pg.Pool({
-  database: "scrabble"
-});
-
-app.use(session({
-  store: new pgSession({
-    pool: pgPool,
-    createTableIfMissing: true
-  }),
-  secret: 'blah',
-  resave: false,
-  cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
-
-}))
 
 //for express flash
 app.use(flash());
