@@ -29,6 +29,7 @@ router.get("/:id", (request, response) => {
    Game.getEmptyGrid()
     .then((cells) => {
       //this is where we call the functions from models 
+      console.log(scoreBoard.getPlayersId())
       response.render("games", {
             style: "gameStyle", 
             boardSquares: cells,
