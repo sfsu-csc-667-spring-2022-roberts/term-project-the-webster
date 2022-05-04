@@ -25,10 +25,11 @@ const pgPool = new pg.Pool({
 const session_middleware = session({
   store: new pgSession({
     pool: pgPool,
-    createTableIfMissing: true
+    createTableIfMissing: true,
   }),
   secret: 'blah',
   resave: false,
+  saveUninitialized: false,
   path: '/',
   cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
 
@@ -59,14 +60,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(function(req,res,next){
 
   if(req.session){
-    console.log(req.session)
+    // console.log(req.session)
     if(req.session.user_id){
-      console.log("user is logged in. ")
+      // console.log("user is logged in. ")
     }else{
-      console.log("user is not logged in.")
+      // console.log("user is not logged in.")
     }
   }else{
-    console.log("no valid session")
+    // console.log("no valid session")
   }
 
   next()

@@ -40,8 +40,8 @@ router.get("/:id", (request, response) => {
             });
     })
     .catch((error) => {
-      console.log(">", error);
-      response.json({ error });
+      // console.log(">", error);
+      // response.json({ error });
     });
 });
 

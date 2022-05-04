@@ -24,6 +24,11 @@ module.exports = {
       text: {
         type: Sequelize.TEXT,
       },
+      createdAt: {
+        type: Sequelize.DATE, 
+        defaultValue: Sequelize.literal('NOW()'),
+        allowNull: false
+      }
     });
   },
   down: (queryInterface, Sequelize) => {

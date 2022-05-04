@@ -10,7 +10,10 @@ const createGame = (userId) =>
         'INSERT INTO game_users ("game_id", "user_id", "order") VALUES ($1, $2, 0) RETURNING game_id',
         [game_id, userId]
       )
-    );
+    )
+    .catch((err) => {
+      Promise.reject(err);
+    })
     // .then(({game_id}) => 
     //   db.any("SELECT * FROM tiles").then((tiles) => {
     //     // INSERT tiles INTO game_tiles (with default values) RETURNING "gameId" in random order
