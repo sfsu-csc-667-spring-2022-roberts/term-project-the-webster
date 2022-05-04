@@ -52,9 +52,6 @@ router.post("/login", async (req, res, next)=> {
   if(req.session.user_id){
     res.redirect("/lobby")
   }else{
-  console.log(username);
-  console.log(password);
-
   
   UserModel.authenticate(username, password)
    .then((results => {
@@ -77,12 +74,10 @@ router.post("/login", async (req, res, next)=> {
          /**  storing userId in cookie. */
         
           req.session.user_id = userId
-          console.log(req.session.user_id)
-          console.log(req.sessionID)
-          console.log(req.session)
+         
          res.redirect("/lobby")
        }else{
-         console.log(req.sessionID)
+         
          res.redirect("/register")
        }
      })
@@ -115,7 +110,7 @@ router.post("/login", async (req, res, next)=> {
 });
 
 router.post("/logout",(req, res, next)=> {
-  console.log(" in post logout ")
+  
   
   req.session.destroy((err) => {
     if(err){
