@@ -9,7 +9,7 @@ router.get('/', function(req, res, next) {
   // isWordValid("ab"),
   // isWordValid("ac"),
   if(req.session.user_id){
-    res.redirect("/lobby")
+    res.redirect("/browseLobby")
   } else{
     // do nothing
   } 
