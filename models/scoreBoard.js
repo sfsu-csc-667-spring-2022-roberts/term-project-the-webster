@@ -32,10 +32,10 @@ const getPlayersScore = (game_id, game_user_id) => {
   .then(results => {
     if(results) {
       // console.log(results);
-      Promise.resolve(results);
+      return Promise.resolve(results);
     }
     else {
-      Promise.resolve(-1);
+      return Promise.resolve(-1);
     }
   })
   .catch((err)=> {
@@ -47,10 +47,10 @@ const getPlayersId = (game_id) => {
   db.any('SELECT user_id FROM game_users WHERE game_id=$1', [game_id])
   .then(results => {
     if(results) {
-      Promise.resolve(results);
+      return Promise.resolve(results);
     }
     else {
-      Promise.resolve(-1);
+      return Promise.resolve(-1);
     }
   })
   .catch( (err) => {

@@ -17,7 +17,13 @@ router.get("/", (request, response) => {
 // });
 // let name = 'wat';
 // let pass = 'watt'
-game.drawTile(1,1);
+
+game.getPlayerHand(1,1)
+.then(results => {
+    console.log("PLAYER HAND:", results);
+});
+
+game.placeTile(5,1,1,1);
 
 
 // db.any(`INSERT INTO users ("username", "password") VALUES ($1,$2)`,[name, pass] )
