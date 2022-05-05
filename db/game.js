@@ -75,14 +75,17 @@ const getInPlayTiles = (game_id) => {
   })
 }
 
-const getGames = () => {
-  db.any('SELECT * FROM games');
-  /*.then(results => {
+const getGames = () => db.any('SELECT * FROM games');
+
+const getGameUsers = (game_id) => {
+  return db.any('SELECT user_id from game_user WHERE game_id =$1', [game_id])
+  .then(results => {
     return Promise.resolve(results);
   })
   .catch((err) => {
-    console.log("ERROR IN getGames in DB/GAME.JS");
-  })*/
+    console.log("ERROR in getGameUsers IN DB/GAMES.JS");
+    Promise.reject(err);
+  })
 }
 
 module.exports = {
@@ -93,5 +96,6 @@ module.exports = {
   drawTile,
   getPlayerHand,
   getInPlayTiles,
-  getGames
+  getGames,
+  getGameUsers
 };
