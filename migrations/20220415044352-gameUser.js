@@ -20,6 +20,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      score: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+      }
     });
   },
   down: (queryInterface, Sequelize) => {

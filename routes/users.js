@@ -8,8 +8,6 @@ const e = require('express');
 const { emptyQuery } = require('pg-protocol/dist/messages');
 
 
-
-//TODO verify if username already in DB
 router.post("/register", async (req, res, next)=> {
   let username = req.body.username;
   let password = req.body.password;
@@ -20,21 +18,21 @@ router.post("/register", async (req, res, next)=> {
     //TODO make this not insert to DB if it does not match
     console.log("passwords do not match");
   }
-  console.log("REGISTER IS RUNNING");
+  // console.log("REGISTER IS RUNNING");
 
   UserModel.usernameExists(username)
   .then( (userDoesExist) => {
     if(userDoesExist) {
-      console.log("USER EXISTS");
+      console.log("USER ALREADY EXISTS");
     }
     else {
-      console.log("USER DOES NOT EXISTSS");
+      // console.log("USER DOES NOT EXISTSS");
       return UserModel.create(username, password);
     }
   })
   .then((createUserId) => {
     //TODO make this get from the create query
-    console.log("AHHHH");
+    // console.log("AHHHH");
     res.redirect('/login')
   })
   .catch(err =>{
@@ -45,16 +43,13 @@ router.post("/register", async (req, res, next)=> {
 router.post("/login", async (req, res, next)=> {
   let username = req.body.username;
   let password = req.body.password;
-  console.log("LOGIN IS RUNNING");
-  console.log(req.session)
+  // console.log("LOGIN IS RUNNING");
+  // console.log(req.session)
  
   let userId = -1
   if(req.session.user_id){
     res.redirect("/lobby")
   }else{
-  console.log(username);
-  console.log(password);
-
   
   UserModel.authenticate(username, password)
    .then((results => {
@@ -71,18 +66,16 @@ router.post("/login", async (req, res, next)=> {
 
      })
      .then((result) => {
-      console.log("user exists? =>  " + result)
+      // console.log("user exists? =>  " + result)
       // user id is valid in db. 
        if(result){
          /**  storing userId in cookie. */
         
           req.session.user_id = userId
-          console.log(req.session.user_id)
-          console.log(req.sessionID)
-          console.log(req.session)
+         
          res.redirect("/lobby")
        }else{
-         console.log(req.sessionID)
+         
          res.redirect("/register")
        }
      })
@@ -115,7 +108,7 @@ router.post("/login", async (req, res, next)=> {
 });
 
 router.post("/logout",(req, res, next)=> {
-  console.log(" in post logout ")
+  
   
   req.session.destroy((err) => {
     if(err){

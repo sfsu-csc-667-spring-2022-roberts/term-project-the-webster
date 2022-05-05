@@ -13,15 +13,15 @@ UserModel.create = (username, password ) =>
         return db.any(baseSQL, [username, hashedPassword]);
     })
     .then(results => {
-        console.log("results from create is:" + results);
+        
         if(results && results.affectedRows)
         {
-            console.log("insertID is:" + results.insertId);
+          
             return Promise.resolve(results.insertId);
         }
         else 
         {
-            console.log("else statement");
+         
             return Promise.resolve(-1);
         }
     })
@@ -48,11 +48,9 @@ UserModel.usernameExists = (username) =>
         console.log(results);
         if (results)
         {
-            console.log("RESULTS EXIST!")
-            console.log(results)
+         
             userId = results.id;
-            console.log(userId)
-            console.log(bcrypt.compare(password, results.password))
+        
             return bcrypt.compare(password, results.password);
         }
         else 

@@ -29,12 +29,10 @@ router.get("/game", (request, response) => {
   response.render('game');
 });
 
-router.get("/lobby", (request, response) => {
-    response.render('lobby');
-});
+// router.get("/lobby", (request, response) => {
+//     response.render('lobby');
+// });
 
-router.get("/logout", (request, response) => {
-    response.send(request.session)
-});
+
 
 module.exports = router;
