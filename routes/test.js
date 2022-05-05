@@ -2,6 +2,8 @@ const express = require("express");
 const { response } = require("../app");
 const router = express.Router();
 const db = require('../db');
+const game = require('../db/game')
+
 router.get("/", (request, response) => {
    
 //     db.any(`INSERT INTO test_table ("testString") VALUES ('Hello at $
@@ -13,16 +15,18 @@ router.get("/", (request, response) => {
 //             response.json({ error })
 //         })
 // });
-let name = 'wat';
-let pass = 'watt'
+// let name = 'wat';
+// let pass = 'watt'
+game.drawTile(1,1);
 
-db.any(`INSERT INTO users ("username", "password") VALUES ($1,$2)`,[name, pass] )
-        .then(_ => 
-        db.any(`SELECT * FROM users`))
-        .then(results => response.json(results))
-        .catch(error => {
-            console.log(error)
-            response.json({ error })
-        })
+
+// db.any(`INSERT INTO users ("username", "password") VALUES ($1,$2)`,[name, pass] )
+//         .then(_ => 
+//         db.any(`SELECT * FROM users`))
+//         .then(results => response.json(results))
+//         .catch(error => {
+//             console.log(error)
+//             response.json({ error })
+//         })
 });
 module.exports = router;

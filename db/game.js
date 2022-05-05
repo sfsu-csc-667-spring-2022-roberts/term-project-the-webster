@@ -29,8 +29,33 @@ const joinGame = (gameId, userId) =>
     [gameId, userId]
   );
 
+const placeTile = (tile_id, x, y, game_id) => 
+  db.any(
+    `UPDATE game_tiles SET x_coordinate=$1, y_coordinate=$2, tile_id=$3, in_play=true WHERE game_id=$4`,
+    [x, y, tile_id, game_id]
+  )
+  .catch((err) => {
+    Promise.resolve(err);
+  });
+
+//get a random tile from game_tiles and insert it into the player's hand
+const drawTile = (game_id, player_id) => {
+  db.one(`SELECT tile_id FROM game_tiles WHERE game_id=$1 AND in_bag=true ORDER BY RANDOM() limit 1`, [game_id])
+  .then( results => {
+    console.log("RESULTS ARE",results);
+    db.any(`UPDATE game_tiles SET in_bag=false, user_id=$1 WHERE game_id=$2 AND tile_id=$3`,
+    [player_id, game_id, results.tile_id]);
+  })
+  .catch((err) => {
+    console.log("ERROR! IN DRAW TILES IN DB/GAME.JS");
+    Promise.resolve(err);
+  })
+}
+
 module.exports = {
   getEmptyGrid,
   createGame,
   joinGame,
+  placeTile,
+  drawTile
 };

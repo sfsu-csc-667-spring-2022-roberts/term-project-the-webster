@@ -9,7 +9,6 @@ router.get("/", (request, response) => {
 
   if(request.session){
     console.log("valid session")
-
     response.render('lobby', {
       style: 'lobbyStyle',
         messages: results
