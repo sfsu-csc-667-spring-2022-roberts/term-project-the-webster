@@ -8,8 +8,6 @@ const e = require('express');
 const { emptyQuery } = require('pg-protocol/dist/messages');
 
 
-
-//TODO verify if username already in DB
 router.post("/register", async (req, res, next)=> {
   let username = req.body.username;
   let password = req.body.password;
