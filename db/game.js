@@ -64,11 +64,24 @@ const getPlayerHand = (game_id, player_id) => {
   })
 }
 
+const getInPlayTiles = (game_id) => {
+  return db.any(`SELECT tile_id, x_coordinate, y_coordinate FROM game_tiles WHERE game_id=$1 AND in_play=true`, [game_id])
+  .then(results => {
+    // console.log("RESULTS ARE" ,results);
+    return Promise.resolve(results);
+  })
+  .catch((err) => {
+    console.log("ERROR IN getInPlayTiles IN DB/GAME.JS");
+    Promise.reject(err);
+  })
+}
+
 module.exports = {
   getEmptyGrid,
   createGame,
   joinGame,
   placeTile,
   drawTile,
-  getPlayerHand
+  getPlayerHand,
+  getInPlayTiles
 };

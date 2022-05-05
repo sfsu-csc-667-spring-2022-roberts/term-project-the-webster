@@ -23,7 +23,12 @@ game.getPlayerHand(1,1)
     console.log("PLAYER HAND:", results);
 });
 
-game.placeTile(5,1,1,1);
+// game.placeTile(5,1,1,1);
+
+console.log(game.getInPlayTiles(1));
+
+game.getInPlayTiles(1)
+.then(results => console.log(results));
 
 
 // db.any(`INSERT INTO users ("username", "password") VALUES ($1,$2)`,[name, pass] )
