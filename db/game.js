@@ -75,6 +75,16 @@ const getInPlayTiles = (game_id) => {
   })
 }
 
+const getGames = () => {
+  db.any('SELECT * FROM games');
+  /*.then(results => {
+    return Promise.resolve(results);
+  })
+  .catch((err) => {
+    console.log("ERROR IN getGames in DB/GAME.JS");
+  })*/
+}
+
 module.exports = {
   getEmptyGrid,
   createGame,
@@ -82,5 +92,6 @@ module.exports = {
   placeTile,
   drawTile,
   getPlayerHand,
-  getInPlayTiles
+  getInPlayTiles,
+  getGames
 };
