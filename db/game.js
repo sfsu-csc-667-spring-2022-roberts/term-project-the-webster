@@ -11,16 +11,13 @@ const createGame = (userId) =>
         [game_id, userId]
       )
     )
+    .then (({game_id}) => {
+      db.any(`INSERT INTO game_tiles(tile_id, game_id) SELECT id , $1 FROM tiles`,[game_id]);
+      return Promise.resolve(game_id);
+    })
     .catch((err) => {
       Promise.reject(err);
     })
-    // .then(({game_id}) => 
-    //   db.any("SELECT * FROM tiles").then((tiles) => {
-    //     // INSERT tiles INTO game_tiles (with default values) RETURNING "gameId" in random order
-    //     data = db.one('INSERT INTO game_tiles ("game_id", "user_id", "tile_id", "order") VALUES (1,1,1, 0) RETURNING "game_id"');
-    //     return data;
-    //   })
-    // );
 
 
 const joinGame = (gameId, userId) =>
