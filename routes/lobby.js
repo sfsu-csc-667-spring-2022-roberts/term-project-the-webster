@@ -11,7 +11,7 @@ router.get("/", (request, response) => {
     console.log("valid session")
     response.render('lobby', {
       style: 'lobbyStyle',
-        messages: results
+        // messages: results
       });
   }else{
     response.send("no session found :(")

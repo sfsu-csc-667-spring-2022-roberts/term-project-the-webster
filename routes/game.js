@@ -15,7 +15,7 @@ router.get("/create",(request, response) => {
   const currentUser = 1; // don't hard code this, get from params
 
   Game.createGame(currentUser)
-    .then(({game_id} ) => {
+    .then((game_id ) => {
       console.log("gameId:" + game_id);
       response.redirect(`/game/${game_id}`);
     })
@@ -29,20 +29,22 @@ router.get("/:id", (request, response) => {
    Game.getEmptyGrid()
     .then((cells) => {
       //this is where we call the functions from models 
-      console.log(scoreBoard.getPlayersId())
+      // console.log(scoreBoard.getPlayersId())
       response.render("games", {
             style: "gameStyle", 
             boardSquares: cells,
-            tiles: gameTiles.getPlayersHand(),
+            tiles: Game.getPlayerHand,
             tilesInBag: gameTiles.getNumTilesInBag(),
-            messages: chat.getMessages(),
+            // messages: chat.getMessages(),
             isReady: true,
             players: scoreBoard.getPlayers(),
             });
+      Promise.resolve(1);
     })
     .catch((error) => {
       // console.log(">", error);
       // response.json({ error });
+      Promise.reject(error);
     });
 });
 
