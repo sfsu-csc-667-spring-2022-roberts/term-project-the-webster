@@ -28,27 +28,23 @@ router.get("/create",(request, response) => {
 router.get("/:id", (request, response) => {
    Game.getEmptyGrid()
     .then((cells) => {
-      response.render("games", {
+      //this is where we call the functions from models 
+      response.render("game", {
             style: "gameStyle", 
             boardSquares: cells,
             tiles: gameTiles.getPlayersHand(),
-            tilesInBag: gameTiles.getNumTilesInBag,
+            tilesInBag: gameTiles.getNumTilesInBag(),
             messages: chat.getMessages(),
             isReady: true,
             players: scoreBoard.getPlayers(),
             });
     })
     .catch((error) => {
-      console.log(">", error);
-      response.json({ error });
+      // console.log(">", error);
+      // response.json({ error });
     });
 });
-    // emptyBoard = gameBoard.getEmptyGameBoard()
-    // console.log(emptyBoard);
-    // response.render("games", {
-    //   style: "gameStyle", 
-    //   boardSquares: emptyBoard,
-    //   });
+
 
 router.get("/:id/join", (request, response) => {
   const userId = 1; // This should be based on the current logged in user
