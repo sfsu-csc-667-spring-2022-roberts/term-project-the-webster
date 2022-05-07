@@ -1,6 +1,6 @@
 "use strict";
 
-const GRID_SIDE = 15;
+const GRID_SIDE = 14;
 const doubleLetter = new Set();
 //building doubleLetter set 
 {

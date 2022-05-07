@@ -53,7 +53,6 @@ html{
     display:flex;
     align-self:center;
     justify-content:center;
-  
 }
   
 .l-1-w-2{
@@ -102,7 +101,28 @@ html{
     overflow:hidden;
 }
   
-  
+.played-square{
+    display:grid;
+    grid-template-areas: 
+                        "...... ...... ...... ......"
+                        "...... letter letter ......"
+                        "...... letter letter value"
+                        "...... ...... ...... value";
+    width:auto;
+    height:auto;
+}
+
+.played-square p:nth-child(1){
+    display:grid;
+    grid-area:letter;
+    color:rgb(31, 194, 39);
+}
+
+.played-square p:nth-child(2){
+    display:grid;
+    grid-area:value;
+    color:pink;
+}
   /****************************/
   /*    Tile Rack Style       */
   /****************************/
