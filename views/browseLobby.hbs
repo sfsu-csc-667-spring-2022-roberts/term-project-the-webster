@@ -1,7 +1,9 @@
 <h1 id="title">Game Search</h1>
 <div class="page-container">
     <div class="options-container">
-        <button class="button">Create Lobby</button>
+        <form action="/game/create">
+            <button type="submit" class="button">Create Lobby</button>
+        </form>
         <form class="button">
             <input type="text" id="code" name="code" placeholder="Use room code">
             <input type="submit" value="Join">
@@ -14,20 +16,20 @@
     </div>
     <div class="lobby-search">
         {{#each lobbies}}
-            <div class="lobby">
-                <div class="lobby-section">
-                    {{id}}
-                </div>
-                <div class="lobby-section">
-                    {{in_lobby}}
-                </div>
-                <div class="lobby-section">
-                    test3
-                </div>
-                <button class="lobby-section">
-                    Join
-                </button>
+        <div class="lobby">
+            <div class="lobby-section">
+                {{id}}
             </div>
+            <div class="lobby-section">
+                {{in_lobby}}
+            </div>
+            <div class="lobby-section">
+                test3
+            </div>
+            <button class="lobby-section">
+                Join
+            </button>
+        </div>
         {{/each}}
     </div>
 </div>
