@@ -157,3 +157,12 @@ a {
   align-items: center;
   align-self: center;
 }
+
+.button-section {
+  display: flex;
+  flex: 10%;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+}
