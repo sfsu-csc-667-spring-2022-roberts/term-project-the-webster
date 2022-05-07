@@ -4,10 +4,18 @@
         <form action="/game/create">
             <button type="submit" class="button">Create Lobby</button>
         </form>
+
+        <!-- cannot hit enter for this -->
         <form class="button">
             <input type="text" id="code" name="code" placeholder="Use room code">
-            <input type="submit" value="Join">
+            <input type="button" value="Join" onclick="join(document.getElementById('code').value)">
         </form>
+        <script>
+            function join(gameId) {
+                window.location.href = `/game/${gameId}/join`, true;
+            }
+        </script>
+        </body>
     </div>
     <div class="lobby-search-header">
         <div class="lobby-section">Lobby ID</div>
