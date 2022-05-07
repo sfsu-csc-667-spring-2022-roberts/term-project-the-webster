@@ -8,10 +8,10 @@
         <!-- cannot hit enter for this -->
         <form class="button">
             <input type="text" id="code" name="code" placeholder="Use room code">
-            <input type="button" value="Join" onclick="join(document.getElementById('code').value)">
+            <input type="button" value="Join" onclick="joinWithCode(document.getElementById('code').value)">
         </form>
         <script>
-            function join(gameId) {
+            function joinWithCode(gameId) {
                 window.location.href = `/game/${gameId}/join`, true;
             }
         </script>
@@ -35,9 +35,14 @@
             <div class="lobby-section">
                 test3
             </div>
-            <button class="button-section">
+            <button onclick="join({{id}})" class="button-section">
                 Join
             </button>
+            <script>
+                function join(gameId) {
+                    window.location.href = `/game/${gameId}/join`, true;
+                }
+            </script>
         </div>
         {{/each}}
     </div>
