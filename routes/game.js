@@ -12,9 +12,11 @@ const chat = require("../models/chat");
 const gameTiles = require("../models/gameTiles");
 
 router.get("/create",(request, response) => {
-  const currentUser = 1; // don't hard code this, get from params
-
-  Game.createGame(currentUser)
+  // let currentUser = 1; // don't hard code this, get from params\
+  if(request.session){
+    let currentUser = request.session.user_id;
+    console.log("current user is ", currentUser);
+    Game.createGame(currentUser)
     .then((game_id ) => {
       console.log("gameId:" + game_id);
       response.redirect(`/game/${game_id}`);
@@ -23,6 +25,12 @@ router.get("/create",(request, response) => {
       console.log(error);
       response.redirect("/lobby");
     });
+  }
+  else {
+    console.log("HANDLE THIS ERROR WHERE USER_ID DOES NOT EXIST IN game.js")
+  }
+
+
 });
 
 router.get("/:id", (request, response) => {
@@ -50,12 +58,12 @@ router.get("/:id", (request, response) => {
 
 
 router.get("/:id/join", (request, response) => {
-  const userId = 1; // This should be based on the current logged in user
   console.log("--------------------------test------JOINING-------------")
   console.log(request.params.id);
-  var gameId = request.params.id;
-
-  Game.joinGame(gameId, userId)
+  if(request.session){
+    let userId = request.session.user_id;
+    var gameId = request.params.id;
+    Game.joinGame(gameId, userId)
     .then(() => {
       response.redirect(`/game/${gameId}`);
       // Broadcast to game socket that a user has joind the game
@@ -64,6 +72,12 @@ router.get("/:id/join", (request, response) => {
       console.log(error);
       response.redirect("/browseLobby");
     });
+  }
+  else {
+    console.log("NO SESSION DETECTED IN JOIN")
+  }
+
+
 });
 
 module.exports = router;

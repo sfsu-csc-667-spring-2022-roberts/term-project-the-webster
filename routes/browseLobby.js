@@ -11,12 +11,13 @@ router.get("/", (request, response) => {
             Game.getGameUsers(games.id)
         })
         Game.getGameUsers(games)
-        console.log(games);
+        // console.log(games);
         response.render('browseLobby', {
             style: 'style',
             lobbies: games
         });
     })
+    .catch((err) => Promise.reject(err));
 });
 
 module.exports = router;

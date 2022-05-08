@@ -1,4 +1,5 @@
 const game = require("../db/game");
+const db = require("../db");
 
 
 const getInitialBag = () => {
@@ -21,8 +22,22 @@ const getPlayersHand = (playerID) => {
     return gameTiles;
 }
 
+//returns how much points a letter is worth 
+const getLetterWorth = (letter) => {
+    return db.one(`SELECT value FROM tiles WHERE letter=$1 LIMIT 1`, [letter])
+    .then(result => {
+        // console.log(result.value);
+        return Promise.resolve(result.value);
+    })
+    .catch(err => {
+        console.log("ERROR IN model/gameTiles IN getLetterWorth");
+        return Promise.reject(err);
+    })
+}
+
 module.exports = {
     getInitialBag,
     getNumTilesInBag,
     getPlayersHand,
+    getLetterWorth
 }

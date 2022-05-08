@@ -3,6 +3,7 @@ const { response } = require("../app");
 const router = express.Router();
 const db = require('../db');
 const game = require('../db/game')
+const gameTiles = require('../models/gameTiles');
 
 router.get("/", (request, response) => {
    
@@ -18,17 +19,26 @@ router.get("/", (request, response) => {
 // let name = 'wat';
 // let pass = 'watt'
 
-game.getPlayerHand(1,1)
-.then(results => {
-    console.log("PLAYER HAND:", results);
-});
+// game.getPlayerHand(1,1)
+// .then(results => {
+//     console.log("PLAYER HAND:", results);
+// });
 
-// game.placeTile(5,1,1,1);
+// // game.placeTile(5,1,1,1);
 
-console.log(game.getInPlayTiles(1));
+// console.log(game.getInPlayTiles(1));
 
-game.getInPlayTiles(1)
-.then(results => console.log(results));
+// game.getInPlayTiles(1)
+// .then(results => console.log(results));
+
+gameTiles.getLetterWorth('')
+.then(result => {
+    console.log("letter worth is ", result);
+    console.log("BANANA");
+})
+.catch((err) => {
+    console.log(err);
+})
 
 
 // db.any(`INSERT INTO users ("username", "password") VALUES ($1,$2)`,[name, pass] )
