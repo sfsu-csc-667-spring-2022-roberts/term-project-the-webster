@@ -7,9 +7,9 @@ const Game = require("../db/game");
 
 router.get("/", (request, response) => {
     Game.getGames().then((games) => {
-        games.forEach(function () {
-            Game.getGameUsers(games.id)
-        })
+        /*games.forEach(function () {
+            Game.getGameUsers(games.request.id).then() 
+        })*/
         Game.getGameUsers(games)
         // console.log(games);
         response.render('browseLobby', {

@@ -13,7 +13,7 @@ const gameTiles = require("../models/gameTiles");
 
 router.get("/create",(request, response) => {
   // let currentUser = 1; // don't hard code this, get from params\
-  if(request.session){
+  if(request.session) {
     let currentUser = request.session.user_id;
     console.log("current user is ", currentUser);
     Game.createGame(currentUser)
@@ -25,8 +25,7 @@ router.get("/create",(request, response) => {
       console.log(error);
       response.redirect("/lobby");
     });
-  }
-  else {
+  } else {
     console.log("HANDLE THIS ERROR WHERE USER_ID DOES NOT EXIST IN game.js")
   }
 

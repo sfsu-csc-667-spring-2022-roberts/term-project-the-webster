@@ -86,6 +86,10 @@ const getGameUsers = (game_id) => {
   })
 }
 
+const getGameById = (game_id) => {
+  return db.one('SELECT * FROM games WHERE id=$1', [game_id])
+}
+
 const getAllGameInfo = () => {
   return db.any('SELECT * FROM games INNER JOIN game_users ON games.id = game_users.game_id INNER JOIN users ON game_users.user_id = users.id')
 }
@@ -100,5 +104,6 @@ module.exports = {
   getInPlayTiles,
   getGames,
   getGameUsers,
-  getAllGameInfo
+  getAllGameInfo,
+  getGameById
 };
