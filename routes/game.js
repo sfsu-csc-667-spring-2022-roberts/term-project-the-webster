@@ -51,15 +51,18 @@ router.get("/:id", (request, response) => {
 
 router.get("/:id/join", (request, response) => {
   const userId = 1; // This should be based on the current logged in user
+  console.log("--------------------------test------JOINING-------------")
+  console.log(request.params.id);
+  var gameId = request.params.id;
 
   Game.joinGame(gameId, userId)
-    .then(({ gameId }) => {
+    .then(() => {
       response.redirect(`/game/${gameId}`);
       // Broadcast to game socket that a user has joind the game
     })
     .catch((error) => {
       console.log(error);
-      response.redirect("/lobby");
+      response.redirect("/browseLobby");
     });
 });
 

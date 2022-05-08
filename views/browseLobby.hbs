@@ -1,63 +1,49 @@
 <h1 id="title">Game Search</h1>
 <div class="page-container">
     <div class="options-container">
-        <button class="button">Create Lobby</button>
+        <form action="/game/create">
+            <button type="submit" class="button">Create Lobby</button>
+        </form>
+
+        <!-- cannot hit enter for this -->
         <form class="button">
             <input type="text" id="code" name="code" placeholder="Use room code">
-            <input type="submit" value="Join">
+            <input type="button" value="Join" onclick="joinWithCode(document.getElementById('code').value)">
         </form>
-    </div>
-    <div class="lobby-search-header">
-        <div class="lobby-section">Lobby Name</div>
-        <div class="lobby-section">Host</div>
-        <div class="lobby-section">Players</div>
-    </div>
-    <div class="lobby-search">
         <script>
-            console.log("Running browse lobby script...");
-
-            var lobbies = [
-                {
-                    id: 1,
-                    name: "Test Lobby",
-                    host: "Bob Jones",
-                    players: 4
-                },
-                {
-                    id: 2,
-                    name: "Come play Scrabble",
-                    host: "Damon",
-                    players: 2
-                },
-                {
-                    id: 3,
-                    name: "Fun times",
-                    host: "Johnson",
-                    players: 3
-                }
-            ]
-
-            for (i = 0; i < lobbies.length; i++) {
-                var lobbyDiv = document.createElement('div');
-                lobbyDiv.className = "lobby";
-                lobbyDiv.body = "test";
-                document.getElementsByClassName("lobby-search")[0].appendChild(lobbyDiv);
-                var nameDiv = document.createElement('div');
-                var hostDiv = document.createElement('div');
-                var playersDiv = document.createElement('div');
-
-                nameDiv.className = "lobby-section";
-                hostDiv.className = "lobby-section";
-                playersDiv.className = "lobby-section";
-
-                nameDiv.textContent = lobbies[i].name;
-                hostDiv.textContent = lobbies[i].host;
-                playersDiv.textContent = lobbies[i].players + " / 4";
-                console.log("Lobby name: " + nameDiv.text + ", Host: " + hostDiv.text + ", players: " + playersDiv.text);
-                lobbyDiv.appendChild(nameDiv);
-                lobbyDiv.appendChild(hostDiv);
-                lobbyDiv.appendChild(playersDiv);
+            function joinWithCode(gameId) {
+                window.location.href = `/game/${gameId}/join`, true;
             }
         </script>
+        </body>
+    </div>
+    <div class="lobby-search-header">
+        <div class="lobby-section">Lobby ID</div>
+        <div class="lobby-section">Game Started</div>
+        <div class="lobby-section">Players</div>
+        <div class="button-section"></div>
+    </div>
+    <div class="lobby-search">
+        {{#each lobbies}}
+        <div class="lobby">
+            <div class="lobby-section">
+                {{id}}
+            </div>
+            <div class="lobby-section">
+                {{in_lobby}}
+            </div>
+            <div class="lobby-section">
+                test3
+            </div>
+            <button onclick="join({{id}})" class="button-section">
+                Join
+            </button>
+            <script>
+                function join(gameId) {
+                    window.location.href = `/game/${gameId}/join`, true;
+                }
+            </script>
+        </div>
+        {{/each}}
     </div>
 </div>

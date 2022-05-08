@@ -76,7 +76,7 @@ const getInPlayTiles = (game_id) => {
 const getGames = () => db.any('SELECT * FROM games');
 
 const getGameUsers = (game_id) => {
-  return db.any('SELECT user_id from game_user WHERE game_id =$1', [game_id])
+  return db.any('SELECT * FROM game_users WHERE game_id =$1', [game_id])
   .then(results => {
     return Promise.resolve(results);
   })
@@ -84,6 +84,10 @@ const getGameUsers = (game_id) => {
     console.log("ERROR in getGameUsers IN DB/GAMES.JS");
     return Promise.reject(err);
   })
+}
+
+const getAllGameInfo = () => {
+  return db.any('SELECT * FROM games INNER JOIN game_users ON games.id = game_users.game_id INNER JOIN users ON game_users.user_id = users.id')
 }
 
 module.exports = {
@@ -95,5 +99,6 @@ module.exports = {
   getPlayerHand,
   getInPlayTiles,
   getGames,
-  getGameUsers
+  getGameUsers,
+  getAllGameInfo
 };
