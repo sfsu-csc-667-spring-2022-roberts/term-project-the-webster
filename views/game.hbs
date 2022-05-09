@@ -1,5 +1,5 @@
 <div class="board-tiles-messages"> 
-    <div class="game-board" id="game-board">
+    <form id="game-board"  >
         {{#each boardSquares}}
             <div class="l-{{this.letter_multiplier}}-w-{{this.word_multiplier}}" 
             data-x="{{this.x}}" data-y="{{this.y}}" id="square({{this.x}},{{this.y}})"
@@ -9,7 +9,7 @@
             
             </div>
         {{/each}}
-    </div>
+    </form>
     {{> tileRack}}
     {{> chatMessages messageArray=messages ready=isReady players=players}}
 </div>

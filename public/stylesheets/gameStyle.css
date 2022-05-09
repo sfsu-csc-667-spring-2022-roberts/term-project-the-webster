@@ -30,7 +30,7 @@ html{
     ;
 } 
   
-.game-board{
+#game-board{
     grid-area:board;
     display:grid;
     transform:translate(0%, 5%);
@@ -43,48 +43,66 @@ html{
   
 .l-1-w-1{
     background-color:rgb(200,156,84);
+    margin:0;
+    padding:0;
 }
   
 .l-2-w-1{
     background-color:orangered;
+    margin:0;
+    padding:0;
 }
   
 .l-2-w-1 > p{
     display:flex;
     align-self:center;
     justify-content:center;
+    margin:0;
+    padding:0;
 }
   
 .l-1-w-2{
     background-color:red;
     align-content:center;
+    margin:0;
+    padding:0;
 }
   
 .l-1-w-2 > p{
     display:flex;
     align-self:center;
     justify-content:center;
+    margin:0;
+    padding:0;
   
 }
   
 .l-3-w-1{
     background-color:plum;
+    margin:0;
+    padding:0;
 }
   
 .l-3-w-1 > p{
     display:flex;
     align-self:center;
     justify-content:center;
+    margin:0;
+    padding:0;
 }
   
 .l-1-w-3{
     background-color:purple;
+    margin:0;
+    padding:0;
 }
   
 .l-1-w-3 > p{
     display:flex;
     align-self:center;
     justify-content:center;
+    margin:0;
+    padding:0;
 }
   
 .l-2-w-2{
@@ -92,6 +110,8 @@ html{
     display:flex;
     align-self:center;
     justify-content:center;
+    margin:0;
+    padding:0;
 }
   
 .center > p{
@@ -99,6 +119,8 @@ html{
     align-self:center;
     justify-content:center;
     overflow:hidden;
+    margin:0;
+    padding:0;
 }
   
 .played-square{
@@ -110,6 +132,7 @@ html{
                         "...... ...... ...... value";
     width:auto;
     height:auto;
+    background-color:rgb(200,156,84);
 }
 
 .played-square p:nth-child(1){
@@ -123,6 +146,7 @@ html{
     grid-area:value;
     color:pink;
 }
+
   /****************************/
   /*    Tile Rack Style       */
   /****************************/
@@ -202,6 +226,23 @@ html{
     font-size:25px;
 }
 
+.play-word-wrapper{
+    display:flex;
+}
+
+#play-word-button{
+    display:flex;
+    width: 5vw;
+    height:3vh;
+    transform:translate(18vh, 8vh);
+}
+
+#play-word-button > p{
+    display:flex;
+    align-self: center;
+    justify-self:center;
+}
+
 /****************************/
 /*    Chat partial style    */
 /****************************/
@@ -216,7 +257,6 @@ html{
     background-color:rgb(149, 146, 146);
     border-radius: 5px;
 }
-
 
 .scoreboard{
     background-color:rgb(200, 200, 200);
