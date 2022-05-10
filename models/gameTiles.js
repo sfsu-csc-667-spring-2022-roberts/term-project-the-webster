@@ -25,14 +25,14 @@ const getInitialHand = (gameId, playerId) => {
 }
 
 const getPlayersHand = (playerID) => {
-    
-    let gameTiles =[{letter:"A", value:1, order:1}, 
-                    {letter:"B", value:1, order:2},
-                    {letter:"C", value:1, order:3},
-                    {letter:"D", value:1, order:4}, 
-                    {letter:"E", value:1, order:5},
-                    {letter:"F", value:1, order:6},
-                    {letter:"G", value:1, order:7}];
+
+    let gameTiles = [{ letter: "A", value: 1, order: 1 },
+    { letter: "B", value: 1, order: 2 },
+    { letter: "C", value: 1, order: 3 },
+    { letter: "D", value: 1, order: 4 },
+    { letter: "E", value: 1, order: 5 },
+    { letter: "F", value: 1, order: 6 },
+    { letter: "G", value: 1, order: 7 }];
     return gameTiles;
 }
 
@@ -48,6 +48,16 @@ const getLetterWorth = (letter) => {
         console.log("ERROR IN model/gameTiles IN getLetterWorth");
         return Promise.resolve(err);
     })
+    /*for (i = 0; i < 7; i++) {
+        console.log("in loop before the promise ")
+        game.drawTile(gameId, playerId)
+            .then(results => {
+                console.log(results);
+                hand.push(results);
+            }).catch((err) => {
+                console.log(err);
+            })
+    }*/
 }
 
 const getLetterFromTileId = (tile_id) => {
