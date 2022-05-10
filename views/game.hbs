@@ -1,12 +1,12 @@
-<div class="board-tiles-messages"> 
+<div class="board-tiles-messages">
     <form id="game-board"  >
         {{#each boardSquares}}
-            <div class="l-{{this.letter_multiplier}}-w-{{this.word_multiplier}}" 
+            <div class="game-board-tile l-{{this.letter_multiplier}}-w-{{this.word_multiplier}}"
             data-x="{{this.x}}" data-y="{{this.y}}" id="square({{this.x}},{{this.y}})"
             ondrop="drop(event)" ondragover="allowDrop(event)">
-            
+
                 <p>  </p>
-            
+
             </div>
         {{/each}}
     </form>
