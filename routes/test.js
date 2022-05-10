@@ -28,17 +28,32 @@ router.get("/", (request, response) => {
 
 // console.log(game.getInPlayTiles(1));
 
-// game.getInPlayTiles(1)
+// game.getInPlayTiles(67)
 // .then(results => console.log(results));
 
-gameTiles.getLetterWorth('')
-.then(result => {
-    console.log("letter worth is ", result);
-    console.log("BANANA");
+
+console.log("AHHHHHHHHHHH"); 
+game.drawTile(67,9)
+.then(tile_id => {
+    console.log("EEEEEEEEEEEEEEEEEE");
+    console.log(tile_id)
 })
-.catch((err) => {
-    console.log(err);
-})
+console.log("NOOOOOOOOO");
+// game.getPlayerHand(67,9)
+// .then(results => console.log("PLAYER HAND IS ", results));
+
+// gameTiles.getInitialHand(67,9)
+// .then(results => {
+
+// })
+// gameTiles.getLetterWorth('')
+// .then(result => {
+//     console.log("letter worth is ", result);
+//     console.log("BANANA");
+// })
+// .catch((err) => {
+//     console.log(err);
+// })
 
 
 // db.any(`INSERT INTO users ("username", "password") VALUES ($1,$2)`,[name, pass] )

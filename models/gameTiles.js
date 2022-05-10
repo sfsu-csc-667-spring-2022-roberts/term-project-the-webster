@@ -22,6 +22,22 @@ const getPlayersHand = (playerID) => {
     return gameTiles;
 }
 
+const getInitialHand = (gameId, playerId) => {
+    hand = Array();
+    console.log("INITIAL HAND ")
+    // for(i = 0; i < 7; i++) {
+        console.log("in loop before the promise ");
+        game.drawTile(gameId, playerId)
+        .then((results) => {
+            console.log("AHHHH");
+            console.log(results);
+            hand.push(results);
+        }).catch((err) => {
+            console.log(err);
+        })
+    // }
+}
+
 //returns how much points a letter is worth 
 const getLetterWorth = (letter) => {
     return db.one(`SELECT value FROM tiles WHERE letter=$1 LIMIT 1`, [letter])
@@ -39,5 +55,6 @@ module.exports = {
     getInitialBag,
     getNumTilesInBag,
     getPlayersHand,
-    getLetterWorth
+    getLetterWorth,
+    getInitialHand
 }
