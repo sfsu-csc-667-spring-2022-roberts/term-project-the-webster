@@ -1,7 +1,4 @@
 const express = require("express");
-
-//const { response } = require("../app");
-
 const router = express.Router();
 const db = require("../db");
 const game = require("../db/game");
@@ -85,22 +82,7 @@ router.get("/", (request, response) => {
 // game.getInPlayTiles(67)
 // .then(results => console.log(results));
 
-
-// console.log("AHHHHHHHHHHH"); 
-// game.drawTile(67,9)
-// .then(tile_id => {
-//     console.log("EEEEEEEEEEEEEEEEEE");
-//     console.log(tile_id)
-// })
-// console.log("NOOOOOOOOO");
-// game.getPlayerHand(67,9)
-// .then(results => console.log("PLAYER HAND IS ", results));
-
-// gameTiles.getInitialHand(67,9)
-// .then(results => {
-
-// })
-// gameTiles.getLetterWorth('')
+// gameTiles.getLetterFromTileId(91)
 // .then(result => {
 //     console.log("letter worth is ", result);
 //     console.log("BANANA");

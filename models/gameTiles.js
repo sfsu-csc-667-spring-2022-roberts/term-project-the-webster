@@ -46,9 +46,23 @@ const getLetterWorth = (letter) => {
     })
     .catch(err => {
         console.log("ERROR IN model/gameTiles IN getLetterWorth");
-        return Promise.reject(err);
+        return Promise.resolve(err);
     })
 }
+
+const getLetterFromTileId = (tile_id) => {
+    return db.one(`SELECT letter FROM tiles WHERE id=$1`, [tile_id])
+    .then(result => {
+        // console.log("LETTER IS ", result)
+        return Promise.resolve(result);
+    })
+    .catch(err => {
+        console.log("ERROR IN getLetterFromTileId in modes/gameTiles");
+        return Promise.resolve(err);
+    })
+}
+
+
 
 module.exports = {
     getInitialBag,

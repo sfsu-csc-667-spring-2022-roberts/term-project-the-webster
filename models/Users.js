@@ -26,7 +26,7 @@ UserModel.create = (username, password ) =>
         }
     })
    
-    .catch( (err) => Promise.reject(err));
+    .catch( (err) => Promise.resolve(err));
 }
 
 UserModel.usernameExists = (username) =>
@@ -35,7 +35,7 @@ UserModel.usernameExists = (username) =>
     .then((results) => {
         return Promise.resolve(!(results && results.length == 0));
     }) 
-    .catch( (err) => Promise.reject(err));
+    .catch( (err) => Promise.resolve(err));
 }
 
  UserModel.authenticate = (username, password) => 
@@ -59,7 +59,7 @@ UserModel.usernameExists = (username) =>
             return Promise.resolve(userId);
         }
     })
-    .catch( (err) => Promise.reject(err));
+    .catch( (err) => Promise.resolve(err));
 };
 
 
