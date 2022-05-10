@@ -1,87 +1,84 @@
-// const { range } = require("express/lib/request");
-
-var submittedLetters = document.getElementById("game-board");
-var tileForm = document.createElement("form");
-tileForm.id = "tile-form";
-tileForm.method = "POST";
-tileForm.action = "/game/:id/playWord";
-var gameBoard = document.getElementById("game-board");
-gameBoard.appendChild(tileForm);
-
-submittedLetters.addEventListener('submit', (e) => {
-    console.log(submittedLetters);
+io.on("game-updated", (payload) => {
+  // Update all the various game board divs, update player's tile rack,
+  // provide some visual indication of current player
 });
 
- window.onload = (event) => {
-    
-    for(i=0; i < 7; i++){
-        let letterInput = document.createElement('input');
-        letterInput.name = `letter-${i}`;
-        letterInput.id = `letter-${i}`;
-        letterInput.type = "text";
-        letterInput.style.display = "none";
-        let xInput = document.createElement('input');
-        xInput.name = `x-${i}`;
-        xInput.id  = `x-${i}`;
-        xInput.type = "text";
-        xInput.style.display = "none";
-        let yInput = document.createElement('input');
-        yInput.name = `y-${i}`;
-        yInput.id = `y-${i}`;
-        yInput.type = "text";
-        yInput.style.display = "none";
-        tileForm.appendChild(letterInput);
-        tileForm.appendChild(xInput);
-        tileForm.appendChild(yInput);
+const selection = [];
+const word = [];
+
+const slotTaken = (x, y) => {
+  const found = word.find((entry) => entry.x === x && entry.y === y);
+
+  return found !== undefined;
+};
+
+const submitWord = () => {
+  if (word.length === 0) {
+    alert("You must enter a word.");
+    return;
+  }
+
+  fetch(`${window.location.pathname}/playWord`, {
+    body: JSON.stringify({ word }),
+    method: "post",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log({ data });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+document
+  .getElementById("play-word-button")
+  .addEventListener("click", (event) => {
+    submitWord();
+  });
+
+document.getElementById("game-board").addEventListener("click", (event) => {
+  if (
+    Array.from(event.target.classList).includes("game-board-tile") &&
+    selection.length === 1
+  ) {
+    const { x, y } = event.target.dataset;
+    // Record letters stored at this coordinate
+    if (slotTaken(x, y)) {
+      alert("A tile has been placed in that slot.");
+      return;
     }
-  };
 
-function allowDrop(allowDropEvent) {
-    allowDropEvent.target.style.color = 'blue';
-    allowDropEvent.preventDefault();
-}
+    const selectedTile = selection.pop();
+    selectedTile.classList.add("played-tile");
+    selectedTile.classList.remove("selected-tile");
 
-function drag(dragEvent) {
-    let bang = dragEvent.dataTransfer.setData("text", dragEvent.target.innerHTML);
-    dragEvent.target.style.color = 'green';
-}
+    document.getElementById("tile-wrapper").removeChild(selectedTile);
 
-function drop(dropEvent) {
-    dropEvent.preventDefault();
-    var data = dropEvent.dataTransfer.getData("text");
-    dropEvent.target.innerHTML = data;
-    dropEvent.target.className += " played-square";
-    let input = findNextFormInput();
-    console.log("drop " + input.id );
-    fillFormInput(input, dropEvent);
-}
+    word.push({ ...selectedTile.dataset, x, y });
+  }
+  console.log({ word, selection });
+});
 
-function findNextFormInput() {
-    var inputList = tileForm.childNodes;
-    var nextInput;
-    for(let i = 0; i < inputList.length; i++){
-        let item = inputList[i];
-        if((item.id == `letter-${i/3}`) && (item.value == "") ){
-            nextInput = document.getElementById(item.id);
-            console.log("findNextFormInput  " + nextInput.id)
-            break;  
-        }
+document
+  .getElementById("tile-wrapper")
+  .addEventListener("click", ({ target }) => {
+    const element = target.tagName === "P" ? target.parentElement : target;
+
+    if (Array.from(element.classList).includes("selected-tile")) {
+      element.classList.remove("selected-tile");
+    } else if (Array.from(element.classList).includes("played-tile")) {
+      alert("This tile has been used already.");
+      return;
     }
-    return nextInput;
-}
 
-function fillFormInput( nextInput, dropEvent ) { 
-    var data = dropEvent.dataTransfer.getData("text");
-    let placedLetter = String(data).match(/> \w </);
-    console.log("fillFormInput " + nextInput.id);
-    nextInput.value = placedLetter[0].slice(2,3);
-    console.log("fillFormInput " + nextInput.value);
-    squarePos = nextInput.id.match(/\d/);
-    nextInput = document.getElementById("x-" + squarePos[0]);
-    nextInput.value = dropEvent.target.dataset.x;
-    console.log("fillFormInput " + nextInput.value);
-    nextInput = document.getElementById("y-" + squarePos[0]);
-    nextInput.value = dropEvent.target.dataset.y;
-    console.log("fillFormInput " + nextInput.value);
-}
-   
+    if (Array.from(element.classList).includes("tile")) {
+      if (selection.length === 1) {
+        alert("Place your tile before selecting a new tile.");
+      } else {
+        selection.push(element);
+      }
+    }
+  });
