@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 //temp import, will need to be encapsulated into models/gameboard
-const Game = require("../db/game");
+const game = require("../db/game");
 
 
 //models imoorts 
@@ -16,7 +16,7 @@ router.get("/create",(request, response) => {
   if(request.session){
     let currentUser = request.session.user_id;
     console.log("current user is ", currentUser);
-    Game.createGame(currentUser)
+    game.createGame(currentUser)
     .then((game_id ) => {
       console.log("gameId:" + game_id);
       response.redirect(`/game/${game_id}`);
@@ -34,18 +34,30 @@ router.get("/create",(request, response) => {
 });
 
 router.get("/:id", (request, response) => {
-   Game.getEmptyGrid()
+  //window.location.pathname
+  if(request.session){
+    var userId = request.session.user_id;
+    var gameId = request.params.id;
+  } //HANDLE POTENTIAL ERROR FROM NO SESSION 
+  let gameTiles = [];
+  let playerHand = [];
+  game.getEmptyGrid()
     .then((cells) => {
-      //this is where we call the functions from models 
-      response.render("game", {
+      game.getPlayerHand(gameId,userId)
+      .then(playerTiles => {
+        playerHand = playerTiles;
+      })
+      .then(useless => {
+        response.render("game", {
             style: "gameStyle", 
             boardSquares: cells,
-            tiles: gameTiles.getPlayersHand,
-            tilesInBag: gameTiles.getNumTilesInBag(),
-            // messages: chat.getMessages(),
+            tiles: playerHand,
+            tilesInBag: gameTiles.getNumTilesInBag,
+            messages: chat.getMessages(),
             isReady: true,
             players: scoreBoard.getPlayers(),
             });
+      })
       Promise.resolve(1);
     })
     .catch((error) => {
@@ -54,6 +66,15 @@ router.get("/:id", (request, response) => {
       Promise.reject(error);
     });
 });
+// response.render("game", {
+//   style: "gameStyle", 
+//   boardSquares: cells,
+//   tiles: game.getPlayerHand(),
+//   tilesInBag: gameTiles.getNumTilesInBag(),
+//   // messages: chat.getMessages(),
+  // isReady: true,
+  // players: scoreBoard.getPlayers(),
+  // });
 
 
 router.get("/:id/join", (request, response) => {
@@ -62,7 +83,7 @@ router.get("/:id/join", (request, response) => {
   if(request.session){
     let userId = request.session.user_id;
     var gameId = request.params.id;
-    Game.joinGame(gameId, userId)
+    game.joinGame(gameId, userId)
     .then(() => {
       response.redirect(`/game/${gameId}`);
       // Broadcast to game socket that a user has joind the game
@@ -81,7 +102,7 @@ router.get("/:id/join", (request, response) => {
 
 router.post("/:id/playWord", (request, response) => {
   console.log("PLAAAAAAAAAAAYYYYYYY " + JSON.stringify(request.params.id));
-  console.log("PLAAAAAAAAAAAYYYYYYY " + request.body) 
+  console.log("PLAAAAAAAAAAAYYYYYYY " + request.body); 
   //response.redirect("/game/" + request.params.id);
 
 });

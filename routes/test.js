@@ -1,12 +1,20 @@
 const express = require("express");
-const { response } = require("../app");
+//const { response } = require("../app");
 const router = express.Router();
 const db = require('../db');
 const game = require('../db/game')
 const gameTiles = require('../models/gameTiles');
 
 router.get("/", (request, response) => {
-   
+    test = gameTiles.getInitialHand(11,1)
+    .then(result => {
+        console.log(" in promise of test.js ---> " + result);
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+    console.log(" bottom of test " + JSON.stringify(test));
+    
 //     db.any(`INSERT INTO test_table ("testString") VALUES ('Hello at $
 // {Date.now()}')`)
 //         .then(_ => db.any(`SELECT * FROM test_table`))
@@ -31,14 +39,6 @@ router.get("/", (request, response) => {
 // game.getInPlayTiles(1)
 // .then(results => console.log(results));
 
-gameTiles.getLetterWorth('')
-.then(result => {
-    console.log("letter worth is ", result);
-    console.log("BANANA");
-})
-.catch((err) => {
-    console.log(err);
-})
 
 
 // db.any(`INSERT INTO users ("username", "password") VALUES ($1,$2)`,[name, pass] )

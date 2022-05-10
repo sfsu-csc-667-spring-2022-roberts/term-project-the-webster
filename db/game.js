@@ -38,10 +38,13 @@ const placeTile = (tile_id, x, y, game_id) =>
 
 //get a random tile from game_tiles and insert it into the player's hand
 const drawTile = (game_id, player_id) => {
-  db.one(`SELECT tile_id FROM game_tiles WHERE game_id=$1 AND in_bag=true ORDER BY RANDOM() limit 1`, [game_id])
+  return db.one(`SELECT tile_id FROM game_tiles WHERE game_id=$1 AND in_bag=true ORDER BY RANDOM() limit 1`, [game_id])
   .then( results => {
-    db.any(`UPDATE game_tiles SET in_bag=false, user_id=$1 WHERE game_id=$2 AND tile_id=$3`,
+    return db.any(`UPDATE game_tiles SET in_bag=false, user_id=$1 WHERE game_id=$2 AND tile_id=$3 RETURNING tile_id`,
     [player_id, game_id, results.tile_id]);
+  })
+  .then((tile_id) => {
+    return Promise.resolve(tile_id);
   })
   .catch((err) => {
     console.log("ERROR! IN DRAW TILES IN DB/GAME.JS");
