@@ -31,7 +31,7 @@ const getLetterWorth = (letter) => {
     })
     .catch(err => {
         console.log("ERROR IN model/gameTiles IN getLetterWorth");
-        return Promise.reject(err);
+        return Promise.resolve(err);
     })
 }
 
