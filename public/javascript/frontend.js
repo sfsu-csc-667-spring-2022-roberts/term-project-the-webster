@@ -3,7 +3,8 @@
 var submittedLetters = document.getElementById("game-board");
 var tileForm = document.createElement("form");
 tileForm.id = "tile-form";
-tileForm.action = "/:id/playWord";
+tileForm.method = "POST";
+tileForm.action = "/game/:id/playWord";
 var gameBoard = document.getElementById("game-board");
 gameBoard.appendChild(tileForm);
 

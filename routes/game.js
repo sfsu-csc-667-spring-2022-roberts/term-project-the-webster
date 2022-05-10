@@ -40,7 +40,7 @@ router.get("/:id", (request, response) => {
       response.render("game", {
             style: "gameStyle", 
             boardSquares: cells,
-            tiles: Game.getPlayerHand,
+            tiles: gameTiles.getPlayersHand,
             tilesInBag: gameTiles.getNumTilesInBag(),
             // messages: chat.getMessages(),
             isReady: true,
@@ -79,9 +79,10 @@ router.get("/:id/join", (request, response) => {
 
 });
 
-router.get("/:id/playWord", (request, response) => {
-    console.log(request.body.tileForm) 
-    response.redirect("/:id");
+router.post("/:id/playWord", (request, response) => {
+  console.log("PLAAAAAAAAAAAYYYYYYY " + JSON.stringify(request.params.id));
+  console.log("PLAAAAAAAAAAAYYYYYYY " + request.body) 
+  //response.redirect("/game/" + request.params.id);
 
 });
 module.exports = router;
