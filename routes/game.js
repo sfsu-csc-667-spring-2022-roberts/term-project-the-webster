@@ -60,4 +60,9 @@ router.get("/:id/join", (request, response) => {
     });
 });
 
+router.get("/:id/playWord", (request, response) => {
+    console.log(request.body.tileForm) 
+    response.redirect("/:id");
+
+});
 module.exports = router;
