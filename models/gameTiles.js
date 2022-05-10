@@ -10,6 +10,20 @@ const getNumTilesInBag = () => {
     return 100;
 }
 
+const getInitialHand = (gameId, playerId) => {
+    hand = Array();
+    for(i = 0; i < 7; i++) {
+        game.drawTile(gameId, playerId)
+        .then(results => {
+            console.log(results);
+            hand.push(results[0]);
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
+    return hand;
+}
+
 const getPlayersHand = (playerID) => {
     
     let gameTiles =[{letter:"A", value:1, order:1}, 
@@ -39,5 +53,6 @@ module.exports = {
     getInitialBag,
     getNumTilesInBag,
     getPlayersHand,
-    getLetterWorth
+    getLetterWorth,
+    getInitialHand,
 }
