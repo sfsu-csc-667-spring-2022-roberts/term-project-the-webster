@@ -22,7 +22,7 @@ const getMessages = (game_id) => {
   })
   .catch((err) => {
 
-    Promise.reject(err);
+    Promise.resolve(err);
   })
   
 };

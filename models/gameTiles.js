@@ -10,6 +10,20 @@ const getNumTilesInBag = () => {
     return 100;
 }
 
+const getInitialHand = (gameId, playerId) => {
+    hand = Array();
+    for(i = 0; i < 7; i++) {
+        game.drawTile(gameId, playerId)
+        .then(results => {
+            console.log(results);
+            hand.push(results[0]);
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
+    return hand;
+}
+
 const getPlayersHand = (playerID) => {
 
     let gameTiles = [{ letter: "A", value: 1, order: 1 },
@@ -22,28 +36,17 @@ const getPlayersHand = (playerID) => {
     return gameTiles;
 }
 
+
 //returns how much points a letter is worth 
 const getLetterWorth = (letter) => {
     return db.one(`SELECT value FROM tiles WHERE letter=$1 LIMIT 1`, [letter])
-        .then(result => {
-            // console.log(result.value);
-            return Promise.resolve(result.value);
-        })
-        .catch(err => {
-            console.log("ERROR IN model/gameTiles IN getLetterWorth");
-            return Promise.reject(err);
-        })
-}
-
-const getInitialHand = (gameId, playerId) => {
-    hand = Array();
-    console.log("INITIAL HAND ");
-    game.drawTile(1,1).then((res) => {
-        console.log(res);
-        // return res;
-    }).catch((err) => {
-        console.log(err);
-        // return err;
+    .then(result => {
+        // console.log(result.value);
+        return Promise.resolve(result.value);
+    })
+    .catch(err => {
+        console.log("ERROR IN model/gameTiles IN getLetterWorth");
+        return Promise.resolve(err);
     })
     /*for (i = 0; i < 7; i++) {
         console.log("in loop before the promise ")
@@ -56,6 +59,20 @@ const getInitialHand = (gameId, playerId) => {
             })
     }*/
 }
+
+const getLetterFromTileId = (tile_id) => {
+    return db.one(`SELECT letter FROM tiles WHERE id=$1`, [tile_id])
+    .then(result => {
+        // console.log("LETTER IS ", result)
+        return Promise.resolve(result);
+    })
+    .catch(err => {
+        console.log("ERROR IN getLetterFromTileId in modes/gameTiles");
+        return Promise.resolve(err);
+    })
+}
+
+
 
 module.exports = {
     getInitialBag,

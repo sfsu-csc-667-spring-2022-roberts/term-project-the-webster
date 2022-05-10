@@ -10,7 +10,7 @@ const createGame = (userId) =>
       return Promise.resolve(game_id);
     })
     .catch((err) => {
-      return Promise.reject(err);
+      return Promise.resolve(err);
     })
 
 
@@ -27,23 +27,22 @@ const placeTile = (tile_id, x, y, game_id) =>
   )
   .catch((err) => {
     console.log("ERROR IN PLACE TILE IN DB/GAME.JS");
-    return Promise.reject(err);
+    return Promise.resolve(err);
   });
 
 //get a random tile from game_tiles and insert it into the player's hand
 const drawTile = (game_id, player_id) => {
   return db.one(`SELECT tile_id FROM game_tiles WHERE game_id=$1 AND in_bag=true ORDER BY RANDOM() limit 1`, [game_id])
   .then( results => {
-    return db.any(`UPDATE game_tiles SET in_bag=false, user_id=$1 WHERE game_id=$2 AND tile_id=$3 RETURNING game_id`,
-    [player_id, game_id, results.tile_id])
-    .then((res) => {
-      console.log(res[0]);
-      return Promise.resolve(res[0].game_id);
-    })
+    return db.any(`UPDATE game_tiles SET in_bag=false, user_id=$1 WHERE game_id=$2 AND tile_id=$3 RETURNING tile_id`,
+    [player_id, game_id, results.tile_id]);
+  })
+  .then((tile_id) => {
+    return Promise.resolve(tile_id);
   })
   .catch((err) => {
     console.log("ERROR! IN DRAW TILES IN DB/GAME.JS");
-    return Promise.reject(err);
+    return Promise.resolve(err);
   })
 }
 
@@ -55,7 +54,7 @@ const getPlayerHand = (game_id, player_id) => {
   })
   .catch((err) => {
     console.log("ERROR IN getPlayerHand IN DB/GAME.JS");
-    return Promise.reject(err);
+    return Promise.resolve(err);
   })
 }
 
@@ -67,7 +66,7 @@ const getInPlayTiles = (game_id) => {
   })
   .catch((err) => {
     console.log("ERROR IN getInPlayTiles IN DB/GAME.JS");
-    return Promise.reject(err);
+    return Promise.resolve(err);
   })
 }
 
@@ -80,7 +79,7 @@ const getGameUsers = (game_id) => {
   })
   .catch((err) => {
     console.log("ERROR in getGameUsers IN DB/GAMES.JS");
-    return Promise.reject(err);
+    return Promise.resolve(err);
   })
 }
 

@@ -1,7 +1,40 @@
 <h1 class="lobby-title">Game Lobby</h1>
 <h1 class="lobby-title">Room Code AE25</h1>
 
-<form method="POST" action="/users/logout"> <input type="submit" value="Submit"> log out </input> </form>
+<form method="POST" action="/users/logout">  <input type="submit" value="Submit"> log out </input>  </form>
+
+ <ul id="messages"></ul>
+    <form id="form" action="">
+      <input id="input" autocomplete="off" /><button>Send</button>
+    </form>
+
+<script src="/socket.io/socket.io.js"></script>
+
+      <script>
+       var socket = io();
+        var messages = document.getElementById('messages');
+        var form = document.getElementById('form');
+        var input = document.getElementById('input');
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+                if (input.value) {
+                
+                  socket.emit('chat message', input.value);
+                  input.value = '';
+                }
+              });
+                
+              socket.on('chat message', function(msg) {
+              var item = document.createElement('li');
+              item.textContent = msg;
+              messages.appendChild(item);
+              window.scrollTo(0, document.body.scrollHeight);
+              });
+              
+              socket.on('disconnect', () => {
+              console.log('user disconnected :(');
+              });
+            </script>
 
 <section class="lobby-chat-container">
   <div class="lobby-window">
