@@ -81,5 +81,8 @@ router.post("/:id/playWord", (request, response) => {
   console.log(word);
 
   // Send a game update via websocket
+  socket.emit("game-updated", {
+    /* game state data */
+  });
 });
 module.exports = router;

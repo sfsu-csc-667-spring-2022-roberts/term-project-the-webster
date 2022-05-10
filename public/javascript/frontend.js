@@ -1,3 +1,8 @@
+io.on("game-updated", (payload) => {
+  // Update all the various game board divs, update player's tile rack,
+  // provide some visual indication of current player
+});
+
 const selection = [];
 const word = [];
 
