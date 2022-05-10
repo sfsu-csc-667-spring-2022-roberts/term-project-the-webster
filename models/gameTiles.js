@@ -35,6 +35,8 @@ const getLetterWorth = (letter) => {
     })
 }
 
+
+
 module.exports = {
     getInitialBag,
     getNumTilesInBag,
