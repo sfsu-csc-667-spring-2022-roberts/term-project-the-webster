@@ -52,7 +52,7 @@ router.get("/", (request, response) => {
   //             response.json({ error })
   //         })
 
-    test = gameTiles.getInitialHand(11,1)
+    test = gameTiles.getInitialHand(1,1)
     .then(result => {
         console.log(" in promise of test.js ---> " + result);
     })

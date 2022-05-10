@@ -118,5 +118,5 @@ router.post("/:id/playWord", (request, response) => {
  // socket.emit("game-updated", {
     /* game state data */
   });
-});
+// });
 module.exports = router;
