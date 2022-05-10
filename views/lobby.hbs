@@ -13,14 +13,19 @@
         </div>
       </div>
       {{/each}}
+      <button class="start-button" onclick="startGame({{gameId}})">Start Game</button>
       <button class="leave-button" onclick="leave({{gameId}})">Leave</button>
     </div>
   </div>
   {{> chatMessages messageArray=messages}}
 </section>
 <script>
+  function startGame(gameId) {
+    window.location.href = `/game/${gameId}`, true;
+  }
+</script>
+<script>
   function leave(gameId) {
-    // window.location.href = `/game/${gameId}/join`, true;
     window.location.href = `/lobby/leave/${gameId}`, true;
   }
 </script>
