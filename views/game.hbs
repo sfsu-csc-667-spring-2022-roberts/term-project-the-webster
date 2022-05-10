@@ -1,14 +1,15 @@
-<div class="board-tiles-messages"> 
+<div class="board-tiles-messages">
+    <form id="game-board"  >
+        {{#each boardSquares}}
+            <div class="game-board-tile l-{{this.letter_multiplier}}-w-{{this.word_multiplier}}"
+            data-x="{{this.x}}" data-y="{{this.y}}" id="square({{this.x}},{{this.y}})"
+            ondrop="drop(event)" ondragover="allowDrop(event)">
 
-<section class="game-board"> 
-    {{#each boardSquares}}
-        <div class="{{type}}" id="square-{{x}},{{y}}">
-            <p>{{text}}</p> 
-        </div>
-    {{/each}}
-  
-</section>
-{{> tileRack}}
-{{> chatMessages messageArray=messages ready=isReady players=players}}
+                <p>  </p>
+
+            </div>
+        {{/each}}
+    </form>
+    {{> tileRack}}
+    {{> chatMessages messageArray=messages ready=isReady players=players}}
 </div>
-
