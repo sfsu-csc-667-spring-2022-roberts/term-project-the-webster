@@ -35,11 +35,24 @@ const getLetterWorth = (letter) => {
     })
 }
 
+const getLetterFromTileId = (tile_id) => {
+    return db.one(`SELECT letter FROM tiles WHERE id=$1`, [tile_id])
+    .then(result => {
+        // console.log("LETTER IS ", result)
+        return Promise.resolve(result);
+    })
+    .catch(err => {
+        console.log("ERROR IN getLetterFromTileId in modes/gameTiles");
+        return Promise.resolve(err);
+    })
+}
+
 
 
 module.exports = {
     getInitialBag,
     getNumTilesInBag,
     getPlayersHand,
-    getLetterWorth
+    getLetterWorth,
+    getLetterFromTileId
 }

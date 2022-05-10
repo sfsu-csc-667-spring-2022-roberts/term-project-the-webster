@@ -1,5 +1,4 @@
 const express = require("express");
-const { response } = require("../app");
 const router = express.Router();
 const db = require('../db');
 const game = require('../db/game')
@@ -31,7 +30,7 @@ router.get("/", (request, response) => {
 // game.getInPlayTiles(1)
 // .then(results => console.log(results));
 
-gameTiles.getLetterWorth('')
+gameTiles.getLetterFromTileId(91)
 .then(result => {
     console.log("letter worth is ", result);
     console.log("BANANA");
