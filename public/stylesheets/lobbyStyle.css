@@ -53,7 +53,7 @@ body {
     align-self: center;
     height: 10vh;
     width: 20vw;
-    margin-left: 15%;
+    margin-right: 20%;
     margin-top: 5%;
     margin-bottom: 5%;
     background-color: transparent;
@@ -63,48 +63,8 @@ body {
     display: flex;
 }
 
-.ready {
-    justify-content: center;
-    align-items: center;
-    align-self: center;
-    float: right;
-    height: 10vh;
-    width: 7vw;
-    margin-left: 5%;
-    margin-top: 5%;
-    margin-bottom: 5%;
-    margin-right: 20%;
-    background-color: rgb(255, 255, 255);
-    color: white;
-    border: 1px solid green;
-    border-radius: 5px;
-}
-
-.not-ready {
-    justify-content: center;
-    align-items: center;
-    align-self: center;
-    float: right;
-    height: 10vh;
-    width: 7vw;
-    margin-left: 5%;
-    margin-top: 5%;
-    margin-bottom: 5%;
-    margin-right: 20%;
-    background-color: rgb(255, 255, 255);
-    color: white;
-    border: 1px solid red;
-    border-radius: 5px;
-}
-
-.ready-text {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    font-family: Arial, sans-serif;
+.player-text {
     color: black;
-    font-size: 20px;
 }
 
 .player-one-glow {

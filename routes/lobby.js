@@ -21,21 +21,24 @@ router.get("/", (request, response) => {
 });
 
 router.get("/:id", (request, response) => {
-  let gameId = request.params.id;
-  console.log("in id lobby");
-  console.log("gameId: " + gameId);
-  Game.getGameById(gameId)
+  let gameID = request.params.id;
+  let userID = request.session.user_id;
+  Game.getGameById(gameID)
     .then((game) => {
-      console.log("game");
-      console.log(game);
-      console.log("in_lobby: " + game.in_lobby)
       let inLobby = game.in_lobby;
-      console.log(inLobby == true)
       if (inLobby == true) {
-        response.render('lobby', {
-          style: 'lobbyStyle'
-          // also send data here about players etc
-        });
+        Game.joinGame(gameID, userID)
+          .then(() => {
+            Game.getGameUsers2(gameID)
+              .then((gameUsers) => {
+                response.render('lobby', {
+                  style: 'lobbyStyle',
+                  players: gameUsers,
+                  currUSer: userID,
+                  gameId: gameID
+                });
+              })
+          })
       } else {
         response.redirect('/browseLobby');
       }

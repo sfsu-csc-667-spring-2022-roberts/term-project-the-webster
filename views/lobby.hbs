@@ -1,87 +1,26 @@
 <h1 class="lobby-title">Game Lobby</h1>
 <h1 class="lobby-title">Room Code AE25</h1>
 
-  <form method="POST" action="/users/logout">  <input type="submit" value="Submit"> log out </input>  </form>
+<form method="POST" action="/users/logout"> <input type="submit" value="Submit"> log out </input> </form>
 
 <section class="lobby-chat-container">
   <div class="lobby-window">
     <div class="inner-lobby">
-
-    
-
-      <script>
-        console.log("Running browse lobby script...");
-
-        var players = [
-          {
-            id: 1,
-            name: "Bob Jones",
-            ready: false
-          },
-          {
-            id: 2,
-            name: "Kyle Gilbert",
-            ready: true
-          },
-          {
-            id: 3,
-            name: "Johnny Johnson",
-            ready: true
-          },
-          {
-            id: 4,
-            name: "Testing test",
-            ready: false
-          }
-        ]
-
-        for (i = 0; i < 4; i++) {
-          containerDiv = document.createElement('div');
-          containerDiv.className = "player-container";
-          document.getElementsByClassName("inner-lobby")[0].appendChild(containerDiv);
-          playerSection = document.createElement('div');
-          playerSection.className = "player-section";
-
-          playerSectionText = document.createElement('p');
-          playerSectionText.className = "player-text";
-          playerSectionText.textContent = players[i].name;
-
-          playerSection.appendChild(playerSectionText);
-
-          buttonSection = document.createElement('button');
-          buttonSection.className = "button-section";
-          isReady = players[i].ready;
-          if (isReady) {
-            buttonSection.textContent = "Ready";
-            buttonSection.style.backgroundColor = "green";
-          } else {
-            buttonSection.textContent = "Not Ready";
-            buttonSection.style.backgroundColor = "red";
-          }
-          // buttonSection.addEventListener('click', readyToggle);
-          containerDiv.appendChild(playerSection);
-          containerDiv.appendChild(buttonSection);
-          // document.querySelectorAll('.button-section').addEventListener('click', readyToggle);
-        }
-      </script>
-      {{!--<div class="player-container">
-        <div class="player-section">
-          <p class="player-text"> Johnny Johnson</p>
-        </div>
-        <button class="button-section">
-          Ready
-        </button>
-      </div>
+      {{#each players}}
       <div class="player-container">
         <div class="player-section">
-          <p class="player-text">Kyle Gilbert</p>
+          <p class="player-text">{{username}}</p>
         </div>
-        <button class="button-section">
-          Ready
-        </button>
-      </div>--}}
-      <button class="leave-button">Leave</button>
+      </div>
+      {{/each}}
+      <button class="leave-button" onclick="leave({{gameId}})">Leave</button>
     </div>
   </div>
   {{> chatMessages messageArray=messages}}
 </section>
+<script>
+  function leave(gameId) {
+    // window.location.href = `/game/${gameId}/join`, true;
+    window.location.href = `/browseLobby/leave/${gameId}`, true;
+  }
+</script>
