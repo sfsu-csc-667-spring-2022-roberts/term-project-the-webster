@@ -57,7 +57,19 @@ const getLetterFromTileId = (tile_id) => {
         return Promise.resolve(result);
     })
     .catch(err => {
-        console.log("ERROR IN getLetterFromTileId in modes/gameTiles");
+        console.log("ERROR IN getLetterFromTileId in models/gameTiles");
+        return Promise.resolve(err);
+    })
+}
+
+const getCoordinatesFromTileId = (game_id, tile_id) => {
+    return db.any(`SELECT x_coordinate, y_coordinate FROM game_tiles WHERE game_id=$1 AND tile_id=$2`,
+    [game_id,tile_id])
+    .then(result => {
+        return Promise.resolve(result);
+    })
+    .catch(err => {
+        console.log("ERROR IN getCoordinatesFromTileId in models/gameTiles");
         return Promise.resolve(err);
     })
 }
@@ -69,5 +81,6 @@ module.exports = {
     getNumTilesInBag,
     getPlayersHand,
     getLetterWorth,
-    getInitialHand
+    getInitialHand,
+    getCoordinatesFromTileId
 }
