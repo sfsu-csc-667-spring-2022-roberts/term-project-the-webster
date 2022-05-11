@@ -8,7 +8,7 @@ const game = require("../db/game");
 const gameBoard = require("../models/gameBoard");
 const scoreBoard = require("../models/scoreBoard");
 const chat = require("../models/chat");
-const gameTiles = require("../models/gameTiles");
+const gameTilesModel = require("../models/gameTiles");
 
 router.get("/create", (request, response) => {
   // let currentUser = 1; // don't hard code this, get from params\
@@ -44,19 +44,22 @@ router.get("/:id", (request, response) => {
     .then((cells) => {
       game.getPlayerHand(gameId,userId)
       .then(playerTiles => {
+        console.log("routes/game " , gameId,userId);
         playerHand = playerTiles;
+        console.log("routes/game " , playerTiles);
       })
       .then(useless => {
         response.render("game", {
             style: "gameStyle", 
             boardSquares: cells,
-            tiles: playerHand,
+            //tiles: playerHand,
+            tiles: gameTilesModel.getPlayersHand(),
             tilesInBag: gameTiles.getNumTilesInBag,
             messages: chat.getMessages(),
             isReady: true,
             players: scoreBoard.getPlayers(),
             });
-      })
+      });
     
       Promise.resolve(1);
     })
@@ -78,7 +81,7 @@ router.get("/:id", (request, response) => {
 
 router.get("/:id/join", (request, response) => {
   console.log("--------------------------test------JOINING-------------");
-  console.log(request.params.id);
+  console.log("join  ",request.params.id);
   if (request.session) {
     let userId = request.session.user_id;
     var gameId = request.params.id;
@@ -107,7 +110,7 @@ router.post("/:id/playWord", (request, response) => {
   response.status(200);
 
   console.log(`HANDLE THIS WORD IN GAME ${id}`);
-  console.log(word);
+  console.log("playword --> ", word);
 
   console.log("PLAAAAAAAAAAAYYYYYYY " + JSON.stringify(request.params.id));
   console.log("PLAAAAAAAAAAAYYYYYYY " + request.body); 

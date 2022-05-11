@@ -73,7 +73,7 @@ router.post("/login", async (req, res, next)=> {
         
           req.session.user_id = userId
          
-         res.redirect("/lobby")
+         res.redirect("/browseLobby")
        }else{
          
          res.redirect("/register")

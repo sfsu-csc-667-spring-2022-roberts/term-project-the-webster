@@ -163,7 +163,7 @@ html{
     flex-direction:column;
 }
   
-.tile-wrapper{
+#tile-wrapper{
     grid-area:tiles;
     display:flex;
     align-items:center;

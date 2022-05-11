@@ -15,12 +15,13 @@ const getInitialHand = (gameId, playerId) => {
     for(i = 0; i < 7; i++) {
         game.drawTile(gameId, playerId)
         .then(results => {
-            console.log(results);
+            //console.log(results);
             hand.push(results[0]);
         }).catch((err) => {
             console.log(err);
         })
     }
+    console.log(hand);
     return hand;
 }
 

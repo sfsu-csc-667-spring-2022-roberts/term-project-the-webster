@@ -33,16 +33,6 @@ router.get("/", (request, response) => {
   // game.getInPlayTiles(1)
   // .then(results => console.log(results));
 
-  gameTiles
-    .getLetterWorth("")
-    .then((result) => {
-      console.log("letter worth is ", result);
-      console.log("BANANA");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-
   // db.any(`INSERT INTO users ("username", "password") VALUES ($1,$2)`,[name, pass] )
   //         .then(_ =>
   //         db.any(`SELECT * FROM users`))
@@ -52,14 +42,14 @@ router.get("/", (request, response) => {
   //             response.json({ error })
   //         })
 
-    test = gameTiles.getInitialHand(1,1)
+    test = gameTiles.getInitialHand(3,1)
     .then(result => {
-        console.log(" in promise of test.js ---> " + result);
+        console.log(" in promise of test.js ---> ", result);
     })
     .catch((err) => {
         console.log(err);
     })
-    console.log(" bottom of test " + JSON.stringify(test));
+    console.log(" bottom of test.js " + JSON.stringify(test));
     
 //     db.any(`INSERT INTO test_table ("testString") VALUES ('Hello at $
 // {Date.now()}')`)

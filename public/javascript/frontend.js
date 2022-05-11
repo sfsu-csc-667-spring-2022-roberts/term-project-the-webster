@@ -1,7 +1,7 @@
-io.on("game-updated", (payload) => {
-  // Update all the various game board divs, update player's tile rack,
-  // provide some visual indication of current player
-});
+// io.on("game-updated", (payload) => {
+//   Update all the various game board divs, update player's tile rack,
+//   provide some visual indication of current player
+// });
 
 const selection = [];
 const word = [];
@@ -40,6 +40,7 @@ document
   });
 
 document.getElementById("game-board").addEventListener("click", (event) => {
+  console.log("CLIIIIIIIIIIIIIIICK game baord ");
   if (
     Array.from(event.target.classList).includes("game-board-tile") &&
     selection.length === 1
@@ -65,6 +66,7 @@ document.getElementById("game-board").addEventListener("click", (event) => {
 document
   .getElementById("tile-wrapper")
   .addEventListener("click", ({ target }) => {
+    console.log("CLIIIIIIIIIIIIIIICK tile rack ");
     const element = target.tagName === "P" ? target.parentElement : target;
 
     if (Array.from(element.classList).includes("selected-tile")) {

@@ -7,11 +7,10 @@ const db = require('../db');
 
 
 router.get("/", (request, response) => {
-
-     response.render('login', {
-        style: 'style' , 
-        block: '', 
-        });
+        let fix = 
+     response.render("login", {
+        style: "style",
+});
     
 });
 
