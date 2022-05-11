@@ -3,15 +3,10 @@
 
 <form method="POST" action="/users/logout">  <input type="submit" value="Submit"> log out </input>  </form>
 
-
  <ul id="messages"></ul>
     <form id="form" action="">
       <input id="input" autocomplete="off" /><button>Send</button>
     </form>
-
-<section class="lobby-chat-container">
-  <div class="lobby-window">
-    <div class="inner-lobby">
 
 <script src="/socket.io/socket.io.js"></script>
 
@@ -39,66 +34,31 @@
               socket.on('disconnect', () => {
               console.log('user disconnected :(');
               });
+            </script>
 
-        console.log("Running browse lobby script...");
-        var players = [
-          {
-            id: 1,
-            name: "Bob Jones",
-            ready: false
-          },
-          {
-            id: 2,
-            name: "Kyle Gilbert",
-            ready: true
-          },
-          {
-            id: 3,
-            name: "Johnny Johnson",
-            ready: true
-          },
-          {
-            id: 4,
-            name: "Testing test",
-            ready: false
-          }
-        ]
-        for (i = 0; i < 4; i++) {
-          containerDiv = document.createElement('div');
-          containerDiv.className = "player-container";
-          document.getElementsByClassName("inner-lobby")[0].appendChild(containerDiv);
-          playerSection = document.createElement('div');
-          playerSection.className = "player-section";
-          playerSectionText = document.createElement('p');
-          playerSectionText.className = "player-text";
-          playerSectionText.textContent = players[i].name;
-          playerSection.appendChild(playerSectionText);
-          buttonSection = document.createElement('button');
-          buttonSection.className = "button-section";
-          isReady = players[i].ready;
-          if (isReady) {
-            buttonSection.textContent = "Ready";
-            buttonSection.style.backgroundColor = "green";
-          } else {
-            buttonSection.textContent = "Not Ready";
-            buttonSection.style.backgroundColor = "red";
-          }
-          // buttonSection.addEventListener('click', readyToggle);
-          containerDiv.appendChild(playerSection);
-          containerDiv.appendChild(buttonSection);
-          // document.querySelectorAll('.button-section').addEventListener('click', readyToggle); --}}
-        }
-      </script>
-      
-      <button class="leave-button">Leave</button>
+<section class="lobby-chat-container">
+  <div class="lobby-window">
+    <div class="inner-lobby">
+      {{#each players}}
+      <div class="player-container">
+        <div class="player-section">
+          <p class="player-text">{{username}}</p>
+        </div>
+      </div>
+      {{/each}}
+      <button class="start-button" onclick="startGame({{gameId}})">Start Game</button>
+      <button class="leave-button" onclick="leave({{gameId}})">Leave</button>
     </div>
   </div>
   {{> chatMessages messageArray=messages}}
-
-
-  
 </section>
-
-
-<br/>
-
+<script>
+  function startGame(gameId) {
+    window.location.href = `/game/${gameId}`, true;
+  }
+</script>
+<script>
+  function leave(gameId) {
+    window.location.href = `/lobby/leave/${gameId}`, true;
+  }
+</script>
