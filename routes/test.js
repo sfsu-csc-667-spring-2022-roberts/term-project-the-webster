@@ -78,8 +78,7 @@ router.get("/", (request, response) => {
   // game.getInPlayTiles(1)
   // .then(results => console.log(results));
 
-  gameTiles
-    .getLetterWorth("")
+  gameTiles.getCoordinatesFromTileId(3,9)
     .then((result) => {
       console.log("letter worth is ", result);
       console.log("BANANA");
@@ -97,14 +96,6 @@ router.get("/", (request, response) => {
   //             response.json({ error })
   //         })
 
-    test = gameTiles.getInitialHand(1,1)
-    .then(result => {
-        console.log(" in promise of test.js ---> " + result);
-    })
-    .catch((err) => {
-        console.log(err);
-    })
-    console.log(" bottom of test " + JSON.stringify(test));
     
 //     db.any(`INSERT INTO test_table ("testString") VALUES ('Hello at $
 // {Date.now()}')`)
