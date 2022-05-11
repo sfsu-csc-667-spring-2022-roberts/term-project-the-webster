@@ -50,10 +50,78 @@ const getLetterWorth = (letter) => {
     })
 }
 
+
+const getLetterFromTileId = (tile_id) => {
+    return db.one(`SELECT letter FROM tiles WHERE id=$1`, [tile_id])
+    .then(result => {
+        // console.log("LETTER IS ", result)
+        return Promise.resolve(result);
+    })
+    .catch(err => {
+        console.log("ERROR IN getLetterFromTileId in models/gameTiles");
+        return Promise.resolve(err);
+    })
+  }
+  
+  const getCoordinatesFromTileId = (game_id, tile_id) => {
+    return db.any(`SELECT x_coordinate, y_coordinate FROM game_tiles WHERE game_id=$1 AND tile_id=$2`,
+    [game_id,tile_id])
+    .then(result => {
+        return Promise.resolve(result);
+    })
+    .catch(err => {
+        console.log("ERROR IN getCoordinatesFromTileId in models/gameTiles");
+        return Promise.resolve(err);
+    })
+  }
+  
+  const parsePlayerHandForHTML = (gameId, userId) => {
+    let letterList = [];
+    let valueList = [];
+    let posList = []; 
+    //let letter;
+    
+    game.getPlayerHand(gameId, userId)
+    .then(handData => {
+      for(i = 0; i < handData.length; i++ ){
+          getLetterFromTileId(handData[i].tile_id)
+          .then(letter =>{
+              console.log("lettertest ,", letter.letter)
+              letterList.push(letter.letter);
+          }).then(results =>{
+            getLetterWorth(letterList[i])
+            .then(value =>{
+                valueList.push(value);
+            })
+            .then(pauseForTest => {
+                console.log(valueList);
+            })
+          }).catch(err => {
+            console.log(err);
+          })
+          
+      }
+      
+    //   for(i = 0; i < handData.length; i++ ){
+    //     getLetterWorth(letterList[i])
+    //     .then(value =>{
+    //        // console.log("value in promise", value.value)
+    //         valueList.push(value);
+    //     }).catch(err => {
+    //       console.log(err);
+    //     })
+    // }
+    })
+  
+  }
+
 module.exports = {
     getInitialBag,
     getNumTilesInBag,
     getPlayersHand,
     getLetterWorth,
     getInitialHand,
+    getLetterFromTileId,
+    getCoordinatesFromTileId,
+    parsePlayerHandForHTML,
 }

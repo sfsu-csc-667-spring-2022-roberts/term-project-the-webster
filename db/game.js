@@ -94,6 +94,21 @@ const getAllGameInfo = () => {
   return db.any('SELECT * FROM games INNER JOIN game_users ON games.id = game_users.game_id INNER JOIN users ON game_users.user_id = users.id')
 }
 
+const getInitialHand = (gameId, playerId) => {
+  hand = Array();
+  for(i = 0; i < 7; i++) {
+      game.drawTile(gameId, playerId)
+      .then(results => {
+          console.log(results);
+          hand.push(results[0]);
+      }).catch((err) => {
+          console.log(err);
+      })
+  }
+  return hand;
+}
+
+
 module.exports = {
   getEmptyGrid,
   createGame,
@@ -104,5 +119,6 @@ module.exports = {
   getInPlayTiles,
   getGames,
   getGameUsers,
-  getAllGameInfo
+  getAllGameInfo,
+  getInitialHand,
 };

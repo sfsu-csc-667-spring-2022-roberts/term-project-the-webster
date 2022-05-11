@@ -42,14 +42,14 @@ router.get("/", (request, response) => {
   //             response.json({ error })
   //         })
 
-    test = gameTiles.getInitialHand(3,1)
+    test = gameTiles.parsePlayerHandForHTML(3,1)
     .then(result => {
         console.log(" in promise of test.js ---> ", result);
     })
     .catch((err) => {
         console.log(err);
     })
-    console.log(" bottom of test.js " + JSON.stringify(test));
+
     
 //     db.any(`INSERT INTO test_table ("testString") VALUES ('Hello at $
 // {Date.now()}')`)
