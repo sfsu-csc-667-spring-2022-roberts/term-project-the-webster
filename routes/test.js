@@ -30,8 +30,8 @@ router.get("/", (request, response) => {
 
   // console.log(game.getInPlayTiles(1));
 
-  // game.getInPlayTiles(1)
-  // .then(results => console.log(results));
+//   gameTiles.getInitialHand(68,9)
+//   .then(results => console.log(results));
 
   // db.any(`INSERT INTO users ("username", "password") VALUES ($1,$2)`,[name, pass] )
   //         .then(_ =>
@@ -42,7 +42,7 @@ router.get("/", (request, response) => {
   //             response.json({ error })
   //         })
 
-    test = gameTiles.parsePlayerHandForHTML(3,1)
+    test = gameTiles.parsePlayerHandForHTML(68,9)
     .then(result => {
         console.log(" in promise of test.js ---> ", result);
     })

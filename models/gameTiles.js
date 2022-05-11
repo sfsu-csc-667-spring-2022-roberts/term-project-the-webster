@@ -76,44 +76,47 @@ const getLetterFromTileId = (tile_id) => {
   }
   
   const parsePlayerHandForHTML = (gameId, userId) => {
+    let tileIdList = [];
     let letterList = [];
     let valueList = [];
-    let posList = []; 
-    //let letter;
-    
-    game.getPlayerHand(gameId, userId)
+
+    return game.getPlayerHand(gameId, userId)
     .then(handData => {
-      for(i = 0; i < handData.length; i++ ){
-          getLetterFromTileId(handData[i].tile_id)
-          .then(letter =>{
-              console.log("lettertest ,", letter.letter)
-              letterList.push(letter.letter);
-          }).then(results =>{
-            getLetterWorth(letterList[i])
-            .then(value =>{
-                valueList.push(value);
-            })
-            .then(pauseForTest => {
-                console.log(valueList);
-            })
-          }).catch(err => {
-            console.log(err);
-          })
-          
-      }
-      
-    //   for(i = 0; i < handData.length; i++ ){
-    //     getLetterWorth(letterList[i])
-    //     .then(value =>{
-    //        // console.log("value in promise", value.value)
-    //         valueList.push(value);
-    //     }).catch(err => {
-    //       console.log(err);
-    //     })
-    // }
+        tileIdList = handData;
+        let promises = [];
+        // console.log("hand data:", handData.length);
+        for (i=0; i < handData.length; i++) {
+            promises.push(getLetterFromTileId(handData[i].tile_id));
+        }
+
+        return Promise.all(promises).then(results => {
+            for (let result of results ) {
+                letterList.push(result.letter);
+            }
+            return letterList;
+        })
     })
-  
-  }
+    .then(letter_list => {
+        for (i =0; i < letter_list.length; i++) {
+            valueList.push(getLetterWorth(letter_list[i]));
+        }
+        return Promise.all(valueList).then(results => {
+            valueList = results;
+            return results;
+        })
+    })
+    .then(value_list => {
+        let htmlData = [];
+        for (i=0;i<tileIdList.length;i++) {
+            let letter = letterList[i];
+            let value = valueList[i];
+            htmlData.push({letter, value});
+        }
+        console.log("AAAAAA");
+        return Promise.resolve(htmlData);
+    })
+
+}
 
 module.exports = {
     getInitialBag,
