@@ -8,11 +8,15 @@ const gameTiles = require("../models/gameTiles");
 
 router.get("/", (request, response) => {
 
-    gameTiles.getInitialHand(1,1).then((res) => {
-        console.log("res: " + res);
-    }).catch((err) => {
-        console.log(err);
-    })
+    // game.getGameState(1).then(results =>{
+    //     console.log(results);
+    // })
+
+    // gameTiles.getInitialHand(1,1).then((res) => {
+    //     console.log("res: " + res);
+    // }).catch((err) => {
+    //     console.log(err);
+    // })
 
     //     db.any(`INSERT INTO test_table ("testString") VALUES ('Hello at $
     // {Date.now()}')`)

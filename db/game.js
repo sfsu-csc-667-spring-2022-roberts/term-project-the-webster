@@ -130,6 +130,28 @@ const getInitialHand = (gameId, playerId) => {
   return hand;
 }
 
+const getGameState = (gameId) => {
+  gameState = [];
+  return db.any(`SELECT * FROM game_tiles WHERE game_id=$1`, [gameId])
+  .then(results => {
+    gameState.push(results);
+    return db.any(`SELECT * FROM game_users WHERE game_id=$1`, [gameId])
+    .then(results => {
+      gameState.push(results);
+      return db.any(`SELECT * FROM games WHERE id=$1`, [gameId])
+      .then(results => {
+        gameState.push(results);
+        return Promise.resolve(gameState);
+      })
+      .catch(err => {
+        console.log("ERROR IN getGameState in db/game.js");
+        return Promise.resolve(err);
+      })
+    })
+  })
+
+}
+
 
 module.exports = {
   getEmptyGrid,
@@ -142,11 +164,10 @@ module.exports = {
   getGames,
   getGameUsers,
   getAllGameInfo,
-
   getInitialHand,
-
   getGameById,
   getGameUsers2,
-  removeFromLobby
+  removeFromLobby,
+  getGameState
 
 };
