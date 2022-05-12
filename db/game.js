@@ -173,6 +173,41 @@ const getGameUserOrder = (gameId, userId) => {
   })
 }
 
+const updateGameTurn = (gameId, turn) => {
+  return db.any(`UPDATE games SET current_turn=$1 WHERE id=$2`, [turn, gameId])
+  .catch(err => {
+    console.log("ERROR IN updateGameTurn in db/game.js");
+    return Promise.resolve(err);
+  })
+}
+
+const getGameTurn = (gameId) => {
+  return db.one(`SELECT current_turn FROM games WHERE id=$1`, [gameId])
+  .then(results => {
+    return Promise.resolve(results);
+  })
+  .catch(err => {
+    console.log("ERROR IN getGameTurn in db/game.js");
+    return Promise.resolve(err);
+  })
+}
+
+const incrementGameTurn = (gameId) => {
+  return getGameTurn(gameId)
+  .then(results => {
+    updateGameTurn(gameId, results.current_turn + 1)
+    .then(results => {
+      return Promise.resolve(results);
+    })
+    .catch(err => {
+      console.log("ERROR IN incrementGameTurn in db/game.js");
+      return Promise.resolve(err);
+    })
+  })
+}
+
+
+
 
 module.exports = {
   getEmptyGrid,
@@ -191,6 +226,9 @@ module.exports = {
   removeFromLobby,
   getGameState,
   updateGameUserOrder,
-  getGameUserOrder
+  getGameUserOrder,
+  updateGameTurn,
+  incrementGameTurn,
+  getGameTurn
 
 };
