@@ -3,7 +3,9 @@ const router = express.Router();
 const db = require('../db');
 const session = require('express-session');
 
+ 
 const Game = require("../db/game");
+ 
 
 router.get("/", (request, response) => {
 
@@ -11,6 +13,8 @@ router.get("/", (request, response) => {
 
   if (request.session) {
     console.log("valid session")
+    console.log(request.sessionID)
+    console.log(request.session.user_id)
     response.render('lobby', {
       style: 'lobbyStyle',
       // messages: results

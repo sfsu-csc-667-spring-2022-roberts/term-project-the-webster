@@ -1,32 +1,79 @@
 const express = require("express");
+const io = require('../socket/index')
 const router = express.Router();
-
 //temp import, will need to be encapsulated into models/gameboard
 const game = require("../db/game");
-
 //models imoorts
 const gameBoard = require("../models/gameBoard");
 const scoreBoard = require("../models/scoreBoard");
 const chat = require("../models/chat");
+
 const gameTiles = require("../models/gameTiles");
+const session = require("express-session");
+// const frontend = require("../public/javascript/frontend")
+
+
+
+const gameTilesModel = require("../models/gameTiles");
+
 
 router.get("/create", (request, response) => {
-  // let currentUser = 1; // don't hard code this, get from params\
-  if(request.session) {
+
+  // let currentUser = 1; // don't hard code this, get from params
+  if (request.session) {
+
+    
+    
     let currentUser = request.session.user_id;
     console.log("current user is ", currentUser);
     game.createGame(currentUser)
-    .then((game_id ) => {
-      console.log("gameId:" + game_id);
-      response.redirect(`/lobby/${game_id}`);
+    .then((game_id) => {
+      // do socket thingy
+      emitTest();
+      response.redirect(`/game/${game_id}`);
     })
-    .catch((error) => {
-      console.log(error);
-      response.redirect("/browseLobby");
-    });
   } else {
-    console.log("HANDLE THIS ERROR WHERE USER_ID DOES NOT EXIST IN game.js")
+    console.log("no sesson in create");
   }
+  
+   function emitTest() {
+    io.emit('test-event1');
+  }
+
+    /*game.createGame(currentUser)
+      .then((game_id) => {
+        console.log("gameId:" + game_id);
+
+        response.redirect(`/game/${game_id}`);
+      })*/
+
+  //     .catch((error) => {
+  //       console.log(error);
+  //       response.redirect("/lobby");
+  //     });
+  // } else {
+  //   console.log("HANDLE THIS ERROR WHERE USER_ID DOES NOT EXIST IN game.js");
+ 
+  // }
+  // });
+// =======
+//   // let currentUser = 1; // don't hard code this, get from params\
+//   if(request.session) {
+//     let currentUser = request.session.user_id;
+//     console.log("current user is ", currentUser);
+//     game.createGame(currentUser)
+//     .then((game_id ) => {
+//       console.log("gameId:" + game_id);
+//       response.redirect(`/lobby/${game_id}`);
+//     })
+//     .catch((error) => {
+//       console.log(error);
+//       response.redirect("/browseLobby");
+//     });
+//   } else {
+//     console.log("HANDLE THIS ERROR WHERE USER_ID DOES NOT EXIST IN game.js")
+//   }
+// >>>>>>> development
 });
 
 router.get("/:id", (request, response) => {
@@ -39,7 +86,7 @@ router.get("/:id", (request, response) => {
   let playerHand = [];
   game.getEmptyGrid()
     .then((cells) => {
-      game.getPlayerHand(gameId,userId)
+      gameTilesModel.parsePlayerHandForHTML(gameId,userId)
       .then(playerTiles => {
         playerHand = playerTiles;
       })
@@ -47,35 +94,24 @@ router.get("/:id", (request, response) => {
         response.render("game", {
             style: "gameStyle", 
             boardSquares: cells,
+            //tiles: playerHand,
             tiles: playerHand,
             tilesInBag: gameTiles.getNumTilesInBag,
             messages: chat.getMessages(),
             isReady: true,
             players: scoreBoard.getPlayers(),
             });
-      })
+      });
     
       Promise.resolve(1);
     })
     .catch((error) => {
-      // console.log(">", error);
-      // response.json({ error });
       Promise.reject(error);
     });
 });
-// response.render("game", {
-//   style: "gameStyle", 
-//   boardSquares: cells,
-//   tiles: game.getPlayerHand(),
-//   tilesInBag: gameTiles.getNumTilesInBag(),
-//   // messages: chat.getMessages(),
-  // isReady: true,
-  // players: scoreBoard.getPlayers(),
-  // });
 
 router.get("/:id/join", (request, response) => {
-  console.log("--------------------------test------JOINING-------------");
-  console.log(request.params.id);
+  console.log("join  ",request.params.id);
   if (request.session) {
     let userId = request.session.user_id;
     var gameId = request.params.id;
@@ -104,13 +140,8 @@ router.post("/:id/playWord", (request, response) => {
   response.status(200);
 
   console.log(`HANDLE THIS WORD IN GAME ${id}`);
-  console.log(word);
-
-  console.log("PLAAAAAAAAAAAYYYYYYY " + JSON.stringify(request.params.id));
-  console.log("PLAAAAAAAAAAAYYYYYYY " + request.body); 
-  //response.redirect("/game/" + request.params.id);
-
-
+  console.log("playword --> ", word);
+  
   // Send a game update via websocket
  // socket.emit("game-updated", {
     /* game state data */

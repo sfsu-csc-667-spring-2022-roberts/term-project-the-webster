@@ -1,5 +1,7 @@
 const db = require("./index");
 
+
+
 const getEmptyGrid = () => db.any("SELECT * FROM game_grid ORDER BY x, y ASC");
 
 const createGame = (userId) =>
@@ -34,6 +36,7 @@ const placeTile = (tile_id, x, y, game_id) =>
 const drawTile = (game_id, player_id) => {
   return db.one(`SELECT tile_id FROM game_tiles WHERE game_id=$1 AND in_bag=true ORDER BY RANDOM() limit 1`, [game_id])
   .then( results => {
+    console.log("in select statement -> ",results);
     return db.any(`UPDATE game_tiles SET in_bag=false, user_id=$1 WHERE game_id=$2 AND tile_id=$3 RETURNING tile_id`,
     [player_id, game_id, results.tile_id]);
   })
@@ -41,7 +44,7 @@ const drawTile = (game_id, player_id) => {
     return Promise.resolve(tile_id);
   })
   .catch((err) => {
-    console.log("ERROR! IN DRAW TILES IN DB/GAME.JS");
+    console.log("ERROR! IN DRAW TILES IN DB/GAME.JS", err);
     return Promise.resolve(err);
   })
 }
@@ -113,6 +116,21 @@ const getAllGameInfo = () => {
   return db.any('SELECT * FROM games INNER JOIN game_users ON games.id = game_users.game_id INNER JOIN users ON game_users.user_id = users.id')
 }
 
+const getInitialHand = (gameId, playerId) => {
+  hand = Array();
+  for(i = 0; i < 7; i++) {
+      game.drawTile(gameId, playerId)
+      .then(results => {
+          console.log(results);
+          hand.push(results[0]);
+      }).catch((err) => {
+          console.log(err);
+      })
+  }
+  return hand;
+}
+
+
 module.exports = {
   getEmptyGrid,
   createGame,
@@ -124,7 +142,11 @@ module.exports = {
   getGames,
   getGameUsers,
   getAllGameInfo,
+
+  getInitialHand,
+
   getGameById,
   getGameUsers2,
   removeFromLobby
+
 };

@@ -2,13 +2,17 @@ var express = require('express');
 const bcrypt = require('bcrypt');
 const db = require('../db');
 var router = express.Router();
+const { removeSocket } = require('../utils/socket_store');
 
 const UserModel = require('../models/Users');
 const e = require('express');
 const { emptyQuery } = require('pg-protocol/dist/messages');
 
 
+
 router.post("/register", async (req, res, next)=> {
+  // if(socket!=undefined)
+  // console.log(socket);
   let username = req.body.username;
   let password = req.body.password;
   let confirmpassword = req.body['confirm-password'];
@@ -73,7 +77,7 @@ router.post("/login", async (req, res, next)=> {
         
           req.session.user_id = userId
          
-         res.redirect("/lobby")
+         res.redirect("/browseLobby")
        }else{
          
          res.redirect("/register")
@@ -109,11 +113,12 @@ router.post("/login", async (req, res, next)=> {
 
 router.post("/logout",(req, res, next)=> {
   
-  
+  const user_id = req.session.user_id;
   req.session.destroy((err) => {
     if(err){
       next(err)
     }else{
+      removeSocket(user_id);
       res.redirect("/")
     }
   })

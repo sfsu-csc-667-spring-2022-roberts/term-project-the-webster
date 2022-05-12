@@ -138,13 +138,15 @@ html{
 .played-square p:nth-child(1){
     display:grid;
     grid-area:letter;
-    color:rgb(31, 194, 39);
+    width:auto;
+    height:auto;
 }
 
 .played-square p:nth-child(2){
     display:grid;
     grid-area:value;
-    color:pink;
+    width:auto;
+    height:auto;
 }
 
   /****************************/
@@ -163,7 +165,7 @@ html{
     flex-direction:column;
 }
   
-.tile-wrapper{
+#tile-wrapper{
     grid-area:tiles;
     display:flex;
     align-items:center;

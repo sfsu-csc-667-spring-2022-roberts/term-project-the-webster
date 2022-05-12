@@ -8,6 +8,7 @@ var pg = require("pg");
 var session = require("express-session");
 var pgSession = require("connect-pg-simple")(session);
 var flash = require("express-flash");
+// const socket = require('socket.io')
 
 if (process.env.NODE_ENV === "development") {
   require("dotenv").config();
