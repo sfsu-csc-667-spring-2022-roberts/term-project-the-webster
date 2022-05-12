@@ -39,7 +39,7 @@ const getPlayersScore = (game_id, game_user_id) => {
     }
   })
   .catch((err)=> {
-    Promise.reject(err);
+    Promise.resolve(err);
   })
 };
 
@@ -54,7 +54,7 @@ const getPlayersId = (game_id) => {
     }
   })
   .catch( (err) => {
-    Promise.reject(err);
+    Promise.resolve(err);
   })
 };
 

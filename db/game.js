@@ -7,12 +7,6 @@ const getEmptyGrid = () => db.any("SELECT * FROM game_grid ORDER BY x, y ASC");
 const createGame = (userId) =>
   db
     .one('INSERT INTO games ("in_lobby") VALUES (true) RETURNING id AS "game_id"')
-    .then(( {game_id} ) =>
-      db.one(
-        'INSERT INTO game_users ("game_id", "user_id", "order") VALUES ($1, $2, 0) RETURNING game_id',
-        [game_id, userId]
-      )
-    )
     .then (({game_id}) => {
       db.any(`INSERT INTO game_tiles(tile_id, game_id) SELECT id , $1 FROM tiles`,[game_id]);
       return Promise.resolve(game_id);
@@ -92,6 +86,32 @@ const getGameUsers = (game_id) => {
   })
 }
 
+const getGameUsers2 = (game_id) => {
+  return db.any('SELECT * FROM game_users INNER JOIN users ON users.id = user_id WHERE game_id =$1', [game_id])
+  .then(results => {
+    return Promise.resolve(results);
+  })
+  .catch((err) => {
+    console.log("ERROR in getGameUsers IN DB/GAMES.JS");
+    return Promise.reject(err);
+  })
+}
+
+const removeFromLobby = (game_id, user_id) => {
+  return db.any(`DELETE FROM game_users WHERE game_id = $1 AND user_id = $2`, [game_id, user_id])
+  .then(results => {
+    return Promise.resolve(results);
+  })
+  .catch((err) => {
+    console.log("ERROR in getGameUsers IN DB/GAMES.JS");
+    return Promise.reject(err);
+  })
+}
+
+const getGameById = (game_id) => {
+  return db.one('SELECT * FROM games WHERE id=$1', [game_id])
+}
+
 const getAllGameInfo = () => {
   return db.any('SELECT * FROM games INNER JOIN game_users ON games.id = game_users.game_id INNER JOIN users ON game_users.user_id = users.id')
 }
@@ -122,5 +142,11 @@ module.exports = {
   getGames,
   getGameUsers,
   getAllGameInfo,
+
   getInitialHand,
+
+  getGameById,
+  getGameUsers2,
+  removeFromLobby
+
 };

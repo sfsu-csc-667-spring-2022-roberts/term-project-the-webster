@@ -25,6 +25,9 @@ const getInitialHand = (gameId, playerId) => {
     return hand;
 }
 
+
+
+ 
 //returns how much points a letter is worth 
 const getLetterWorth = (letter) => {
     return db.one(`SELECT value FROM tiles WHERE letter=$1 LIMIT 1`, [letter])
@@ -34,10 +37,22 @@ const getLetterWorth = (letter) => {
     })
     .catch(err => {
         console.log("ERROR IN model/gameTiles IN getLetterWorth");
-        return Promise.reject(err);
+        return Promise.resolve(err);
     })
+    /*for (i = 0; i < 7; i++) {
+        console.log("in loop before the promise ")
+        game.drawTile(gameId, playerId)
+            .then(results => {
+                console.log(results);
+                hand.push(results);
+            }).catch((err) => {
+                console.log(err);
+            })
+    }*/
 }
 
+ 
+ 
 
 const getLetterFromTileId = (tile_id) => {
     return db.one(`SELECT letter FROM tiles WHERE id=$1`, [tile_id])
@@ -51,7 +66,8 @@ const getLetterFromTileId = (tile_id) => {
     })
   }
   
-  const getCoordinatesFromTileId = (game_id, tile_id) => {
+const getCoordinatesFromTileId = (game_id, tile_id) => {
+ 
     return db.any(`SELECT x_coordinate, y_coordinate FROM game_tiles WHERE game_id=$1 AND tile_id=$2`,
     [game_id,tile_id])
     .then(result => {
@@ -61,6 +77,7 @@ const getLetterFromTileId = (tile_id) => {
         console.log("ERROR IN getCoordinatesFromTileId in models/gameTiles");
         return Promise.resolve(err);
     })
+ 
   }
   
   const parsePlayerHandForHTML = (gameId, userId) => {
@@ -104,13 +121,21 @@ const getLetterFromTileId = (tile_id) => {
     })
 
 }
+ 
+//}
+// ^ might be necessary 
+ 
 
 module.exports = {
     getInitialBag,
     getNumTilesInBag,
     getLetterWorth,
     getInitialHand,
+ 
     getLetterFromTileId,
     getCoordinatesFromTileId,
     parsePlayerHandForHTML,
+ 
+    getCoordinatesFromTileId
+ 
 }
