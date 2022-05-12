@@ -42,18 +42,16 @@ router.get("/:id", (request, response) => {
   let playerHand = [];
   game.getEmptyGrid()
     .then((cells) => {
-      game.getPlayerHand(gameId,userId)
+      gameTilesModel.parsePlayerHandForHTML(gameId,userId)
       .then(playerTiles => {
-        console.log("routes/game " , gameId,userId);
         playerHand = playerTiles;
-        console.log("routes/game " , playerTiles);
       })
       .then(useless => {
         response.render("game", {
             style: "gameStyle", 
             boardSquares: cells,
             //tiles: playerHand,
-            tiles: gameTilesModel.getPlayersHand(),
+            tiles: playerHand,
             tilesInBag: gameTiles.getNumTilesInBag,
             messages: chat.getMessages(),
             isReady: true,
@@ -64,23 +62,11 @@ router.get("/:id", (request, response) => {
       Promise.resolve(1);
     })
     .catch((error) => {
-      // console.log(">", error);
-      // response.json({ error });
       Promise.reject(error);
     });
 });
-// response.render("game", {
-//   style: "gameStyle", 
-//   boardSquares: cells,
-//   tiles: game.getPlayerHand(),
-//   tilesInBag: gameTiles.getNumTilesInBag(),
-//   // messages: chat.getMessages(),
-  // isReady: true,
-  // players: scoreBoard.getPlayers(),
-  // });
 
 router.get("/:id/join", (request, response) => {
-  console.log("--------------------------test------JOINING-------------");
   console.log("join  ",request.params.id);
   if (request.session) {
     let userId = request.session.user_id;
@@ -111,12 +97,7 @@ router.post("/:id/playWord", (request, response) => {
 
   console.log(`HANDLE THIS WORD IN GAME ${id}`);
   console.log("playword --> ", word);
-
-  console.log("PLAAAAAAAAAAAYYYYYYY " + JSON.stringify(request.params.id));
-  console.log("PLAAAAAAAAAAAYYYYYYY " + request.body); 
-  //response.redirect("/game/" + request.params.id);
-
-
+  
   // Send a game update via websocket
  // socket.emit("game-updated", {
     /* game state data */

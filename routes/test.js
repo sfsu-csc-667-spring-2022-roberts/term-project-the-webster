@@ -42,7 +42,7 @@ router.get("/", (request, response) => {
   //             response.json({ error })
   //         })
 
-    test = gameTiles.parsePlayerHandForHTML(68,9)
+    test = gameTiles.parsePlayerHandForHTML(3,1)
     .then(result => {
         console.log(" in promise of test.js ---> ", result);
     })

@@ -25,18 +25,6 @@ const getInitialHand = (gameId, playerId) => {
     return hand;
 }
 
-const getPlayersHand = (playerID) => {
-    
-    let gameTiles =[{letter:"A", value:1, order:1}, 
-                    {letter:"B", value:1, order:2},
-                    {letter:"C", value:1, order:3},
-                    {letter:"D", value:1, order:4}, 
-                    {letter:"E", value:1, order:5},
-                    {letter:"F", value:1, order:6},
-                    {letter:"G", value:1, order:7}];
-    return gameTiles;
-}
-
 //returns how much points a letter is worth 
 const getLetterWorth = (letter) => {
     return db.one(`SELECT value FROM tiles WHERE letter=$1 LIMIT 1`, [letter])
@@ -84,7 +72,6 @@ const getLetterFromTileId = (tile_id) => {
     .then(handData => {
         tileIdList = handData;
         let promises = [];
-        // console.log("hand data:", handData.length);
         for (i=0; i < handData.length; i++) {
             promises.push(getLetterFromTileId(handData[i].tile_id));
         }
@@ -110,9 +97,9 @@ const getLetterFromTileId = (tile_id) => {
         for (i=0;i<tileIdList.length;i++) {
             let letter = letterList[i];
             let value = valueList[i];
-            htmlData.push({letter, value});
+            let tileId = tileIdList[i].tile_id;
+            htmlData.push({letter, value, tileId });
         }
-        console.log("AAAAAA");
         return Promise.resolve(htmlData);
     })
 
@@ -121,7 +108,6 @@ const getLetterFromTileId = (tile_id) => {
 module.exports = {
     getInitialBag,
     getNumTilesInBag,
-    getPlayersHand,
     getLetterWorth,
     getInitialHand,
     getLetterFromTileId,
