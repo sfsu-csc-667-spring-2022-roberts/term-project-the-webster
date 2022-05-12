@@ -11,6 +11,10 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },
+      current_turn: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+      }
     });
   },
   down: (queryInterface, Sequelize) => {
