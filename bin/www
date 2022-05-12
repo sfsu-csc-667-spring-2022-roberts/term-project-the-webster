@@ -7,8 +7,7 @@
  var app = require('../app');
  var debug = require('debug')('scrabble:server');
  var http = require('http');
- let socketapi = require("../public/javascript/socketapi")
- 
+ const io = require('../socket')
  /**
   * Get port from environment and store in Express.
   */
@@ -20,9 +19,10 @@
   * Create HTTP server.
   */
  
- var server = http.createServer(app);
+const server = http.createServer(app);
  
- socketapi.io.attach(server);
+// const io = socketIO(server)
+io.attach(server)
  
  
  /**
@@ -94,3 +94,7 @@
      : 'port ' + addr.port;
    debug('Listening on ' + bind);
  }
+
+
+ /** server socket events */
+

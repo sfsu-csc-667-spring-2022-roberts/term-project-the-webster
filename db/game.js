@@ -1,5 +1,7 @@
 const db = require("./index");
 
+
+
 const getEmptyGrid = () => db.any("SELECT * FROM game_grid ORDER BY x, y ASC");
 
 const createGame = (userId) =>

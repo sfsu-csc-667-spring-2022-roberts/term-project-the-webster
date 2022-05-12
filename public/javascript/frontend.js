@@ -1,7 +1,30 @@
-io.on("game-updated", (payload) => {
-  // Update all the various game board divs, update player's tile rack,
-  // provide some visual indication of current player
-});
+
+console.log(socket);
+console.log('FRONT END SOCK ^^ ')
+
+/*socket.on('test-event1', async () => {
+  console.log(` id is ${socket.id}`)
+  
+  socket.emit('hey')
+
+})*/
+
+
+
+// io.on("game-updated", (payload) => {
+//   // Update all the various game board divs, update player's tile rack,
+//   // provide some visual indication of current player
+
+// });
+
+// const game = require("../../db/game")
+
+// const createGame = (currentUser) => {
+//   game.createGame(currentUser)
+//   .then((game_id) => {
+//     return game_id;
+//   })
+// }
 
 const selection = [];
 const word = [];
@@ -17,7 +40,7 @@ const submitWord = () => {
     alert("You must enter a word.");
     return;
   }
-
+   
   fetch(`${window.location.pathname}/playWord`, {
     body: JSON.stringify({ word }),
     method: "post",
