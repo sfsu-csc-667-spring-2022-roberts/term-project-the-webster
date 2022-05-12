@@ -7,10 +7,14 @@ const game = require("../db/game");
 const gameBoard = require("../models/gameBoard");
 const scoreBoard = require("../models/scoreBoard");
 const chat = require("../models/chat");
+
 const gameTiles = require("../models/gameTiles");
 const session = require("express-session");
 // const frontend = require("../public/javascript/frontend")
 
+
+
+const gameTilesModel = require("../models/gameTiles");
 
 
 router.get("/create", (request, response) => {
@@ -64,7 +68,7 @@ router.get("/:id", (request, response) => {
   let playerHand = [];
   game.getEmptyGrid()
     .then((cells) => {
-      game.getPlayerHand(gameId,userId)
+      gameTilesModel.parsePlayerHandForHTML(gameId,userId)
       .then(playerTiles => {
         playerHand = playerTiles;
       })
@@ -72,35 +76,24 @@ router.get("/:id", (request, response) => {
         response.render("game", {
             style: "gameStyle", 
             boardSquares: cells,
+            //tiles: playerHand,
             tiles: playerHand,
             tilesInBag: gameTiles.getNumTilesInBag,
             messages: chat.getMessages(),
             isReady: true,
             players: scoreBoard.getPlayers(),
             });
-      })
+      });
     
       Promise.resolve(1);
     })
     .catch((error) => {
-      // console.log(">", error);
-      // response.json({ error });
       Promise.reject(error);
     });
 });
-// response.render("game", {
-//   style: "gameStyle", 
-//   boardSquares: cells,
-//   tiles: game.getPlayerHand(),
-//   tilesInBag: gameTiles.getNumTilesInBag(),
-//   // messages: chat.getMessages(),
-  // isReady: true,
-  // players: scoreBoard.getPlayers(),
-  // });
 
 router.get("/:id/join", (request, response) => {
-  console.log("--------------------------test------JOINING-------------");
-  console.log(request.params.id);
+  console.log("join  ",request.params.id);
   if (request.session) {
     let userId = request.session.user_id;
     var gameId = request.params.id;
@@ -129,13 +122,8 @@ router.post("/:id/playWord", (request, response) => {
   response.status(200);
 
   console.log(`HANDLE THIS WORD IN GAME ${id}`);
-  console.log(word);
-
-  console.log("PLAAAAAAAAAAAYYYYYYY " + JSON.stringify(request.params.id));
-  console.log("PLAAAAAAAAAAAYYYYYYY " + request.body); 
-  //response.redirect("/game/" + request.params.id);
-
-
+  console.log("playword --> ", word);
+  
   // Send a game update via websocket
  // socket.emit("game-updated", {
     /* game state data */
