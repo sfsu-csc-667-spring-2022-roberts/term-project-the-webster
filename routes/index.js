@@ -41,9 +41,7 @@ router.get('/userInfo', async function (req, res){
   
   let query = 'SELECT username FROM users WHERE id = $1';
 	 await db.one(query, [user_id]).then(result => {
-    console.log("RESULT INSIDE /userINFO")
-    console.log(result)
-    
+   
     res 
     .status(200)
 		.json({ uid: user_id, username: result.username });
