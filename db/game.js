@@ -152,6 +152,27 @@ const getGameState = (gameId) => {
 
 }
 
+const updateGameUserOrder = (gameId, userId, order) => {
+  return db.any(`UPDATE game_users SET "order"=$1 WHERE game_id=$2 AND user_id=$3`,[order, gameId, userId])
+  .catch(err => {
+    console.log("ERROR IN updateGameUserOrder in db/game.js");
+    console.log(err);
+    return Promise.resolve(err);
+  })
+}
+
+const getGameUserOrder = (gameId, userId) => {
+  return db.one(`SELECT "order" FROM game_users WHERE game_id=$1 AND user_id=$2`, [gameId, userId])
+  .then(results => {
+    // console.log("getGameUserOrder is", results);
+    return Promise.resolve(results.order);
+  })
+  .catch(err => {
+    console.log("ERROR IN getGameUserOrder in db/game.js");
+    return Promise.resolve(err);
+  })
+}
+
 
 module.exports = {
   getEmptyGrid,
@@ -168,6 +189,8 @@ module.exports = {
   getGameById,
   getGameUsers2,
   removeFromLobby,
-  getGameState
+  getGameState,
+  updateGameUserOrder,
+  getGameUserOrder
 
 };
