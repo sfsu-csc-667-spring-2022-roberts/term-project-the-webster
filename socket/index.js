@@ -42,6 +42,8 @@ io.on('connection', socket => {
 
         db.any(`SELECT * FROM session where sid=$1`, [socket_id])
         .then(results => {
+          if(results.length >0){
+        
           const sess = results[0];
             console.log(sess)
             if(sess['sess']['user_id']){
@@ -50,6 +52,9 @@ io.on('connection', socket => {
 
               addSocket(_user_id, _session)
             }
+          }else{
+            console.log("CAN'T ADD USER socke yet")
+          }
           // console.log(sess['sess']['user_id'])
         
           

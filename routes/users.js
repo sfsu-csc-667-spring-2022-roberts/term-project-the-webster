@@ -11,7 +11,8 @@ const { emptyQuery } = require('pg-protocol/dist/messages');
 
 
 router.post("/register", async (req, res, next)=> {
-  console.log(socket);
+  // if(socket!=undefined)
+  // console.log(socket);
   let username = req.body.username;
   let password = req.body.password;
   let confirmpassword = req.body['confirm-password'];

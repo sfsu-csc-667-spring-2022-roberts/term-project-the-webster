@@ -32,8 +32,8 @@ router.get("/", (request, response) => {
 
   // console.log(game.getInPlayTiles(1));
 
-//   gameTiles.getInitialHand(68,9)
-//   .then(results => console.log(results));
+  gameTiles.getInitialHand(1,1)
+  .then(results => console.log(results));
 
   // db.any(`INSERT INTO users ("username", "password") VALUES ($1,$2)`,[name, pass] )
   //         .then(_ =>
@@ -44,13 +44,13 @@ router.get("/", (request, response) => {
   //             response.json({ error })
   //         })
 
-    test = gameTiles.parsePlayerHandForHTML(3,1)
-    .then(result => {
-        console.log(" in promise of test.js ---> ", result);
-    })
-    .catch((err) => {
-        console.log(err);
-    })
+    // test = gameTiles.parsePlayerHandForHTML(1,1)
+    // .then(result => {
+    //     console.log(" in promise of test.js ---> ", result);
+    // })
+    // .catch((err) => {
+    //     console.log(err);
+    // })
 
     
 //     db.any(`INSERT INTO test_table ("testString") VALUES ('Hello at $
