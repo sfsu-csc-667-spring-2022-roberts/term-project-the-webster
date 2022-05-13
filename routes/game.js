@@ -130,43 +130,85 @@ router.get("/:id/join", (request, response) => {
 router.post("/:id/playWord", (request, response) => {
 
   const { id } = request.params;
-  const { wordData } = request.body;
-
-  response.status(200);
-
+  const  wordData  = request.body;
+  let word_placed;
+  console.log(request.body)
+ 
   console.log(`HANDLE THIS WORD IN GAME ${id}`);
+  // console.log( {wordData} )
 
-  console.log(wordData);
+    const res_wordData  = { wordData }
+
+    const tiles = res_wordData["wordData"]
+    wordifyTiles(tiles).then(result => {
+        word_placed = result.toLowerCase()
+
+        gameBoard.isWordValid(word_placed).then(result => {
+          console.log("IS WORD VALID ? " + result)
+          if(result == true){
+            getPointsPerWord(tiles).then(result => {
+              console.log(word_placed + " is worth " +  result + " points.")
+            }).catch(err => {
+              console.log("ERR " + err)
+            })
+          }
+        }).catch(err => {
+          console.log("ERROR " + err)
+        })
+
+    }).catch(err => {
+      console.log("ERROR!! " + err)
+    })
+
+    
+
+
+
+  //console.log(`WORD DATA ==> ${{wordData}} `);
+
+
+
+  response
+  .status(200)
+  .json(res_wordData);
 
   //let word = wordifyTiles(wordData);
 
-  gameBoard.isWordValid(word).then(result => {
-  console.log(result)
+  // gameBoard.isWordValid(word).then(result => {
+  // console.log(result)
   
-   request.app.get("io").sockets.emit.to('room' + gameId, { })
+  //  request.app.get("io").sockets.emit.to('room' + gameId, { })
 
   
-  }).catch(err => {
-    console.log(err)
-  })
+  // }).catch(err => {
+  //   console.log(err)
+  // })
 
 
   // Send a game update via websocket
  // socket.emit("game-updated", {
     /* game state data */
-  });
+});
 // });
 
 
-async function wordifyTiles(){
+async function wordifyTiles(tiles){
   let word = "";
-  for( const x of objects){
+  for( const x of tiles){
     word+=String(x.letter)
   }
 
   return word;
 }
 
+
+async function getPointsPerWord(tiles){
+  let points = 0;
+  for ( const x of tiles){
+    points+=Number(x.value)
+  }
+  return points;
+}
 
 
 

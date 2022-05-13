@@ -8,8 +8,8 @@ const gameTiles = require("../models/gameTiles");
 
 router.get("/", (request, response) => {
 
-    
-    gameTiles.getInitialHand(1,1).then((res) => {
+
+    gameTiles.getInitialHand(2,1).then((res) => {
         console.log("res: " + res);
     }).catch((err) => {
         console.log(err);
