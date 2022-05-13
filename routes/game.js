@@ -3,7 +3,7 @@ const io = require('../socket/index')
 const router = express.Router();
 //temp import, will need to be encapsulated into models/gameboard
 const game = require("../db/game");
-//models imoorts
+//models imports
 const gameBoard = require("../models/gameBoard");
 const scoreBoard = require("../models/scoreBoard");
 const chat = require("../models/chat");
@@ -12,8 +12,6 @@ const gameTiles = require("../models/gameTiles");
 const session = require("express-session");
 // const frontend = require("../public/javascript/frontend")
 
-
-
 const gameTilesModel = require("../models/gameTiles");
 
 
@@ -21,26 +19,22 @@ router.get("/create", (request, response) => {
 
   // let currentUser = 1; // don't hard code this, get from params
   if (request.session) {
-
-    
     
     let currentUser = request.session.user_id;
     console.log("current user is ", currentUser);
     game.createGame(currentUser)
     .then((game_id) => {
       // do socket thingy
-      emitTest();
-      response.redirect(`/game/${game_id}`);
+      response.redirect(`/lobby/${game_id}`);
     })
   } else {
     console.log("no sesson in create");
   }
   
-   function emitTest() {
-    io.emit('test-event1');
-  }
+  
 
-    /*game.createGame(currentUser)
+
+  /*game.createGame(currentUser)
       .then((game_id) => {
         console.log("gameId:" + game_id);
 
@@ -89,6 +83,7 @@ router.get("/:id", (request, response) => {
       gameTilesModel.parsePlayerHandForHTML(gameId,userId)
       .then(playerTiles => {
         playerHand = playerTiles;
+        console.log(` PLAYER HAND = ${playerHand}`)
       })
       .then(useless => {
         response.render("game", {
@@ -99,7 +94,7 @@ router.get("/:id", (request, response) => {
             tilesInBag: gameTiles.getNumTilesInBag,
             messages: chat.getMessages(),
             isReady: true,
-            players: scoreBoard.getPlayers(),
+         //   players: scoreBoard.getPlayers(),
             });
       });
     
@@ -135,16 +130,88 @@ router.get("/:id/join", (request, response) => {
 router.post("/:id/playWord", (request, response) => {
 
   const { id } = request.params;
-  const { word } = request.body;
-
-  response.status(200);
-
+  const  wordData  = request.body;
+  let word_placed;
+  console.log(request.body)
+ 
   console.log(`HANDLE THIS WORD IN GAME ${id}`);
-  console.log("playword --> ", word);
+  // console.log( {wordData} )
+
+    const res_wordData  = { wordData }
+
+    const tiles = res_wordData["wordData"]
+    wordifyTiles(tiles).then(result => {
+        word_placed = result.toLowerCase()
+
+        gameBoard.isWordValid(word_placed)
+        .then(result => {
+          console.log("IS WORD VALID ? " + result)
+          if(result == true){
+            getPointsPerWord(tiles)
+            .then(result => {
+              console.log(word_placed + " is worth " +  result + " points.")
+            }).catch(err => {
+              console.log("ERR " + err)
+            })
+          }
+        }).catch(err => {
+          console.log("ERROR " + err)
+        })
+
+    }).catch(err => {
+      console.log("ERROR!! " + err)
+    })
+
+    
+
+
+
+  //console.log(`WORD DATA ==> ${{wordData}} `);
+
+
+
+  response
+  .status(200)
+  .json(res_wordData);
+
+  //let word = wordifyTiles(wordData);
+
+  // gameBoard.isWordValid(word).then(result => {
+  // console.log(result)
   
+  //  request.app.get("io").sockets.emit.to('room' + gameId, { })
+
+  
+  // }).catch(err => {
+  //   console.log(err)
+  // })
+
+
   // Send a game update via websocket
  // socket.emit("game-updated", {
     /* game state data */
-  });
+});
 // });
+
+
+async function wordifyTiles(tiles){
+  let word = "";
+  for( const x of tiles){
+    word+=String(x.letter)
+  }
+
+  return word;
+}
+
+
+async function getPointsPerWord(tiles){
+  let points = 0;
+  for ( const x of tiles){
+    points+=Number(x.value)
+  }
+  return points;
+}
+
+
+
 module.exports = router;

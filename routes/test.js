@@ -10,10 +10,17 @@ const gameScore = require("../models/scoreBoard");
 router.get("/", (request, response) => {
 
 
-    gameScore.getMultiplier(7,7)
-    .then(results => {
-        console.log("TEST" ,results)
-    })
+// <<<<<<< socket_rooms
+//     gameTiles.getInitialHand(2,1).then((res) => {
+//         console.log("res: " + res);
+//     }).catch((err) => {
+//         console.log(err);
+// =======
+//     gameScore.getMultiplier(7,7)
+//     .then(results => {
+//         console.log("TEST" ,results)
+// >>>>>>> development
+//     })
     // gameScore.getPlayersScore(1,1).then(results => {
     //     console.log("PLAYER SCORE BEFORE UPDATE ", results)
     // })
