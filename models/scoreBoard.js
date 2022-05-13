@@ -1,31 +1,35 @@
 const game = require("../db/game");
-const db = require('../db');
+const db = require('../db/index');
 
-const getPlayers = () => {
-    players = [
-        {
-        name: "jack",
-        id: 1, 
-        score: getPlayersScore(1,1)
-        }, 
-        {
-          name: "kris", 
-          id: 2, 
-          score: getPlayersScore(1,2)
-        },
-        {
-          name: "kyle",
-          id: 11, 
-          score: getPlayersScore(1,3)
-          },
-        {
-            name: "kyle",
-            id: 11, 
-            score: getPlayersScore(1,4)
-        }
-      ];
-      return players;
-};
+
+
+
+
+// const getPlayers = () => {
+//     players = [
+//         {
+//         name: "jack",
+//         id: 1, 
+//         score: getPlayersScore(1,1)
+//         }, 
+//         {
+//           name: "kris", 
+//           id: 2, 
+//           score: getPlayersScore(1,2)
+//         },
+//         {
+//           name: "kyle",
+//           id: 11, 
+//           score: getPlayersScore(1,3)
+//           },
+//         {
+//             name: "kyle",
+//             id: 11, 
+//             score: getPlayersScore(1,4)
+//         }
+//       ];
+//       return players;
+// };
 
 const getPlayersScore = (game_id, game_user_id) => {
   db.any(`SELECT score FROM game_users WHERE game_id=$1 AND user_id=$2`, [game_id,game_user_id])
@@ -59,7 +63,7 @@ const getPlayersId = (game_id) => {
 };
 
 module.exports = {
-  getPlayers,
+  // getPlayers,
   getPlayersScore,
   getPlayersId,
 };

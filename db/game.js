@@ -63,7 +63,7 @@ const getPlayerHand = (game_id, player_id) => {
 
 const getInPlayTiles = (game_id) => {
   return db.any(`SELECT tile_id, x_coordinate, y_coordinate FROM game_tiles WHERE game_id=$1 AND in_play=true`, [game_id])
-  .then(results => {
+  .then((results) => {
     // console.log("RESULTS ARE" ,results);
     return Promise.resolve(results);
   })
@@ -73,7 +73,16 @@ const getInPlayTiles = (game_id) => {
   })
 }
 
-const getGames = () => db.any('SELECT * FROM games');
+const getGames = () => {
+ return db.any('SELECT * FROM games')
+  .then((results) => {
+    return Promise.resolve(results);
+  })
+  .catch((err) => {
+    console.log("ERROR IN getGames() game.js in /db");
+    return Promise.resolve(err);
+  })
+}
 
 const getGameUsers = (game_id) => {
   return db.any('SELECT * FROM game_users WHERE game_id =$1', [game_id])
@@ -92,7 +101,7 @@ const getGameUsers2 = (game_id) => {
     return Promise.resolve(results);
   })
   .catch((err) => {
-    console.log("ERROR in getGameUsers IN DB/GAMES.JS");
+    console.log("ERROR in getGameUsers2 IN DB/GAMES.JS");
     return Promise.reject(err);
   })
 }
@@ -142,9 +151,7 @@ module.exports = {
   getGames,
   getGameUsers,
   getAllGameInfo,
-
   getInitialHand,
-
   getGameById,
   getGameUsers2,
   removeFromLobby

@@ -26,6 +26,44 @@ router.get("/", (request, response) => {
 
 router.get("/:id", (request, response) => {
   let gameID = request.params.id;
+  let userID = request.session.user_id; 
+  
+  console.log("inside lobby / id router ")
+  
+  Game.getGameById(gameID)
+  .then((game) => {
+    let inLobby = game.in_lobby;
+    if (inLobby == true) {
+      Game.getGameUsers2(gameID)
+      .then((gameUsers) => {
+        for (i = 0; i < gameUsers.length; i++) {
+          if (gameUsers[i].user_id == userID) {
+            console.log("user already exists, so redirecting to browseLobby");
+            response.redirect('/browseLobby');
+            return;
+          }
+        }
+        Game.joinGame(gameID, userID)
+        .then(() => {
+          console.log(`inserting ${userID} into game`);
+          Game.getGameUsers2(gameID)
+          .then((gameUsers) => {
+            console.log("getting gameUsers2 for a 2nd and final time before rendering...")
+            response.render('lobby', {
+              style: 'lobbyStyle',
+              players: gameUsers,
+              currUser: userID,
+              gameId: gameID
+            })
+          })
+        })
+      })
+    }
+  })
+})
+
+/*router.get("/:id", (request, response) => {
+  let gameID = request.params.id;
   let userID = request.session.user_id;
   Game.getGameById(gameID)
     .then((game) => {
@@ -34,6 +72,7 @@ router.get("/:id", (request, response) => {
         Game.joinGame(gameID, userID)
           .then(() => {
             Game.getGameUsers2(gameID)
+
               .then((gameUsers) => {
                 response.render('lobby', {
                   style: 'lobbyStyle',
@@ -47,7 +86,7 @@ router.get("/:id", (request, response) => {
         response.redirect('/browseLobby');
       }
     })
-})
+})*/
 
 router.get("/leave/:id", (request, response) => {
   if (request.session) {
@@ -60,7 +99,7 @@ router.get("/leave/:id", (request, response) => {
   } else {
       console.log("NO SESSION");
   }
-  Game.removeFromLobby(request.session.id)
+  // Game.removeFromLobby(request.session.id)
 })
 
 module.exports = router;

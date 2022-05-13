@@ -19,15 +19,15 @@
         </body>
     </div>
     <div class="lobby-search-header">
-        <div class="lobby-section">Lobby ID</div>
+        <div class="lobby-section" >Lobby ID</div>
         <div class="lobby-section">Game Started</div>
         <div class="lobby-section">Players</div>
         <div class="button-section"></div>
     </div>
     <div class="lobby-search">
         {{#each lobbies}}
-        <div class="lobby">
-            <div class="lobby-section">
+        <div class="lobby" id="lobby">
+            <div class="lobby-section" id="lobby-id">
                 {{id}}
             </div>
             <div class="lobby-section">
@@ -36,14 +36,10 @@
             <div class="lobby-section">
                 test3
             </div>
-            <button onclick="join({{id}})" class="button-section">
+            <button class="button-section" id="join-lobby">
                 Join
             </button>
             <script>
-                function join(gameId) {
-                    // window.location.href = `/game/${gameId}/join`, true;
-                    window.location.href = `/lobby/${gameId}`, true;
-                }
             </script>
         </div>
         {{/each}}

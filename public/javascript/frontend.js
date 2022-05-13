@@ -40,20 +40,23 @@ const slotTaken = (x, y) => {
   return found !== undefined;
 };
 
-const submitWord = () => {
+const submitWord = async () => {
   if (word.length === 0) {
     alert("You must enter a word.");
     return;
   }
-   
-  fetch(`${window.location.pathname}/playWord`, {
+
+ await fetch(`${window.location.pathname}/playWord`, {
     body: JSON.stringify({ word }),
     method: "post",
-    headers: { "Content-Type": "application/json" },
+    headers: { 
+      "Content-Type": "application/json" 
+    },
     credentials: "include",
   })
     .then((response) => response.json())
     .then((data) => {
+      console.log("AFTER POST!")
       console.log({ data });
     })
     .catch((error) => {
@@ -120,3 +123,5 @@ document
       }
     }
   });
+
+
