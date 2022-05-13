@@ -143,10 +143,12 @@ router.post("/:id/playWord", (request, response) => {
     wordifyTiles(tiles).then(result => {
         word_placed = result.toLowerCase()
 
-        gameBoard.isWordValid(word_placed).then(result => {
+        gameBoard.isWordValid(word_placed)
+        .then(result => {
           console.log("IS WORD VALID ? " + result)
           if(result == true){
-            getPointsPerWord(tiles).then(result => {
+            getPointsPerWord(tiles)
+            .then(result => {
               console.log(word_placed + " is worth " +  result + " points.")
             }).catch(err => {
               console.log("ERR " + err)
