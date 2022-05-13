@@ -137,11 +137,14 @@ router.post("/:id/playWord", (request, response) => {
   const { id } = request.params;
   const { word } = request.body;
 
-  response.status(200);
 
   console.log(`HANDLE THIS WORD IN GAME ${id}`);
   console.log("playword --> ", word);
   
+  
+  response
+  .status(200)
+  .json(word);
   // Send a game update via websocket
  // socket.emit("game-updated", {
     /* game state data */
