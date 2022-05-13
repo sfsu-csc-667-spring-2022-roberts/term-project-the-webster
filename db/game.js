@@ -63,7 +63,7 @@ const getPlayerHand = (game_id, player_id) => {
 
 const getInPlayTiles = (game_id) => {
   return db.any(`SELECT tile_id, x_coordinate, y_coordinate FROM game_tiles WHERE game_id=$1 AND in_play=true`, [game_id])
-  .then(results => {
+  .then((results) => {
     // console.log("RESULTS ARE" ,results);
     return Promise.resolve(results);
   })
@@ -73,7 +73,16 @@ const getInPlayTiles = (game_id) => {
   })
 }
 
-const getGames = () => db.any('SELECT * FROM games');
+const getGames = () => {
+ return db.any('SELECT * FROM games')
+  .then((results) => {
+    return Promise.resolve(results);
+  })
+  .catch((err) => {
+    console.log("ERROR IN getGames() game.js in /db");
+    return Promise.resolve(err);
+  })
+}
 
 const getGameUsers = (game_id) => {
   return db.any('SELECT * FROM game_users WHERE game_id =$1', [game_id])
@@ -92,7 +101,7 @@ const getGameUsers2 = (game_id) => {
     return Promise.resolve(results);
   })
   .catch((err) => {
-    console.log("ERROR in getGameUsers IN DB/GAMES.JS");
+    console.log("ERROR in getGameUsers2 IN DB/GAMES.JS");
     return Promise.reject(err);
   })
 }
@@ -130,6 +139,84 @@ const getInitialHand = (gameId, playerId) => {
   return hand;
 }
 
+const getGameState = (gameId) => {
+  gameState = [];
+  return db.any(`SELECT * FROM game_tiles WHERE game_id=$1`, [gameId])
+  .then(results => {
+    gameState.push(results);
+    return db.any(`SELECT * FROM game_users WHERE game_id=$1`, [gameId])
+    .then(results => {
+      gameState.push(results);
+      return db.any(`SELECT * FROM games WHERE id=$1`, [gameId])
+      .then(results => {
+        gameState.push(results);
+        return Promise.resolve(gameState);
+      })
+      .catch(err => {
+        console.log("ERROR IN getGameState in db/game.js");
+        return Promise.resolve(err);
+      })
+    })
+  })
+
+}
+
+const updateGameUserOrder = (gameId, userId, order) => {
+  return db.any(`UPDATE game_users SET "order"=$1 WHERE game_id=$2 AND user_id=$3`,[order, gameId, userId])
+  .catch(err => {
+    console.log("ERROR IN updateGameUserOrder in db/game.js");
+    console.log(err);
+    return Promise.resolve(err);
+  })
+}
+
+const getGameUserOrder = (gameId, userId) => {
+  return db.one(`SELECT "order" FROM game_users WHERE game_id=$1 AND user_id=$2`, [gameId, userId])
+  .then(results => {
+    // console.log("getGameUserOrder is", results);
+    return Promise.resolve(results.order);
+  })
+  .catch(err => {
+    console.log("ERROR IN getGameUserOrder in db/game.js");
+    return Promise.resolve(err);
+  })
+}
+
+const updateGameTurn = (gameId, turn) => {
+  return db.any(`UPDATE games SET current_turn=$1 WHERE id=$2`, [turn, gameId])
+  .catch(err => {
+    console.log("ERROR IN updateGameTurn in db/game.js");
+    return Promise.resolve(err);
+  })
+}
+
+const getGameTurn = (gameId) => {
+  return db.one(`SELECT current_turn FROM games WHERE id=$1`, [gameId])
+  .then(results => {
+    return Promise.resolve(results);
+  })
+  .catch(err => {
+    console.log("ERROR IN getGameTurn in db/game.js");
+    return Promise.resolve(err);
+  })
+}
+
+const incrementGameTurn = (gameId) => {
+  return getGameTurn(gameId)
+  .then(results => {
+    updateGameTurn(gameId, results.current_turn + 1)
+    .then(results => {
+      return Promise.resolve(results);
+    })
+    .catch(err => {
+      console.log("ERROR IN incrementGameTurn in db/game.js");
+      return Promise.resolve(err);
+    })
+  })
+}
+
+
+
 
 module.exports = {
   getEmptyGrid,
@@ -142,11 +229,15 @@ module.exports = {
   getGames,
   getGameUsers,
   getAllGameInfo,
-
   getInitialHand,
-
   getGameById,
   getGameUsers2,
-  removeFromLobby
+  removeFromLobby,
+  getGameState,
+  updateGameUserOrder,
+  getGameUserOrder,
+  updateGameTurn,
+  incrementGameTurn,
+  getGameTurn
 
 };

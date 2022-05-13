@@ -1,37 +1,41 @@
 const game = require("../db/game");
-const db = require('../db');
+const db = require('../db/index');
 
-const getPlayers = () => {
-    players = [
-        {
-        name: "jack",
-        id: 1, 
-        score: getPlayersScore(1,1)
-        }, 
-        {
-          name: "kris", 
-          id: 2, 
-          score: getPlayersScore(1,2)
-        },
-        {
-          name: "kyle",
-          id: 11, 
-          score: getPlayersScore(1,3)
-          },
-        {
-            name: "kyle",
-            id: 11, 
-            score: getPlayersScore(1,4)
-        }
-      ];
-      return players;
-};
+
+
+
+
+// const getPlayers = () => {
+//     players = [
+//         {
+//         name: "jack",
+//         id: 1, 
+//         score: getPlayersScore(1,1)
+//         }, 
+//         {
+//           name: "kris", 
+//           id: 2, 
+//           score: getPlayersScore(1,2)
+//         },
+//         {
+//           name: "kyle",
+//           id: 11, 
+//           score: getPlayersScore(1,3)
+//           },
+//         {
+//             name: "kyle",
+//             id: 11, 
+//             score: getPlayersScore(1,4)
+//         }
+//       ];
+//       return players;
+// };
+
 
 const getPlayersScore = (game_id, game_user_id) => {
-  db.any(`SELECT score FROM game_users WHERE game_id=$1 AND user_id=$2`, [game_id,game_user_id])
+  return db.one(`SELECT score FROM game_users WHERE game_id=$1 AND user_id=$2`, [game_id,game_user_id])
   .then(results => {
     if(results) {
-      // console.log(results);
       return Promise.resolve(results);
     }
     else {
@@ -43,8 +47,24 @@ const getPlayersScore = (game_id, game_user_id) => {
   })
 };
 
+const updatePlayerScore = (game_id, game_user_id, score) => {
+  return getPlayersScore(game_id, game_user_id)
+  .then(results => {
+    newScore = results.score +  score;
+    return db.any(`UPDATE game_users SET score=$1 WHERE game_id=$2 AND user_id=$3 RETURNING score`
+    ,[newScore, game_id, game_user_id])
+    .then(results => {
+      return Promise.resolve(results);
+    })
+  })
+  .catch((err)=> {
+    Promise.resolve(err);
+  })
+
+}
+
 const getPlayersId = (game_id) => {
-  db.any('SELECT user_id FROM game_users WHERE game_id=$1', [game_id])
+  return db.any('SELECT user_id FROM game_users WHERE game_id=$1', [game_id])
   .then(results => {
     if(results) {
       return Promise.resolve(results);
@@ -54,12 +74,27 @@ const getPlayersId = (game_id) => {
     }
   })
   .catch( (err) => {
+    console.log("ERROR IN getPlayersId IN models/scoreBoard");
     Promise.resolve(err);
   })
 };
 
+const getMultiplier = (x, y) => {
+  return db.any(`SELECT letter_multiplier, word_multiplier FROM game_grid WHERE x=$1 AND y=$2`
+  ,[x,y])
+  .then(results => {
+    return Promise.resolve(results);
+  })
+  .catch( (err) => {
+    console.log("ERROR IN getMultiplier IN models/scoreBoard");
+    Promise.resolve(err);
+  })
+}
+
 module.exports = {
-  getPlayers,
+  // getPlayers,
   getPlayersScore,
   getPlayersId,
+  updatePlayerScore,
+  getMultiplier
 };

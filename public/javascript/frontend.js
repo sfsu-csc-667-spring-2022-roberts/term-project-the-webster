@@ -40,31 +40,47 @@ const slotTaken = (x, y) => {
   return found !== undefined;
 };
 
-const submitWord = () => {
+const submitWord = async () => {
   if (word.length === 0) {
     alert("You must enter a word.");
     return;
   }
-   
-  fetch(`${window.location.pathname}/playWord`, {
-    body: JSON.stringify({ word }),
+   console.log(`${window.location.pathname}/playWord`)
+
+  return await fetch(`${window.location.pathname}/playWord`, {
+    body: JSON.stringify(word),
     method: "post",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
   })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log({ data });
-    })
+    .then((response) => {
+
+      console.log("returned response = ")
+      return response.json()
+
+    })  
     .catch((error) => {
       console.log(error);
+      Promise.reject(error)
     });
 };
 
 document
   .getElementById("play-word-button")
   .addEventListener("click", (event) => {
-    submitWord();
+
+   submitWord().then(result => {
+     console.log("before RESULT")
+     console.log(result)
+     console.log("after RESULT")
+   
+    })
+   .catch(err =>{
+     console.log(err)
+   });
+    
+
+
   });
 
 document.getElementById("game-board").addEventListener("click", (event) => {

@@ -19,11 +19,19 @@
   {{{body}}}
  
 </body>
+{{!-- client socket script --}}
 <script src="/socket.io/socket.io.js"></script>
 <script> 
+ /* global socket obj */ 
      const socket = io();
 </script>
- <script  src="/javascript/frontend.js"></script>
- <script src="/javascript/chat.js"></script>
- 
+
+{{!-- INCLUDE SCRIPTS WHERE WE NEED CLIENT SOCKETS!  --}}
+<script src="/javascript/frontend.js"></script>
+<script src="/javascript/chat.js"></script>
+<script src="/javascript/scoreboard.js"></script>
+<script src="/javascript/test.js"></script>
+<script src="/javascript/lobby.js"></script>
+<script src="/javascript/browseLobby.js"></script>
+
 </html>
