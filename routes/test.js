@@ -3,18 +3,36 @@ const router = express.Router();
 const db = require("../db");
 const game = require("../db/game");
 const gameTiles = require("../models/gameTiles");
+const gameScore = require("../models/scoreBoard");
 
 
 
 router.get("/", (request, response) => {
 
-    game.incrementGameTurn(1)
+
+    gameScore.getMultiplier(7,7)
     .then(results => {
-        game.getGameTurn(1)
-        .then(results => {
-            console.log("Game Turn",results);
-        })
+        console.log("TEST" ,results)
     })
+    // gameScore.getPlayersScore(1,1).then(results => {
+    //     console.log("PLAYER SCORE BEFORE UPDATE ", results)
+    // })
+
+    // console.log("ASFSAFSA");
+    // gameScore.updatePlayerScore(1,1,100)
+    // .then(results => {
+    //     gameScore.getPlayersScore(1,1)
+    //     .then(results => {
+    //         console.log("playe score is", results);
+    //     })
+    // })
+    // game.incrementGameTurn(1)
+    // .then(results => {
+    //     game.getGameTurn(1)
+    //     .then(results => {
+    //         console.log("Game Turn",results);
+    //     })
+    // })
 
     // game.updateGameUserOrder(1,1,1)
     // .then(blah => {
