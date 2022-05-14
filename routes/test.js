@@ -14,6 +14,11 @@ router.get("/", (request, response) => {
     .then(results => {
         console.log("TEST" ,results)
     })
+
+
+    gameTiles.getWords([]);
+
+  
     // gameScore.getPlayersScore(1,1).then(results => {
     //     console.log("PLAYER SCORE BEFORE UPDATE ", results)
     // })
