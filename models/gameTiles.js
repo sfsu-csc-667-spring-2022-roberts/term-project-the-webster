@@ -364,21 +364,21 @@ function includesJson(arr, target) {
 
  
 function sortJsonByX(arr){
-
-    let values = [] 
-    // for ( const x of arr){
-        let tmp = [] 
-        for ( const i of arr){
+         let tmp = [] 
+        
+         for ( const i of arr){
             tmp.push(i.x)
-        }
-        values.push(tmp)
-    values[0].sort(function(a, b){return a-b});
+         }
 
-    const firstWordCombo = arr
-    for ( const i in firstWordCombo){
-        firstWordCombo[i].x = values[0][i]
+     tmp.sort(function(a, b){return a-b});
+
+    for ( const i in arr){
+        arr[i].x = tmp[i]
     }
-    console.log("VALUES" ,values);
+
+    return arr
+  
+
 }
 module.exports = {
     getInitialBag,
