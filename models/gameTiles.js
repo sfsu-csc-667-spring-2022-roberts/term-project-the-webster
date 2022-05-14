@@ -155,7 +155,7 @@ const getWords = (coordsArray, gameId) => {
                 }
             }
         }
-
+        
         checkHorizontal(coordsArray, horizontalCoords)
         checkVertical(coordsArray, verticalCoords)
     })
