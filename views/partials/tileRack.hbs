@@ -2,9 +2,9 @@
     <div class="tile-rack-wrapper">
         <div id="tile-wrapper">
         {{#each tiles}}
-        <div class="tile" draggable="true" ondragstart="drag(event)" data-id="{{tileId}}" data-letter="{{this.letter}}" data-value="{{this.value}}">
-            <p class="tile-letter"> {{this.letter}} </p>
-            <p class="tile-value"> {{this.value}} </p>
+        <div class="tile" data-id="{{tileId}}" data-letter="{{this.letter}}" data-value="{{this.value}}">
+            <p class="tile-letter">{{this.letter}}</p>
+            <p class="tile-value">{{this.value}}</p>
         </div>
         {{/each}}
         </div>

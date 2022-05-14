@@ -394,7 +394,7 @@ grid-gap: 1px;
   transform:translate(0%, 5%);
   grid-template-columns: repeat(15, 2.5vw);
   grid-template-rows: repeat(15, 2.5vw); 
-  gap:0.2vw;
+  gap:0.25vw;
   justify-content:center;
   align-content:center;
 }
@@ -411,14 +411,6 @@ grid-gap: 1px;
   padding:0;
 }
 
-.l-2-w-1 > p{
-  display:flex;
-  align-self:center;
-  justify-content:center;
-  margin:0;
-  padding:0;
-}
-
 .l-1-w-2{
   background-color:red;
   align-content:center;
@@ -426,25 +418,8 @@ grid-gap: 1px;
   padding:0;
 }
 
-.l-1-w-2 > p{
-  display:flex;
-  align-self:center;
-  justify-content:center;
-  margin:0;
-  padding:0;
-
-}
-
 .l-3-w-1{
   background-color:plum;
-  margin:0;
-  padding:0;
-}
-
-.l-3-w-1 > p{
-  display:flex;
-  align-self:center;
-  justify-content:center;
   margin:0;
   padding:0;
 }
@@ -455,57 +430,35 @@ grid-gap: 1px;
   padding:0;
 }
 
-.l-1-w-3 > p{
-  display:flex;
-  align-self:center;
-  justify-content:center;
-  margin:0;
-  padding:0;
-}
-
 .l-2-w-2{
-  background-color:lightseagreen;
-  display:flex;
-  align-self:center;
-  justify-content:center;
-  margin:0;
-  padding:0;
-}
-
-.center > p{
-  display:flex;
-  align-self:center;
-  justify-content:center;
-  overflow:hidden;
+  background-color:seagreen;
   margin:0;
   padding:0;
 }
 
 .played-square{
-  display:grid;
-  grid-template-areas: 
-                      "...... ...... ...... ......"
-                      "...... letter letter ......"
-                      "...... letter letter value"
-                      "...... ...... ...... value";
-  width:auto;
-  height:auto;
+  display:flex;
+  width:2.5vw;
+  height:2.5vw;
+  gap:0.25vw;
   background-color:rgb(200,156,84);
 }
 
 .played-square p:nth-child(1){
-  display:grid;
-  grid-area:letter;
+  display:flex;
   width:auto;
   height:auto;
+  font-weight:bold;
+  transform:translate(19px, 5px); 
 }
 
 .played-square p:nth-child(2){
-  display:grid;
-  grid-area:value;
+  display:flex;
   width:auto;
   height:auto;
+  transform:translate(20px, 16px);
 }
+
 
 /****************************/
 /*    Tile Rack Style       */
@@ -550,11 +503,11 @@ grid-gap: 1px;
   display:flex; 
   align-self:center;
   justify-self:center;
-  transform:translate(230%);
+  transform:translate(250%);
 }
 
 .tile-value{
-  transform:translate(350% , 70%);
+  transform:translate(380% , 70%);
 }
 
 .tile-rack{

@@ -65,6 +65,7 @@ const submitWord = async () => {
     });
 };
 
+
 document
   .getElementById("play-word-button")
   .addEventListener("click", (event) => {
@@ -100,11 +101,16 @@ document.getElementById("game-board").addEventListener("click", (event) => {
     selectedTile.classList.add("played-tile");
 
     selectedTile.classList.remove("selected-tile");
+
+    let letterP = document.createElement("p");
+    let valueP = document.createElement("p");
+
+    letterP.innerText = selectedTile.children[0].innerText;
+    valueP.innerText = selectedTile.children[1].innerText;
+   
+    event.target.appendChild(letterP);
+    event.target.appendChild(valueP);
     event.target.classList.add("played-square");
-    //we need to create a new set of divs that have the 
-    //letter and the value and then append them without 
-    //removing a child of the tilerack(selectedTile)
-    // to keep jrobs code working code 
 
     document.getElementById("tile-wrapper").removeChild(selectedTile);
 
