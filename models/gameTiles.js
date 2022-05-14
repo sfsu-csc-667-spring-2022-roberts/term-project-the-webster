@@ -336,7 +336,8 @@ function checkVertical(playedTiles, verticalRow) {
             for (x of aboveSide) {
                 tempArr.push(x);
             }
-            // sortJsonByX(tempArr);
+            console.log("TEMP ARRAY", tempArr);
+            newTempArr = sortJsonByX(tempArr);
             returnArray.push(tempArr);
         }
     }
