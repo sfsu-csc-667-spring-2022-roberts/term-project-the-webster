@@ -121,21 +121,14 @@ const getCoordinatesFromTileId = (game_id, tile_id) => {
     })
 
 }
- 
-//}
-// ^ might be necessary 
- 
 
 module.exports = {
     getInitialBag,
     getNumTilesInBag,
     getLetterWorth,
     getInitialHand,
- 
     getLetterFromTileId,
     getCoordinatesFromTileId,
     parsePlayerHandForHTML,
- 
     getCoordinatesFromTileId
- 
 }

@@ -72,12 +72,14 @@ router.get("/create", (request, response) => {
 
 router.get("/:id", (request, response) => {
   //window.location.pathname
+  let id = request.params;
   if(request.session){
     var userId = request.session.user_id;
     var gameId = request.params.id;
   } //HANDLE POTENTIAL ERROR FROM NO SESSION 
   let gameTiles = [];
   let playerHand = [];
+  console.log( "in game route ",scoreBoard.getPlayers(id.id));
   game.getEmptyGrid()
     .then((cells) => {
       gameTilesModel.parsePlayerHandForHTML(gameId,userId)
@@ -93,8 +95,9 @@ router.get("/:id", (request, response) => {
             tiles: playerHand,
             tilesInBag: gameTiles.getNumTilesInBag,
             messages: chat.getMessages(),
-            isReady: true,
-         //   players: scoreBoard.getPlayers(),
+            //isReady: true,
+            //broken call 
+            //players: scoreBoard.getPlayers(id.id),
             });
       });
     
@@ -161,38 +164,13 @@ router.post("/:id/playWord", (request, response) => {
     }).catch(err => {
       console.log("ERROR!! " + err)
     })
-
-    
-
-
-
-  //console.log(`WORD DATA ==> ${{wordData}} `);
-
-
+    //makeTilesInPlay(tiles, id);
 
   response
   .status(200)
   .json(res_wordData);
-
-  //let word = wordifyTiles(wordData);
-
-  // gameBoard.isWordValid(word).then(result => {
-  // console.log(result)
-  
-  //  request.app.get("io").sockets.emit.to('room' + gameId, { })
-
-  
-  // }).catch(err => {
-  //   console.log(err)
-  // })
-
-
-  // Send a game update via websocket
- // socket.emit("game-updated", {
-    /* game state data */
 });
 // });
-
 
 async function wordifyTiles(tiles){
   let word = "";
@@ -203,7 +181,6 @@ async function wordifyTiles(tiles){
   return word;
 }
 
-
 async function getPointsPerWord(tiles){
   let points = 0;
   for ( const x of tiles){
@@ -212,6 +189,19 @@ async function getPointsPerWord(tiles){
   return points;
 }
 
+async function makeTilesInPlay(tiles, gameId) {
+  let promises = [];
+        for (i=0; i < tiles.length; i++) {
+          promises.push(game.placeTile(tiles[i].id, tiles[i].x, tiles[i].y, gameId));
+        }
+        // placeTile = (tile_id, x, y, game_id)
+        return Promise.all(promises)
+        .then(results => {
+          if(results){return Promise.resolve(true)}
+        }).catch(err =>{
+          console.log(err);
+        })
+}
 
 
 module.exports = router;

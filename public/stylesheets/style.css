@@ -9,7 +9,8 @@ body {
 }
 
 a {
-  color: #00B7FF;
+  color: black;
+  /* color: #00B7FF; */
 }
 
 ul {
@@ -409,6 +410,7 @@ grid-gap: 1px;
   background-color:orangered;
   margin:0;
   padding:0;
+  box-shadow:0 0 0px 2px orangered inset;
 }
 
 .l-1-w-2{
@@ -416,24 +418,28 @@ grid-gap: 1px;
   align-content:center;
   margin:0;
   padding:0;
+  box-shadow:0 0 0px 2px red inset;
 }
 
 .l-3-w-1{
   background-color:plum;
   margin:0;
   padding:0;
+  box-shadow:0 0 0px 2px plum inset;
 }
 
 .l-1-w-3{
   background-color:purple;
   margin:0;
   padding:0;
+  box-shadow:0 0 0px 2px purple inset;
 }
 
 .l-2-w-2{
-  background-color:seagreen;
+  background-color:darkgreen;
   margin:0;
   padding:0;
+  box-shadow:0 0 0px 2px darkgreen inset;
 }
 
 .played-square{
@@ -801,13 +807,75 @@ grid-gap: 1px;
 }
 
 .player-three-glow {
-  /*  green ->  rgb(85,115,21) */
+  /* green ->  rgb(85,115,21) */
   box-shadow: 0px 0px 15px rgb(85, 115, 21);
   border: 1px solid rgb(85, 115, 21);
 }
 
 .player-four-glow {
-  /*  yellow ->  rgb(85,115,21) */
+  /* yellow ->  rgb(85,115,21) */
   box-shadow: 0px 0px 15px rgb(184, 173, 17);
   border: 1px solid rgb(184, 173, 17);
+}
+
+/*********************/
+/* index page style  */
+/*********************/
+
+#index-container{ 
+  display:absolute;
+  align-self:center;
+  justify-self: center;
+  justify-content: center;
+  background-color: rgb(225, 225, 225);
+  width:23%;
+  margin-left: 35%;
+  margin-right:40%;
+  margin-top:5%;
+  overflow:hidden;
+  text-shadow:0 0 1px darkgray;
+  border-radius:5px;
+  box-shadow: 0 0 10px 2px rgba(0,0,0,0.6);
+}
+
+.background{
+  display: flex;
+  flex-direction: column;
+  align-items:flex-start;
+  align-self:center;
+  justify-self: center;
+  background-color: rgb(200,156,84);
+  border-radius:5px;
+  /* border not displaying  */
+  border-color:rgb(0, 0, 0, 0.5); 
+  border-width:5px;  
+  margin:1vh;
+}
+
+.title-container{
+  display: flex;
+  flex-direction: column;
+  align-items:flex-start;
+  align-self:center;
+  justify-self: center;
+  border-radius:10px;
+  border-color:rgba(0, 0, 0, 0.8);
+  box-shadow:0 0 0px 2px rgba(0,0,0,0.2) inset;  
+  margin:1vh;
+  padding-left:2vh;
+  padding-right:2vh;
+}
+
+.link-container{
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+  justify-items:center;
+  align-self:center;
+  justify-self: center;
+  background-color: rgb(200,156,84);
+  border-radius:5px;
+  border-color:rgba(0, 0, 0, 0.2);   
+  margin:1vh;
+  padding-bottom:10px;
 }

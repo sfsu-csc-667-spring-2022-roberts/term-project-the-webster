@@ -2,34 +2,19 @@ const game = require("../db/game");
 const db = require('../db/index');
 
 
-
-
-
-// const getPlayers = () => {
-//     players = [
-//         {
-//         name: "jack",
-//         id: 1, 
-//         score: getPlayersScore(1,1)
-//         }, 
-//         {
-//           name: "kris", 
-//           id: 2, 
-//           score: getPlayersScore(1,2)
-//         },
-//         {
-//           name: "kyle",
-//           id: 11, 
-//           score: getPlayersScore(1,3)
-//           },
-//         {
-//             name: "kyle",
-//             id: 11, 
-//             score: getPlayersScore(1,4)
-//         }
-//       ];
-//       return players;
-// };
+const getPlayers = async (gameId) => {
+  //returns a pending promise
+    let data = await game.getGameUsers(gameId)
+    console.log("get plaaaaayers", data[0].user_id);
+    let list = [];
+    for(player in data ){
+      //use promise.all for this portion
+     // getUserNameFromId(player.userId)
+      list.push(player);
+    }
+    console.log(list);
+    return list;
+};
 
 
 const getPlayersScore = (game_id, game_user_id) => {
@@ -96,5 +81,6 @@ module.exports = {
   getPlayersScore,
   getPlayersId,
   updatePlayerScore,
-  getMultiplier
+  getMultiplier,
+  getPlayers,
 };

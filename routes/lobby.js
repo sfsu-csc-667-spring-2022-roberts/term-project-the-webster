@@ -13,8 +13,8 @@ router.get("/", (request, response) => {
 
   if (request.session) {
     console.log("valid session")
-    console.log(request.sessionID)
-    console.log(request.session.user_id)
+    console.log("session ID lobby", request.sessionID)
+    console.log("user ID lobby",request.session.user_id)
     response.render('lobby', {
       style: 'lobbyStyle',
       // messages: results
