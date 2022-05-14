@@ -122,8 +122,46 @@ const getCoordinatesFromTileId = (game_id, tile_id) => {
 
 }
  
-//}
-// ^ might be necessary 
+
+const getWords = (coords_array) => {
+    //verify horiozntal XOR very vertical
+    
+    //get all tiles in play 
+
+    //check the tiles which our playing tiles are touching 
+        //find the coordinates of a gap of the passed in coords if a gap exists 
+        //then check the gameBoard if there exists letter on the gap coords
+            //throw error if there is no letter in any of the gap 
+
+
+    //if not touching return or throw error 
+
+    //
+}
+
+function verifyHorizontal(arr) {
+
+}
+
+function verifyVertical(arr) {
+
+}
+
+function checkHorizontal(playedTiles, horizontalRow) {
+    // for (i=0; i < horizontalRow.length; i++) {
+
+    // }
+    leftSide =[];
+    rightSide = [];
+    currentTile = playedTiles[0];
+    before = playedTiles.x - 1;
+    while( (horizontalRow.includes(before) || playedTiles.includes(before)) || before > -1) {
+
+    }
+}
+
+//{EAAI, HAL, UAY, SI}
+
  
 
 module.exports = {
