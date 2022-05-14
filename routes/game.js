@@ -13,6 +13,7 @@ const session = require("express-session");
 // const frontend = require("../public/javascript/frontend")
 
 const gameTilesModel = require("../models/gameTiles");
+const { multi } = require("../db");
 
 
 router.get("/create", (request, response) => {
@@ -31,43 +32,7 @@ router.get("/create", (request, response) => {
     console.log("no sesson in create");
   }
   
-  
 
-
-  /*game.createGame(currentUser)
-      .then((game_id) => {
-        console.log("gameId:" + game_id);
-
-        response.redirect(`/game/${game_id}`);
-      })*/
-
-  //     .catch((error) => {
-  //       console.log(error);
-  //       response.redirect("/lobby");
-  //     });
-  // } else {
-  //   console.log("HANDLE THIS ERROR WHERE USER_ID DOES NOT EXIST IN game.js");
- 
-  // }
-  // });
-// =======
-//   // let currentUser = 1; // don't hard code this, get from params\
-//   if(request.session) {
-//     let currentUser = request.session.user_id;
-//     console.log("current user is ", currentUser);
-//     game.createGame(currentUser)
-//     .then((game_id ) => {
-//       console.log("gameId:" + game_id);
-//       response.redirect(`/lobby/${game_id}`);
-//     })
-//     .catch((error) => {
-//       console.log(error);
-//       response.redirect("/browseLobby");
-//     });
-//   } else {
-//     console.log("HANDLE THIS ERROR WHERE USER_ID DOES NOT EXIST IN game.js")
-//   }
-// >>>>>>> development
 });
 
 router.get("/:id", (request, response) => {
@@ -127,7 +92,7 @@ router.get("/:id/join", (request, response) => {
   }
 });
 
-router.post("/:id/playWord", (request, response) => {
+router.post("/:id/playWord",  (request, response)  => {
 
   const { id } = request.params;
   const  wordData  = request.body;
@@ -135,24 +100,44 @@ router.post("/:id/playWord", (request, response) => {
   console.log(request.body)
  
   console.log(`HANDLE THIS WORD IN GAME ${id}`);
-  // console.log( {wordData} )
-
+   
     const res_wordData  = { wordData }
 
     const tiles = res_wordData["wordData"]
     wordifyTiles(tiles).then(result => {
-        word_placed = result.toLowerCase()
+      word_placed = result.toLowerCase()
 
         gameBoard.isWordValid(word_placed)
         .then(result => {
           console.log("IS WORD VALID ? " + result)
           if(result == true){
-            getPointsPerWord(tiles)
+           getPointsPerWord(tiles)
             .then(result => {
               console.log(word_placed + " is worth " +  result + " points.")
+             areTilesAdjacent(tiles)
+              .then(result => {
+
+                 if(result){
+                   console.log("  WORD IS VALID ")
+                   console.log("b4 EMITTING VALID WORD")                   
+                   request.app.get("io").emit("valid-word")
+                   console.log("AFTER EMITTING VALID WORD")
+                 }
+                 else{
+                   console.log( " CANNOT PLAY THAT WORD! ")
+                 }
+
+
+              }).catch(err => {
+                console.log("ERROR" + err)
+              })
+          
+
             }).catch(err => {
               console.log("ERR " + err)
             })
+          }else{
+            console.log( " CANNOT PLAY THAT WORD! ")
           }
         }).catch(err => {
           console.log("ERROR " + err)
@@ -163,35 +148,16 @@ router.post("/:id/playWord", (request, response) => {
     })
 
     
-
-
-
-  //console.log(`WORD DATA ==> ${{wordData}} `);
-
-
-
   response
   .status(200)
   .json(res_wordData);
-
-  //let word = wordifyTiles(wordData);
-
-  // gameBoard.isWordValid(word).then(result => {
-  // console.log(result)
-  
-  //  request.app.get("io").sockets.emit.to('room' + gameId, { })
-
-  
-  // }).catch(err => {
-  //   console.log(err)
-  // })
-
+ 
 
   // Send a game update via websocket
  // socket.emit("game-updated", {
     /* game state data */
 });
-// });
+ 
 
 
 async function wordifyTiles(tiles){
@@ -203,13 +169,115 @@ async function wordifyTiles(tiles){
   return word;
 }
 
+async function isAdjacentHorizontally(tiles){
+
+  let x_coords = []
+  let row_val  = tiles[0].x
+
+  for ( const i of tiles){
+      if(row_val != i.x){
+        return false
+      }
+      console.log(i.x + " == " + row_val)
+    x_coords.push(i.y)
+    
+
+  }
+
+  console.log(x_coords)
+  const length = x_coords.length
+  const last = x_coords[length -1]
+  const first = (x_coords[0])
+
+  const diff = (last - first + 1)
+
+  return (diff == length)
+
+}
+
+
+async function isAdjacentVertically(tiles){
+
+  
+  let y_coords = []
+  let col_val = tiles[0].y
+
+  for ( const i of tiles){
+    if(col_val != i.y){
+      return false
+    }
+    console.log(i.y + " == " + col_val)
+    y_coords.push(i.x)
+
+
+  }
+
+  console.log("\n\n\n\n")
+  console.log(y_coords)
+  console.log("\n\n\n\n")
+
+  console.log(y_coords)
+  const length = y_coords.length
+  const last = y_coords[length -1]
+  const first = (y_coords[0])
+
+  const diff = (last - first + 1)
+
+ 
+  return (diff == length)
+
+
+
+}
+
+async function areTilesAdjacent(tiles){
+ 
+  const x = await isAdjacentHorizontally(tiles)
+
+  const y = await (isAdjacentVertically(tiles))
+
+  console.log(x)
+  console.log(y)
+
+  return x || y 
+}
+
 
 async function getPointsPerWord(tiles){
   let points = 0;
-  for ( const x of tiles){
-    points+=Number(x.value)
+  let word_multiplier = 1;
+  let total_points;
+  for ( const i of tiles){
+ 
+    const _x = i.x
+    const _y = i.y
+    await scoreBoard.getMultiplier(_x,_y).then(result => {
+
+    const multipliers = (result[0])
+    
+    console.log(multipliers.letter_multiplier)
+    console.log(multipliers.word_multiplier)
+    
+    word_multiplier *= Number(multipliers.word_multiplier)
+    
+      const initial_val = Number(i.value)
+
+      const adjusted_val = initial_val * Number(multipliers.letter_multiplier)
+       
+      points += adjusted_val
+
+     
+      total_points = points * word_multiplier
+
+      
+    }).catch(err => {
+      console.log("ERROR " + err)
+    })
+
   }
-  return points;
+ 
+  return total_points;
+ 
 }
 
 

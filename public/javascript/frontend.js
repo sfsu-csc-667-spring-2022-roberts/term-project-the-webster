@@ -6,6 +6,11 @@
 
 })*/
 
+console.log("FRONT END ")
+console.log(socket)
+console.log("FRONT END ")
+
+
 
 
 // io.on("game-updated", (payload) => {
@@ -136,3 +141,9 @@ document
       }
     }
   });
+
+  
+socket.on("valid-word" , ()=> {
+
+   alert("VALID WORD PLAYED :)");
+})
