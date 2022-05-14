@@ -281,7 +281,7 @@ function checkHorizontal(playedTiles, horizontalRow) {
             for (y of leftSide) {
                 tempArr.push( y);
             }
-            sortJsonByX()
+
             returnArray.push(tempArr);
         }
     }
@@ -336,8 +336,7 @@ function checkVertical(playedTiles, verticalRow) {
             for (x of aboveSide) {
                 tempArr.push(x);
             }
-            tempArr.sort();
-
+            sortJsonByX(tempArr);
             returnArray.push(tempArr);
         }
     }
@@ -366,32 +365,27 @@ function includesJson(arr, target) {
  
 function sortJsonByX(arr){
 
-   
-let values = [] 
+    let values = [] 
+    // for ( const x of arr){
+        let tmp = [] 
+        for ( const i of arr){
+            tmp.push(i.x)
+        }
+        values.push(tmp)
+    values[0].sort(function(a, b){return a-b});
 
-for ( const x of arr){
-  
-
-let tmp = [] 
-  for ( const i of x){
-    tmp.push(i.x)
-  }
-  values.push(tmp)
-}
-values[0].sort(function(a, b){return a-b});
-
-const firstWordCombo = arr[0]
-for ( const i in firstWordComb){
-    firstWordComb[i].x = values[0][i]
- }
-
+    const firstWordCombo = arr
+    for ( const i in firstWordCombo){
+        firstWordCombo[i].x = values[0][i]
+    }
+    console.log("VALUES" ,values);
 }
 module.exports = {
     getInitialBag,
     getNumTilesInBag,
     getLetterWorth,
     getInitialHand,
- 
+  
     getLetterFromTileId,
     getCoordinatesFromTileId,
     parsePlayerHandForHTML,
