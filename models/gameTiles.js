@@ -139,9 +139,9 @@ const getWords = (coordsArray, gameId) => {
         return false;
     }
     //get all tiles in play
-    game.getInPlayTiles(gameId)
+    return game.getInPlayTiles(gameId)
     .then(results => {
-
+        console.log("results are", results);
         horizontalCoords = [];
         verticalCoords = [];
 
@@ -155,11 +155,32 @@ const getWords = (coordsArray, gameId) => {
                 }
             }
         }
-        
-        checkHorizontal(coordsArray, horizontalCoords)
-        checkVertical(coordsArray, verticalCoords)
+
+        console.log("horizontal coords", horizontalCoords);
+        console.log("vertical coords", verticalCoords);
+        arr1 = checkHorizontal(coordsArray, horizontalCoords)
+        arr2 = checkVertical(coordsArray, verticalCoords)
+        // console.log('arr1: ', arr1);
+        // console.log('arr2: ', arr2);
+
+        let wordSet = new Set();
+        if(arr1 != false) {
+            for (let ele of arr1) {
+                wordSet.add(ele);
+            }
+        }
+
+        if (arr2 != false){
+            for (let ele of arr2) {
+                wordSet.add(ele);
+            }
+        }
+        return wordSet;
     })
-    
+    .catch(err => {
+        console.log("ERROR IN models/gameTiles",err);
+
+    })
     //check the tiles which our playing tiles are touching 
         //find the coordinates of a gap of the passed in coords if a gap exists 
         //then check the gameBoard if there exists letter on the gap coords
@@ -190,13 +211,18 @@ function verifyVertical(arr) {
     return true;
 }
 
-
-
 function checkHorizontal(playedTiles, horizontalRow) {
     // for (i=0; i < horizontalRow.length; i++) {
 
     // }     //  | B R A V [E]   S E E        |
 
+    if (horizontalRow.length == 0) {
+        return false;
+    }
+
+    console.log("CHECK HORIZONTAL PLAYED TILES ARE", playedTiles);
+    
+    console.log("CHECK HORIZONTAL HORIZONTAL ROWS ARE", horizontalRow);
     returnArray = [];
     /*
 
@@ -206,12 +232,12 @@ function checkHorizontal(playedTiles, horizontalRow) {
     coordinates = []
     
     for ( const tile of horizontalRow){
-        coordinates.push(Number((tile.y)))
+        coordinates.push(Number((tile.y_coordinate)))
     }
 
     otherCoordinates = []
     for ( const tile of playedTiles){
-        otherCoordinates.push(Number((tile.y)))
+        otherCoordinates.push(Number((tile.y_coordinate)))
     }
 
 
@@ -239,27 +265,37 @@ function checkHorizontal(playedTiles, horizontalRow) {
     }   
 
 
-        leftSide.push(curr);
 
-        for ( const tile of rightSide ){
-            leftSide.push(tile);
+    leftSide.push(curr);
+
+    // console.log("LEFT SIDE", leftSide);
+    // console.log("RIGHT SIDE", rightSide);
+    for ( const tile of rightSide ){
+        leftSide.push(tile);
+    }
+
+    let x = playedTiles[0].x;
+    for (let ele of playedTiles) {
+        if (ele.x == horizontalRow[0].x_coordinate) {
+            x = ele.x;
         }
+    }
 
-        x = Number(playedTiles[0].x)
-
-        for (y of leftSide) {
-            returnArray.push( {x, y});
-        }
-            
-
-
-        return returnArray;
+    for (y of leftSide) {
+        returnArray.push( {x, y});
+    }
+        
+    return returnArray;
 }
 
 function checkVertical(playedTiles, verticalRow) {
     // for (i=0; i < horizontalRow.length; i++) {
 
     // }     //  | B R A V [E]   S E E        |
+
+    if (verticalRow.length == 0) {
+        return false;
+    }
     returnArray = [];
     /*
 
@@ -267,12 +303,12 @@ function checkVertical(playedTiles, verticalRow) {
     coordinates = []
     
     for ( const tile of verticalRow){
-        coordinates.push(Number((tile.x)))
+        coordinates.push(Number((tile.x_coordinate)))
     }
 
     otherCoordinates = []
     for ( const tile of playedTiles){
-        otherCoordinates.push(Number((tile.x)))
+        otherCoordinates.push(Number((tile.x_coordinate)))
     }
 
 
@@ -300,21 +336,26 @@ function checkVertical(playedTiles, verticalRow) {
         
 
 
-        aboveSide.push(curr);
+    aboveSide.push(curr);
 
-        for ( const tile of belowSide ){
-           aboveSide.push(tile);
+    for ( const tile of belowSide ){
+        aboveSide.push(tile);
+    }
+
+    let y = playedTiles[0].y;
+    for (let ele of playedTiles) {
+        if (ele.y == verticalRow[0].y_coordinate) {
+            y = ele.y;
         }
+    }
 
-        y = Number(playedTiles[0].y);
-
-        for (x of belowSide) {
-            returnArray.push( {x, y});
-        }
-            
+    for (x of belowSide) {
+        returnArray.push( {x, y});
+    }
+        
 
 
-        return returnArray;
+    return returnArray;
 }
 
 

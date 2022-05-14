@@ -11,12 +11,12 @@ router.get("/", (request, response) => {
 
 
 
-    playedCoords = [{x: '3',y:'6' } , {x: '4',y:'6' } , {x: '6',y:'6' } , {x: '7',y:'6' } ]
+    playedCoords = [{x: '7',y:'4' } , {x: '8',y:'4' } , {x: '9',y:'4' } , {x: '10',y:'4' } ]
 
 
     gameTiles.getWords(playedCoords, 1)
     .then(results => {
-        
+        console.log("word set is", results);
     })
 
     // gameScore.getMultiplier(7,7)
