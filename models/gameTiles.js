@@ -141,23 +141,35 @@ const getWords = (coordsArray, gameId) => {
     //get all tiles in play
     return game.getInPlayTiles(gameId)
     .then(results => {
-        console.log("results are", results);
+        // console.log("results are", results);
         horizontalCoords = [];
         verticalCoords = [];
 
         for (let coords of coordsArray) {
             for (let playedTile of results) {
+                // console.log("Played Tile ", playedTile);
+                // console.log("coords ", coords)
                 if (coords.x == playedTile.x_coordinate) {
-                    horizontalCoords.push(playedTile);
+                    // console.log("pushing into HORIZONTAL");
+                    // console.log("COORDS ARE ", coords, "PLAYED COORDS ARE ", playedTile)
+                    if(!horizontalCoords.includes(playedTile)){
+                    // console.log("pushing into HORIZONTAL");
+                    // console.log("COORDS ARE ", coords, "PLAYED COORDS ARE ", playedTile);
+                        horizontalCoords.push(playedTile);
+                    }
                 }
                 if (coords.y == playedTile.y_coordinate) {
-                    verticalCoords.push(playedTile);
+                    // console.log("pushing into VERTICAL");
+                    // console.log("COORDS ARE ", coords, "PLAYED COORDS ARE ", playedTile);
+                    if(!verticalCoords.includes(playedTile)){
+                        verticalCoords.push(playedTile);
+                    }
                 }
             }
         }
 
-        console.log("horizontal coords", horizontalCoords);
-        console.log("vertical coords", verticalCoords);
+        // console.log("horizontal coords", horizontalCoords);
+        // console.log("vertical coords", verticalCoords);
         arr1 = checkHorizontal(coordsArray, horizontalCoords)
         arr2 = checkVertical(coordsArray, verticalCoords)
         // console.log('arr1: ', arr1);
@@ -220,142 +232,131 @@ function checkHorizontal(playedTiles, horizontalRow) {
         return false;
     }
 
-    console.log("CHECK HORIZONTAL PLAYED TILES ARE", playedTiles);
-    
-    console.log("CHECK HORIZONTAL HORIZONTAL ROWS ARE", horizontalRow);
     returnArray = [];
-    /*
-
-    horizontal row =  [ placed tiles in the row ]. 
-
-    */
-    coordinates = []
-    
+    boardCoordinates = []
+  
     for ( const tile of horizontalRow){
-        coordinates.push(Number((tile.y_coordinate)))
+        boardCoordinates.push({ x: Number((tile.x_coordinate)), y: Number((tile.y_coordinate)) })
     }
 
-    otherCoordinates = []
+    playingCoordinates = []
     for ( const tile of playedTiles){
-        otherCoordinates.push(Number((tile.y_coordinate)))
+        playingCoordinates.push( {x:Number((tile.x)),y: Number((tile.y))} )
     }
 
-
-    leftSide =[];
-    rightSide = [];
-    currentTile = playedTiles[0];
-    curr = Number(currentTile.y);
-    before = Number(currentTile.y) - 1;
-    after = Number(currentTile.y) + 1;
-
-    // iterating left
-    while( (coordinates.includes(before) || otherCoordinates.includes(before)) && before > -1) {
-        leftSide.push(before)
-        before--;
-    }
+    // console.log("board coords are ", boardCoordinates);
+    // console.log("playing Coordinates ", playingCoordinates);
+    // curr = Number(currentTile.y);
+    for(i = 0; i < playingCoordinates.length;i++) {
+        leftSide =[];
+        rightSide = [];
+        currentTile = playingCoordinates[i];
+        previousTile = {x: currentTile.x, y: currentTile.y - 1 };
+        nextTile = {x: currentTile.x, y: currentTile.y + 1 };
+        // iterating left
 
 
-    // iterating right
+        while(  (includesJson(boardCoordinates, previousTile) || includesJson(playingCoordinates, previousTile) ) && previousTile.y > -1) {
+            let toPushTile = {...previousTile}
+            leftSide.push(toPushTile);
+            previousTile.y--;
+        }
 
-     while( (coordinates.includes(after) || otherCoordinates.includes(after)) && after < 15) {
-         
-        rightSide.push(after)
-        after++; 
-   
-    }   
+        // iterating right
+        while( (includesJson(boardCoordinates, nextTile)  || includesJson(playingCoordinates, nextTile))  && nextTile.y < 15) {
+            let toPushTile = {...nextTile};
+            rightSide.push(toPushTile)
+            nextTile.y++; 
+        }   
 
+        leftSide.push(currentTile);
 
+        for ( const tile of rightSide ){
+            leftSide.push(tile);
+        }
 
-    leftSide.push(curr);
-
-    // console.log("LEFT SIDE", leftSide);
-    // console.log("RIGHT SIDE", rightSide);
-    for ( const tile of rightSide ){
-        leftSide.push(tile);
-    }
-
-    let x = playedTiles[0].x;
-    for (let ele of playedTiles) {
-        if (ele.x == horizontalRow[0].x_coordinate) {
-            x = ele.x;
+        // console.log("LEFT SIDE THERE0", leftSide);
+        if(leftSide.length > 1) {
+            tempArr = [];
+            for (y of leftSide) {
+                tempArr.push( y);
+            }
+            returnArray.push(tempArr);
         }
     }
-
-    for (y of leftSide) {
-        returnArray.push( {x, y});
-    }
-        
     return returnArray;
 }
 
 function checkVertical(playedTiles, verticalRow) {
-    // for (i=0; i < horizontalRow.length; i++) {
-
-    // }     //  | B R A V [E]   S E E        |
 
     if (verticalRow.length == 0) {
         return false;
     }
     returnArray = [];
-    /*
-
-    */
-    coordinates = []
-    
+    boardCoordinates = []
     for ( const tile of verticalRow){
-        coordinates.push(Number((tile.x_coordinate)))
+        boardCoordinates.push({ x: Number((tile.x_coordinate)), y: Number((tile.y_coordinate)) })
     }
-
-    otherCoordinates = []
+    playingCoordinates = []
     for ( const tile of playedTiles){
-        otherCoordinates.push(Number((tile.x_coordinate)))
+        playingCoordinates.push( {x:Number((tile.x)),y: Number((tile.y))} )
     }
 
-
-    aboveSide =[];
-    belowSide = [];
-    currentTile = playedTiles[0];
-    curr = Number(currentTile.x);
-    above = Number(currentTile.x) - 1;
-    below = Number(currentTile.x) + 1;
-    // iterating left
-    while( (coordinates.includes(above) || otherCoordinates.includes(above)) && above > -1) {
-        aboveSide.push(above)
-        before--;
-    }
-
-
-    // iterating right
-
-     while( (coordinates.includes(below) || otherCoordinates.includes(below)) && below < 15) {
-         
-        belowSide.push(below)
-        below++; 
-   
-    }   
-        
+    for(i = 0; i < playingCoordinates.length;i++) {
+        aboveSide =[];
+        belowSide = [];
+        currentTile = playingCoordinates[i];
+        previousTile = {x: currentTile.x-1, y: currentTile.y };
+        nextTile = {x: currentTile.x + 1, y: currentTile.y };
+        // iterating left
+        while( (includesJson(boardCoordinates, previousTile) || includesJson(playingCoordinates, previousTile) ) && previousTile.x > -1) {
+            let toPushTile = {...previousTile}
+            aboveSide.push(toPushTile)
+            previousTile.x--;
+        }
 
 
-    aboveSide.push(curr);
+        // iterating right
 
-    for ( const tile of belowSide ){
-        aboveSide.push(tile);
-    }
+        while( (includesJson(boardCoordinates, nextTile)  || includesJson(playingCoordinates, nextTile))  && nextTile.x < 15) {
+            let toPushTile = {...nextTile}
+            aboveSide.push(toPushTile)
+            nextTile.x++;
+        }   
+            
+        aboveSide.push(currentTile);
 
-    let y = playedTiles[0].y;
-    for (let ele of playedTiles) {
-        if (ele.y == verticalRow[0].y_coordinate) {
-            y = ele.y;
+        for ( const tile of belowSide ){
+            aboveSide.push(tile);
+        }
+
+        if (aboveSide.length > 1) {
+            tempArr = [];
+            for (x of aboveSide) {
+                tempArr.push(x);
+            }
+            tempArr.sort();
+
+            returnArray.push(tempArr);
         }
     }
-
-    for (x of belowSide) {
-        returnArray.push( {x, y});
-    }
-        
-
-
+    console.log("VERTICAL RETURN", returnArray); 
+    // console.log("RETURN ARRAY FROM VERTICAL IS", returnArray);
     return returnArray;
+}
+
+// testArr = [{ x:7, y:5  }, {x:8, y:9}]
+
+// const x = {x:7, y:5}
+
+function includesJson(arr, target) {
+    for ( const item  of arr){
+        if(item.x == target.x && item.y == target.y){
+            return true
+        }
+
+    }
+    return false;
 }
 
 

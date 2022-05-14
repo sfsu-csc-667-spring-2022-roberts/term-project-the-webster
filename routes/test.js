@@ -11,13 +11,18 @@ router.get("/", (request, response) => {
 
 
 
-    playedCoords = [{x: '7',y:'4' } , {x: '8',y:'4' } , {x: '9',y:'4' } , {x: '10',y:'4' } ]
+    playedCoords = [ {x: '6',y:'4' },{x: '7',y:'4' } , {x: '8',y:'4' } , {x: '9',y:'4' }  ]
 
 
     gameTiles.getWords(playedCoords, 1)
     .then(results => {
-        console.log("word set is", results);
+        if(results != undefined)
+        {
+            console.log("word set is", results);
+        }
     })
+
+    // game.placeTile(81,9,5,1)
 
     // gameScore.getMultiplier(7,7)
     // .then(results => {
