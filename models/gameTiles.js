@@ -281,6 +281,7 @@ function checkHorizontal(playedTiles, horizontalRow) {
             for (y of leftSide) {
                 tempArr.push( y);
             }
+            sortJsonByX()
             returnArray.push(tempArr);
         }
     }
@@ -363,7 +364,28 @@ function includesJson(arr, target) {
 //{EAAI, HAL, UAY, SI}
 
  
+function sortJsonByX(arr){
 
+   
+let values = [] 
+
+for ( const x of arr){
+  
+
+let tmp = [] 
+  for ( const i of x){
+    tmp.push(i.x)
+  }
+  values.push(tmp)
+}
+values[0].sort(function(a, b){return a-b});
+
+const firstWordCombo = arr[0]
+for ( const i in firstWordComb){
+    firstWordComb[i].x = values[0][i]
+ }
+
+}
 module.exports = {
     getInitialBag,
     getNumTilesInBag,
