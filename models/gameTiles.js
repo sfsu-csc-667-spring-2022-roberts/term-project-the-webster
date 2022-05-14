@@ -123,11 +123,11 @@ const getCoordinatesFromTileId = (game_id, tile_id) => {
 }
  
 // playedCoords = [{x:'7',y:'0'}, {x:'7',y:'1'},  {x:'7',y:'2'}, {x:'7',y:'3'}]
-horizontalCoords = [{x:'7',y:'4'}, {x:'7',y:'6'}, {x:'7',y:'7'}, {x:'7',y:'8'}]
+// horizontalCoords = [{x:'7',y:'4'}, {x:'7',y:'6'}, {x:'7',y:'7'}, {x:'7',y:'8'}]
 
 
-playedCoords = [{x: '3',y:'6' } , {x: '4',y:'6' } , {x: '6',y:'6' } , {x: '7',y:'6' } ]
-verticalCoords = [{x:'0', y: '6'},{x:'5',y:'6'}, {x:'11',y:'6'}, {x:'14', y: '6'}]
+// playedCoords = [{x: '3',y:'6' } , {x: '4',y:'6' } , {x: '6',y:'6' } , {x: '7',y:'6' } ]
+// verticalCoords = [{x:'0', y: '6'},{x:'5',y:'6'}, {x:'11',y:'6'}, {x:'14', y: '6'}]
 
 // playedCoords = [{x:'11',y:'6'}, {x:'11',y:'8'},  {x:'11',y:'9'}]
 // horizontalCoords = [{x:'11',y:'0'}, {x:'11',y:'7'},{x:'11',y:'14'} ]
@@ -141,7 +141,23 @@ const getWords = (coordsArray, gameId) => {
     //get all tiles in play
     game.getInPlayTiles(gameId)
     .then(results => {
-        console.log(results);
+
+        horizontalCoords = [];
+        verticalCoords = [];
+
+        for (let coords of coordsArray) {
+            for (let playedTile of results) {
+                if (coords.x == playedTile.x_coordinate) {
+                    horizontalCoords.push(playedTile);
+                }
+                if (coords.y == playedTile.y_coordinate) {
+                    verticalCoords.push(playedTile);
+                }
+            }
+        }
+
+        checkHorizontal(coordsArray, horizontalCoords)
+        checkVertical(coordsArray, verticalCoords)
     })
     
     //check the tiles which our playing tiles are touching 
@@ -152,8 +168,7 @@ const getWords = (coordsArray, gameId) => {
 
 
     //if not touching return or throw error 
-    checkHorizontal(playedCoords, horizontalCoords)
-    checkVertical(playedCoords, verticalCoords)
+
     //
 }
 
@@ -199,8 +214,6 @@ function checkHorizontal(playedTiles, horizontalRow) {
         otherCoordinates.push(Number((tile.y)))
     }
 
-    console.log("playedTiles", playedTiles);
-    console.log("horizontal row", horizontalRow);
 
     leftSide =[];
     rightSide = [];
@@ -209,14 +222,11 @@ function checkHorizontal(playedTiles, horizontalRow) {
     before = Number(currentTile.y) - 1;
     after = Number(currentTile.y) + 1;
 
-    console.log("BEFORE => "+ before)
-    console.log("AFTER => "+ after)
     // iterating left
     while( (coordinates.includes(before) || otherCoordinates.includes(before)) && before > -1) {
         leftSide.push(before)
         before--;
     }
-        console.log("LEFT SIDE ", leftSide);
 
 
     // iterating right
@@ -228,10 +238,8 @@ function checkHorizontal(playedTiles, horizontalRow) {
    
     }   
 
-        console.log("RIGHT SIDE", rightSide);
 
         leftSide.push(curr);
-            console.log("LEFT SIDE AFTER ADDING CURRENT TILE ==> "  + leftSide)
 
         for ( const tile of rightSide ){
             leftSide.push(tile);
@@ -243,7 +251,6 @@ function checkHorizontal(playedTiles, horizontalRow) {
             returnArray.push( {x, y});
         }
             
-        console.log("Horizontal Coords",returnArray);
 
 
         return returnArray;
@@ -253,8 +260,6 @@ function checkVertical(playedTiles, verticalRow) {
     // for (i=0; i < horizontalRow.length; i++) {
 
     // }     //  | B R A V [E]   S E E        |
-    console.log("PLAYED TILES =>", playedTiles)
-    console.log("VERTICAL ROW =>", verticalRow)
     returnArray = [];
     /*
 
@@ -282,7 +287,6 @@ function checkVertical(playedTiles, verticalRow) {
         aboveSide.push(above)
         before--;
     }
-        console.log("ABOVE SIDE ", aboveSide);
 
 
     // iterating right
@@ -294,7 +298,6 @@ function checkVertical(playedTiles, verticalRow) {
    
     }   
         
-    console.log("Below SIDE ", belowSide);
 
 
         aboveSide.push(curr);
@@ -309,7 +312,6 @@ function checkVertical(playedTiles, verticalRow) {
             returnArray.push( {x, y});
         }
             
-        console.log("Vertical Coords", returnArray);
 
 
         return returnArray;

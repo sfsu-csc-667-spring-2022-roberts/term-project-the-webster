@@ -10,13 +10,22 @@ const gameScore = require("../models/scoreBoard");
 router.get("/", (request, response) => {
 
 
-    gameScore.getMultiplier(7,7)
+
+    playedCoords = [{x: '3',y:'6' } , {x: '4',y:'6' } , {x: '6',y:'6' } , {x: '7',y:'6' } ]
+
+
+    gameTiles.getWords(playedCoords, 1)
     .then(results => {
-        console.log("TEST" ,results)
+        
     })
 
+    // gameScore.getMultiplier(7,7)
+    // .then(results => {
+    //     console.log("TEST" ,results)
+    // })
 
-    gameTiles.getWords([]);
+
+    // gameTiles.getWords([]);
 
   
     // gameScore.getPlayersScore(1,1).then(results => {
