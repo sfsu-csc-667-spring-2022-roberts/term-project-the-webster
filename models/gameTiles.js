@@ -15,7 +15,6 @@ const getInitialHand = (gameId, playerId) => {
     for(i = 0; i < 7; i++) {
         game.drawTile(gameId, playerId)
         .then(results => {
-            //console.log(results);
             hand.push(results[0]);
         }).catch((err) => {
             console.log(err);
@@ -141,68 +140,60 @@ const getWords = (coordsArray, gameId) => {
     //get all tiles in play
     return game.getInPlayTiles(gameId)
     .then(results => {
-        // console.log("results are", results);
         horizontalCoords = [];
         verticalCoords = [];
 
         for (let coords of coordsArray) {
             for (let playedTile of results) {
-                // console.log("Played Tile ", playedTile);
-                // console.log("coords ", coords)
+
                 if (coords.x == playedTile.x_coordinate) {
-                    // console.log("pushing into HORIZONTAL");
-                    // console.log("COORDS ARE ", coords, "PLAYED COORDS ARE ", playedTile)
+
                     if(!horizontalCoords.includes(playedTile)){
-                    // console.log("pushing into HORIZONTAL");
-                    // console.log("COORDS ARE ", coords, "PLAYED COORDS ARE ", playedTile);
+
                         horizontalCoords.push(playedTile);
                     }
                 }
                 if (coords.y == playedTile.y_coordinate) {
-                    // console.log("pushing into VERTICAL");
-                    // console.log("COORDS ARE ", coords, "PLAYED COORDS ARE ", playedTile);
+
                     if(!verticalCoords.includes(playedTile)){
                         verticalCoords.push(playedTile);
                     }
                 }
             }
         }
-
-        // console.log("horizontal coords", horizontalCoords);
-        // console.log("vertical coords", verticalCoords);
         arr1 = checkHorizontal(coordsArray, horizontalCoords)
         arr2 = checkVertical(coordsArray, verticalCoords)
-        // console.log('arr1: ', arr1);
-        // console.log('arr2: ', arr2);
 
-        let wordSet = new Set();
+        let wordSet = [];
         if(arr1 != false) {
             for (let ele of arr1) {
-                wordSet.add(ele);
+                wordSet.push(ele);
             }
         }
 
         if (arr2 != false){
             for (let ele of arr2) {
-                wordSet.add(ele);
+                wordSet.push(ele);
             }
         }
-        return wordSet;
+        clean = multiDimensionalUnique(wordSet);
+        return clean;
     })
     .catch(err => {
         console.log("ERROR IN models/gameTiles",err);
 
     })
-    //check the tiles which our playing tiles are touching 
-        //find the coordinates of a gap of the passed in coords if a gap exists 
-        //then check the gameBoard if there exists letter on the gap coords
-            //throw error if there is no letter in any of the gap 
-    
+}
 
-
-    //if not touching return or throw error 
-
-    //
+function multiDimensionalUnique(arr) {
+    var uniques = [];
+    var itemsFound = {};
+    for(var i = 0, l = arr.length; i < l; i++) {
+        if(itemsFound[arr[i]]) { continue; }
+        uniques.push(arr[i]);
+        itemsFound[arr[i]] = true;
+    }
+    return uniques;
 }
 
 function verifyHorizontal(arr) {
@@ -244,17 +235,12 @@ function checkHorizontal(playedTiles, horizontalRow) {
         playingCoordinates.push( {x:Number((tile.x)),y: Number((tile.y))} )
     }
 
-    // console.log("board coords are ", boardCoordinates);
-    // console.log("playing Coordinates ", playingCoordinates);
-    // curr = Number(currentTile.y);
     for(i = 0; i < playingCoordinates.length;i++) {
         leftSide =[];
         rightSide = [];
         currentTile = playingCoordinates[i];
         previousTile = {x: currentTile.x, y: currentTile.y - 1 };
         nextTile = {x: currentTile.x, y: currentTile.y + 1 };
-        // iterating left
-
 
         while(  (includesJson(boardCoordinates, previousTile) || includesJson(playingCoordinates, previousTile) ) && previousTile.y > -1) {
             let toPushTile = {...previousTile}
@@ -282,7 +268,8 @@ function checkHorizontal(playedTiles, horizontalRow) {
                 tempArr.push( y);
             }
 
-            returnArray.push(tempArr);
+            newTempArr = sortJsonByY(tempArr);
+            returnArray.push(newTempArr);
         }
     }
     return returnArray;
@@ -336,13 +323,10 @@ function checkVertical(playedTiles, verticalRow) {
             for (x of aboveSide) {
                 tempArr.push(x);
             }
-            console.log("TEMP ARRAY", tempArr);
             newTempArr = sortJsonByX(tempArr);
-            returnArray.push(tempArr);
+            returnArray.push(newTempArr);
         }
     }
-    console.log("VERTICAL RETURN", returnArray); 
-    // console.log("RETURN ARRAY FROM VERTICAL IS", returnArray);
     return returnArray;
 }
 
@@ -365,22 +349,17 @@ function includesJson(arr, target) {
 
  
 function sortJsonByX(arr){
-         let tmp = [] 
-        
-         for ( const i of arr){
-            tmp.push(i.x)
-         }
-
-     tmp.sort(function(a, b){return a-b});
-
-    for ( const i in arr){
-        arr[i].x = tmp[i]
-    }
-
-    return arr
-  
-
+    let deep_cpy = [...arr]
+    let sortedInput = deep_cpy.slice().sort((a, b) => a.x - b.x);
+    return sortedInput;
 }
+
+function sortJsonByY(arr){
+    let deep_cpy = [...arr]
+    let sortedInput = deep_cpy.slice().sort((a, b) => a.y - b.y);
+    return sortedInput;
+}
+
 module.exports = {
     getInitialBag,
     getNumTilesInBag,
