@@ -11,7 +11,7 @@ router.get("/", (request, response) => {
 
 
 
-    playedCoords = [ {x: '6',y:'4' },{x: '7',y:'4' } , {x: '8',y:'4' } , {x: '9',y:'4' }  ]
+    playedCoords = [ {x: '6',y:'6' },{x: '6',y:'8' } , {x: '6',y:'9' } , {x: '6',y:'10' }  ]
 
 
     gameTiles.getWords(playedCoords, 1)
@@ -22,7 +22,7 @@ router.get("/", (request, response) => {
         }
     })
 
-    // game.placeTile(81,9,5,1)
+    // game.placeTile(5,10,7,1)
 
     // gameScore.getMultiplier(7,7)
     // .then(results => {
