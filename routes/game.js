@@ -99,11 +99,19 @@ router.post("/:id/nextTurn", (request, response) => {
   console.log(request.params);
   const gameID = request.params.id;
   console.log(gameID);
-  game.incrementGameTurn(gameID)
-  .then((gameTurn) => {
-    console.log("turn.......");
-    console.log(gameTurn);
+  game.getGameTurn(gameID)
+  .then(result => {
+    let gameTurn = result.current_turn;
+    console.log("current game turn");
+    console.log(gameTurn); 
+    game.updateGameTurn(gameID, gameTurn + 1)
+    .then(newGameTurn => {
+      console.log("please work");
+      console.log(newGameTurn);
+    })
   })
+  response
+  .status(200);
 })
 
 router.post("/:id/playWord",  (request, response)  => {

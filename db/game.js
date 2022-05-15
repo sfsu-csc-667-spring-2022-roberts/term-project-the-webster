@@ -168,16 +168,9 @@ const getGameUserOrder = (gameId, userId) => {
 }
 
 const updateGameTurn = (gameId, turn) => {
-  console.log("----gameID: " + gameId);
-  console.log("----turn: " + turn);
   return db.one(`UPDATE games SET current_turn=$1 WHERE id=$2 RETURNING current_turn`, [turn, gameId])
   .then((result) => {
-    console.log(result);
-    return result;
-  })
-  .catch(err => {
-    console.log("ERROR IN updateGameTurn in db/game.js");
-    return Promise.resolve(err);
+    return Promise.resolve(result);
   })
 }
 
@@ -192,21 +185,19 @@ const getGameTurn = (gameId) => {
   })
 }
 
-const incrementGameTurn = async (gameId) => {
-  let data = await getGameTurn(gameId)
+/*const incrementGameTurn = (gameId) => {
+  return getGameTurn(gameId)
   .then(results => {
     updateGameTurn(gameId, results.current_turn + 1)
     .then(result => {
-      console.log(result);
-      // return Promise.resolve(result);
+      return Promise.resolve(result);
     })
     .catch(err => {
       console.log("ERROR IN incrementGameTurn in db/game.js");
       return Promise.resolve(err);
     })
   })
-  return data;
-}
+}*/
 
 const getUserNameFromId = (userId) => {
   return db.one("SELECT username FROM users WHERE id=?", [userId])
