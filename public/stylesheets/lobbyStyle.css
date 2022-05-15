@@ -53,13 +53,9 @@ body {
     align-self: center;
     height: 10vh;
     width: 20vw;
-    margin-right: 20%;
-    margin-top: 5%;
-    margin-bottom: 5%;
     background-color: transparent;
     background-color: rgb(255, 255, 255);
     border-radius: 5px;
-    float: left;
     display: flex;
 }
 
