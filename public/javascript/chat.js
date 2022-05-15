@@ -6,7 +6,8 @@ console.log(socket)
     const input = document.getElementById('chat-text-input')
 
     const send_button = document.getElementById('send-text-game')
-    const chat_logs = document.getElementById('chat-logs')
+    const chat_logs_game = document.getElementById('chat-logs-game')
+    const chat_logs_lobby = document.getElementById('chat-logs-game')
 
        
     socket.emit('ping');
@@ -18,6 +19,7 @@ console.log(socket)
     send_button.addEventListener("click", async function() {
         const message = (input.value) 
         console.log("RIGHT CLICK HERE!");
+        console.log("ABOUT TO SEND " , message)
         if(message != ""){
          
             
@@ -65,10 +67,19 @@ console.log(socket)
    
 
     socket.on('message_back', data => {
-    
+      console.log("GOT MESSAGE BACK ", data)
         const _li = document.createElement('li')
         _li.textContent = data.sender + " : " + data.message
-        chat_logs.appendChild(_li)
+        console.log(_li)
+        if(data.destination.includes("game")){
+
+          chat_logs_game.appendChild(_li)
+        }
+        
+        if(data.destination.includes("lobby")){
+          chat_logs_lobby.appendChild(_li)
+        }
+        
            
     })
 
