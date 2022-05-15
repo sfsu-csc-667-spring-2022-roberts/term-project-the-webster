@@ -111,7 +111,16 @@ router.post("/:id/playWord",  (request, response)  => {
     // console.log("TILES ARE", tiles);
     gameTiles.getWords(tiles, id)
     .then(results => {
-      console.log("Results", results);
+      // console.log("Results", results);
+      if(!results) {
+        console.log("EMIT BAD SOCKET NO PLAY DIAGONAL");
+        return;
+      }
+      gameTiles.getWordsFromArray(results)
+      .then(results => {
+        console.log("AHHHHHHHHHHH", results);
+      })
+
     })
     // wordifyTiles(tiles).then(result => {
     //   word_placed = result.toLowerCase()

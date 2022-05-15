@@ -223,7 +223,7 @@ const getWords = (coordsArray, gameId) => {
             for (let tile of coordsArray) {
                 returnArr.push({ tile_id: Number(tile.id), x: Number(tile.x), y: Number(tile.y)})
             }
-            return returnArr;
+            return [returnArr];
         }
         
         arr1 = checkHorizontal(coordsArray, horizontalCoords)
@@ -251,6 +251,7 @@ const getWords = (coordsArray, gameId) => {
 }
 
 const getWordsFromArray = (coordsList, gameId) => {
+    console.log("coord list", coordsList);
 
     returnArr = [];
     wordsArr = [];
