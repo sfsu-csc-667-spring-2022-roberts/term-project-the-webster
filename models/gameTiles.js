@@ -132,6 +132,45 @@ const getCoordinatesFromTileId = (game_id, tile_id) => {
     })
 
 }
+
+
+const getScoreFromWords = (arr) => {
+    let words = [];
+    for (let word of arr) {
+        words.push(getWordWorth(word));
+    }
+    return Promise.all(words).then(results => {
+        score = 0;
+        for (let point of results) {
+            score += point;
+        }
+        return Promise.resolve(score);
+    })
+    .catch(err => {
+        console.log("ERROR IN models/gameTiles in getScoreFromWords");
+        Promise.resolve(err);
+    })
+}
+
+const getWordWorth = (word) => {
+    let letters = [];
+    let upperWord = word.toUpperCase();
+    for (let letter of upperWord.split('')) {
+        letters.push(getLetterWorth(letter));
+    }
+    return Promise.all(letters).then(results => {
+        worth = 0;
+        console.log("results", results);
+        for (let point of results) {
+            worth += point;
+        }
+        return Promise.resolve(worth);
+    })
+    .catch(err => {
+        console.log("ERROR IN models/gameTiles in getWorthWorth");
+        Promise.resolve(err);
+    })
+}
  
  
 // playedCoords = [{x:'7',y:'0'}, {x:'7',y:'1'},  {x:'7',y:'2'}, {x:'7',y:'3'}]
@@ -454,7 +493,8 @@ module.exports = {
  
     getCoordinatesFromTileId,
     getWords,
-    getWordsFromArray
+    getWordsFromArray,
+    getScoreFromWords
  
  
 }

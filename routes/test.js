@@ -12,17 +12,21 @@ router.get("/", (request, response) => {
     playedCoords = [ {tile_id: 11, x: '6',y:'6' },{tile_id: 13,x: '6',y:'8' } , {tile_id: 15,x: '6',y:'9' } , {tile_id: 4, x: '6',y:'10' }  ]
 
 
-    gameTiles.getWords(playedCoords, 1)
+    gameTiles.getScoreFromWords(["hello", "world", "beans"])
     .then(results => {
-        if(results != undefined)
-        {
-            // console.log(results);
-            gameTiles.getWordsFromArray(results)
-            .then(resut => {
-                console.log(resut);
-            });
-        }
+        console.log("SCORE TO ADD IS", results);
     })
+    // gameTiles.getWords(playedCoords, 1)
+    // .then(results => {
+    //     if(results != undefined)
+    //     {
+    //         // console.log(results);
+    //         gameTiles.getWordsFromArray(results)
+    //         .then(resut => {
+    //             console.log(resut);
+    //         });
+    //     }
+    // })
   
 })
 
