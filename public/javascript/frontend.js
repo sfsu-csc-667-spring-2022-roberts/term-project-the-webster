@@ -13,6 +13,7 @@ console.log("FRONT END ")
 
 
 
+
 // io.on("game-updated", (payload) => {
 //   // Update all the various game board divs, update player's tile rack,
 //   // provide some visual indication of current player
@@ -34,6 +35,22 @@ console.log("FRONT END ")
 // });
 
 let firstTurn = false;
+
+socket.on("turn-update", gameTurn => {
+  console.log("gameTurn----");  
+  console.log(gameTurn);
+  console.log(gameTurn.newGameTurn);
+})
+
+socket.on("first-turn", () => {
+  console.log("it is the first turn");
+  firstTurn = true;
+})
+
+socket.on("not-first-turn", () => {
+  console.log("it is NOT the first turn");
+  firstTurn = false;
+})
 
 const selection = [];
 const word = [];
@@ -179,22 +196,6 @@ socket.on("valid-word", async () => {
       console.log(error);
       Promise.reject(error)
     });
-})
-
-socket.on("turn-update", gameTurn => {
-  console.log("gameTurn----");  
-  console.log(gameTurn);
-  console.log(gameTurn.newGameTurn);
-})
-
-socket.on("first-turn", () => {
-  console.log("it is the first turn");
-  firstTurn = true;
-})
-
-socket.on("not-first-turn", () => {
-  console.log("it is NOT the first turn");
-  firstTurn = false;
 })
 
 function clearPlayedTiles(word) {

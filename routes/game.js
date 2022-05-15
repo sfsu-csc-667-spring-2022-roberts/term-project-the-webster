@@ -44,65 +44,75 @@ router.get("/:id", (request, response) => {
   } //HANDLE POTENTIAL ERROR FROM NO SESSION 
   let playerHand = [];
   var currentTurn;
+  var cells;
   console.log("in game route ", scoreBoard.getPlayers(id.id));
-  game.getEmptyGrid()
-    .then((cells) => {
-        game.getPlayerHand(gameId, userId)
-        .then(tileCount =>{
-        game.getGameTurn(gameId)
-          .then(gameTurn => {
-            currentTurn = gameTurn.current_turn;
-            console.log("gameturn");
-            console.log(currentTurn);
-            if (currentTurn == 0) {
-              console.log("----first turn ------");
-              request.app.get("io").to("room" + gameId).emit("first-turn");
-              if(tileCount.length == 0) {
+  game.getPlayerHand(gameId, userId)
+    .then(tileCount => {
+      console.log("tileCount: " + tileCount);
+      game.getGameTurn(gameId)
+        .then(gameTurn => {
+          currentTurn = gameTurn.current_turn;
+          console.log("gameturn");
+          console.log(currentTurn);
+          if (currentTurn == 0) {
+            console.log("----first turn ------");
+            request.app.get("io").to("room" + gameId).emit("first-turn");
+            if (tileCount.length == 0) {
               gameTiles.getInitialHand(gameId, userId);
-              }
-              // request.app.get("io").to("room" + gameId).emit("first-turn");
-            } else {
-              request.app.get("io").to("room" + gameId).emit("not-first-turn");
-              console.log("---- not the first turn ------");
             }
-          }).then(() => {
-            game.getGameUsers2(gameId)
-              .then(gameUsers => {
-                var currentUser;
-                for (i = 0; i < gameUsers.length; i++) {
-                  if (gameUsers[i].user_id == userId) {
-                    currentUser = gameUsers[i];
+            // request.app.get("io").to("room" + gameId).emit("first-turn");
+          } else {
+            request.app.get("io").to("room" + gameId).emit("not-first-turn");
+            console.log("---- not the first turn ------");
+          }
+        }).then(() => {
+          game.getEmptyGrid()
+            .then((cellsResult) => {
+              cells = cellsResult;
+              game.getGameUsers2(gameId)
+                .then(gameUsers => {
+                  var currentUser;
+                  console.log("gameUsers");
+                  console.log(gameUsers);
+                  console.log("---userID");
+                  console.log(userId);
+                  for (i = 0; i < gameUsers.length; i++) {
+                    if (gameUsers[i].user_id == userId) {
+                      currentUser = gameUsers[i];
+                    }
                   }
-                }
-                var turn = currentTurn == currentUser.order;
-                request.app.get("io").emit("", { turn : turn });
-              })
-          })
-          .then(() => {
-            gameTiles.parsePlayerHandForHTML(gameId, userId)
-              .then(playerTiles => {
-                playerHand = playerTiles;
-              }).then(() => {
-                response.render("game", {
-                  style: "gameStyle",
-                  boardSquares: cells,
-                  //tiles: playerHand,
-                  tiles: playerHand,
-                  tilesInBag: gameTiles.getNumTilesInBag,
-                  messages: chat.getMessages(),
-                  //isReady: true,
-                  //broken call 
-                  //players: scoreBoard.getPlayers(id.id),
+                  console.log("currentTurn: " + currentTurn);
+                  console.log("currentUser");
+                  console.log(currentUser);
+                  var turn = currentTurn == currentUser.order;
+                  request.app.get("io").emit("", { turn: turn });
+                })
+            })
+            .then(() => {
+              gameTiles.parsePlayerHandForHTML(gameId, userId)
+                .then(playerTiles => {
+                  playerHand = playerTiles;
+                }).then(() => {
+                  response.render("game", {
+                    style: "gameStyle",
+                    boardSquares: cells,
+                    //tiles: playerHand,
+                    tiles: playerHand,
+                    tilesInBag: gameTiles.getNumTilesInBag,
+                    messages: chat.getMessages(),
+                    //isReady: true,
+                    //broken call 
+                    //players: scoreBoard.getPlayers(id.id),
+                  });
                 });
-              });
-          })
-        Promise.resolve(1);
-      })
+            })
+          Promise.resolve(1);
+        })
     })
     .catch((error) => {
       Promise.reject(error);
     });
-});
+})
 
 router.get("/:id/join", (request, response) => {
   console.log("join  ", request.params.id);
@@ -143,7 +153,7 @@ router.post("/:id/nextTurn", (request, response) => {
           let gameTurn = result.current_turn;
           console.log("current game turn");
           console.log(gameTurn);
-          game.updateGameTurn(gameID, (gameTurn + 1) >  gameUsers.length ? 1 : (gameTurn + 1))
+          game.updateGameTurn(gameID, (gameTurn + 1) > gameUsers.length ? 1 : (gameTurn + 1))
             .then(newGameTurn => {
               console.log("please work");
               console.log(newGameTurn);
