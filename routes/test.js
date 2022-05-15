@@ -22,7 +22,15 @@ router.get("/", (request, response) => {
 
  
 // <<<<<<< socket_rooms
+ 
+    gameTiles.getInitialHand(3,1).then((res) => {
+        console.log("res: " + res);
+    }).catch((err) => {
+        console.log(err);
+    })
+ 
   
+ 
 // =======
 //     gameScore.getMultiplier(7,7)
 //     .then(results => {
