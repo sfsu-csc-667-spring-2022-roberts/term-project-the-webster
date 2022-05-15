@@ -9,11 +9,23 @@ const gameScore = require("../models/scoreBoard");
 
 router.get("/", (request, response) => {
 
-    gameTiles.getInitialHand(4,4).then((res) => {
-        console.log("res: " + res);
-    }).catch((err) => {
-        console.log(err);
-    });
+    // gameTiles.getInitialHand(4,4).then((res) => {
+    //     console.log("res: " + res);
+    // }).catch((err) => {
+    //     console.log(err);
+    // });
+    // game.getGameUsers2(22).then(results=> {
+    //     console.log(results); 
+    // }).catch(err => {
+    //     console.log(err); 
+    // })
+    let test =[];
+    gameScore.getPlayersScore(22).then((scores=> {
+        test = scores;
+        console.log("in Test", test)
+    }));
+    console.log("in Test", test)
+        
 
   
   

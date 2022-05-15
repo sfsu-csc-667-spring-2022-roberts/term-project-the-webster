@@ -16,21 +16,19 @@ const getPlayers = async (gameId) => {
     return list;
 };
 
-
-const getPlayersScore = (game_id, game_user_id) => {
-  return db.one(`SELECT score FROM game_users WHERE game_id=$1 AND user_id=$2`, [game_id,game_user_id])
-  .then(results => {
-    if(results) {
-      return Promise.resolve(results);
+const getPlayersScore = (gameId) => {
+  return game.getGameUsers2(gameId).then(results=> {
+    //console.log(results); 
+    scores = [];
+    for(i = 0; i < results.length; i++){
+      scores.push(results[i].score);
     }
-    else {
-      return Promise.resolve(-1);
-    }
-  })
-  .catch((err)=> {
-    Promise.resolve(err);
-  })
-};
+    console.log("scoreboard.getplayersScore ", scores); 
+    return scores;
+}).catch(err => {
+    console.log(err); 
+})
+}
 
 const updatePlayerScore = (game_id, game_user_id, score) => {
   return getPlayersScore(game_id, game_user_id)
