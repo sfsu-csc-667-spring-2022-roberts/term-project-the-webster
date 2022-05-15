@@ -44,24 +44,41 @@ router.get("/:id", (request, response) => {
   } //HANDLE POTENTIAL ERROR FROM NO SESSION 
   let gameTiles = [];
   let playerHand = [];
+  var currentTurn;
   console.log("in game route ", scoreBoard.getPlayers(id.id));
   game.getEmptyGrid()
     .then((cells) => {
       game.getGameTurn(gameId)
         .then(gameTurn => {
+          currentTurn = gameTurn;
+          console.log("gameturn");
+          console.log(gameTurn);
           if (gameTurn == 0) {
-            request.app.get("io").emit("first-turn")
-          } else {
-
+            console.log("----first turn ------");
+            request.app.get("io").to("room" + gameId).emit("first-turn");
           }
         }).then(() => {
+          game.getGameUsers2(gameId)
+            .then(gameUsers => {
+              console.log("----gameUsers----");
+              console.log(gameUsers);
+              var currentUser;
+              for (i = 0; i < gameUsers.length; i++) {
+                if (gameUsers[i].user_id == userId) {
+                  currentUser = gameUsers[i];
+                }
+              }
+              if (chosen(currentTurn) == currentUser.order) {
+
+              }
+            })
+        })
+        .then(() => {
           gameTilesModel.parsePlayerHandForHTML(gameId, userId)
             .then(playerTiles => {
               playerHand = playerTiles;
               console.log(` PLAYER HAND = ${playerHand}`)
             }).then(() => {
-            })
-            .then(useless => {
               response.render("game", {
                 style: "gameStyle",
                 boardSquares: cells,
@@ -109,16 +126,25 @@ router.post("/:id/nextTurn", (request, response) => {
   console.log(request.params);
   const gameID = request.params.id;
   console.log(gameID);
-  game.getGameTurn(gameID)
-    .then(result => {
-      let gameTurn = result.current_turn;
-      console.log("current game turn");
-      console.log(gameTurn);
-      game.updateGameTurn(gameID, gameTurn + 1)
-        .then(newGameTurn => {
-          console.log("please work");
-          console.log(newGameTurn);
-          request.app.get("io").sockets.to("room" + gameID).emit("turn-update", { newGameTurn: newGameTurn });
+  var gameUsers;
+  game.getGameUsers2(gameID)
+    .then(users => {
+      gameUsers = users;
+      console.log("--- users ----");
+      console.log(gameUsers);
+    })
+    .then(() => {
+      game.getGameTurn(gameID)
+        .then(result => {
+          let gameTurn = result.current_turn;
+          console.log("current game turn");
+          console.log(gameTurn);
+          game.updateGameTurn(gameID, (gameTurn + 1) >  gameUsers.length ? 1 : (gameTurn + 1))
+            .then(newGameTurn => {
+              console.log("please work");
+              console.log(newGameTurn);
+              request.app.get("io").sockets.to("room" + gameID).emit("turn-update", { newGameTurn: newGameTurn });
+            })
         })
     })
   response
@@ -332,6 +358,8 @@ async function makeTilesInPlay(tiles, gameId) {
       console.log(err);
     })
 }
+
+
 
 
 module.exports = router;

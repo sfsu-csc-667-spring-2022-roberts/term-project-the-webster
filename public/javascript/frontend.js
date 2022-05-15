@@ -33,7 +33,7 @@ console.log("FRONT END ")
 //   provide some visual indication of current player
 // });
 
-const firstTurn = false;
+let firstTurn = false;
 
 const selection = [];
 const word = [];
@@ -172,7 +172,8 @@ socket.on("valid-word", async () => {
     });
 })
 
-socket.on("first-turn", async () => {
+socket.on("first-turn", () => {
+  console.log("first turn set");
   firstTurn = true;
   console.log(firstTurn);
 })
