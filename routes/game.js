@@ -12,7 +12,7 @@ const gameTiles = require("../models/gameTiles");
 const session = require("express-session");
 // const frontend = require("../public/javascript/frontend")
 
-const gameTilesModel = require("../models/gameTiles");
+// const gameTilesModel = require("../models/gameTiles");
 const { multi } = require("../db");
 
 
@@ -42,7 +42,6 @@ router.get("/:id", (request, response) => {
     var userId = request.session.user_id;
     var gameId = request.params.id;
   } //HANDLE POTENTIAL ERROR FROM NO SESSION 
-  let gameTiles = [];
   let playerHand = [];
   var currentTurn;
   console.log("in game route ", scoreBoard.getPlayers(id.id));
@@ -50,12 +49,17 @@ router.get("/:id", (request, response) => {
     .then((cells) => {
       game.getGameTurn(gameId)
         .then(gameTurn => {
-          currentTurn = gameTurn;
+          currentTurn = gameTurn.current_turn;
           console.log("gameturn");
-          console.log(gameTurn);
-          if (gameTurn == 0) {
+          console.log(currentTurn);
+          if (currentTurn == 0) {
             console.log("----first turn ------");
             request.app.get("io").to("room" + gameId).emit("first-turn");
+            gameTiles.getInitialHand(gameId, userId);
+            // request.app.get("io").to("room" + gameId).emit("first-turn");
+            // ask jack about this
+          } else {
+            request.app.get("io").to("room" + gameId).emit("not-first-turn");
           }
         }).then(() => {
           game.getGameUsers2(gameId)
@@ -68,13 +72,12 @@ router.get("/:id", (request, response) => {
                   currentUser = gameUsers[i];
                 }
               }
-              if (chosen(currentTurn) == currentUser.order) {
-
-              }
+              var turn = currentTurn == currentUser.order;
+              request.app.get("io").emit("", { turn : turn });
             })
         })
         .then(() => {
-          gameTilesModel.parsePlayerHandForHTML(gameId, userId)
+          gameTiles.parsePlayerHandForHTML(gameId, userId)
             .then(playerTiles => {
               playerHand = playerTiles;
               console.log(` PLAYER HAND = ${playerHand}`)

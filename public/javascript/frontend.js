@@ -97,6 +97,15 @@ document.getElementById("game-board").addEventListener("click", (event) => {
     selection.length === 1
   ) {
     const { x, y } = event.target.dataset;
+
+    console.log("x: " + x);
+    console.log("y: " + y);
+    console.log("firstTurn: " + firstTurn);
+
+    if ((firstTurn == true) && (x != 7 || y != 7))   {
+      alert("Tile must be placed in center");
+      return;
+    }
     // Record letters stored at this coordinate
     if (slotTaken(x, y)) {
       alert("A tile has been placed in that slot.");
@@ -172,16 +181,20 @@ socket.on("valid-word", async () => {
     });
 })
 
-socket.on("first-turn", () => {
-  console.log("first turn set");
-  firstTurn = true;
-  console.log(firstTurn);
-})
-
 socket.on("turn-update", gameTurn => {
-  console.log("gameTurn----");
+  console.log("gameTurn----");  
   console.log(gameTurn);
   console.log(gameTurn.newGameTurn);
+})
+
+socket.on("first-turn", () => {
+  console.log("it is the first turn");
+  firstTurn = true;
+})
+
+socket.on("not-first-turn", () => {
+  console.log("it is NOT the first turn");
+  firstTurn = false;
 })
 
 function clearPlayedTiles(word) {

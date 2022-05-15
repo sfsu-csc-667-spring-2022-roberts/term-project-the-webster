@@ -366,13 +366,9 @@ module.exports = {
     getNumTilesInBag,
     getLetterWorth,
     getInitialHand,
- 
     getLetterFromTileId,
     getCoordinatesFromTileId,
     parsePlayerHandForHTML,
- 
     getCoordinatesFromTileId,
     getWords
- 
- 
 }
