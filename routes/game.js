@@ -106,49 +106,54 @@ router.post("/:id/playWord",  (request, response)  => {
    
     const res_wordData  = { wordData }
 
-    const tiles = res_wordData["wordData"]
-    wordifyTiles(tiles).then(result => {
-      word_placed = result.toLowerCase()
-
-        gameBoard.isWordValid(word_placed)
-        .then(result => {
-          console.log("IS WORD VALID ? " + result)
-          if(result == true){
-           getPointsPerWord(tiles)
-            .then(result => {
-              console.log(word_placed + " is worth " +  result + " points.")
-             areTilesAdjacent(tiles)
-              .then(result => {
-
-                 if(result){
-                   console.log("  WORD IS VALID ")
-                   console.log("b4 EMITTING VALID WORD")                   
-                   request.app.get("io").emit("valid-word")
-                   console.log("AFTER EMITTING VALID WORD")
-                 }
-                 else{
-                   console.log( " CANNOT PLAY THAT WORD! ")
-                 }
-
-
-              }).catch(err => {
-                console.log("ERROR" + err)
-              })
-          
-
-            }).catch(err => {
-              console.log("ERR " + err)
-            })
-          }else{
-            console.log( " CANNOT PLAY THAT WORD! ")
-          }
-        }).catch(err => {
-          console.log("ERROR " + err)
-        })
-
-    }).catch(err => {
-      console.log("ERROR!! " + err)
+    const tiles = res_wordData["wordData"];
+    // console.log("RES WORD DATA", res_wordData);
+    // console.log("TILES ARE", tiles);
+    gameTiles.getWords(tiles, id)
+    .then(results => {
+      console.log("Results", results);
     })
+    // wordifyTiles(tiles).then(result => {
+    //   word_placed = result.toLowerCase()
+
+        // gameBoard.isWordValid(word_placed)
+        // .then(result => {
+        //   console.log("IS WORD VALID ? " + result)
+        //   if(result == true){
+        //    getPointsPerWord(tiles)
+        //     .then(result => {
+        //       console.log(word_placed + " is worth " +  result + " points.")
+            //  areTilesAdjacent(tiles)
+              // .then(result => {
+
+              //    if(result){
+              //      console.log("  WORD IS VALID ")
+              //      console.log("b4 EMITTING VALID WORD")                   
+              //      request.app.get("io").emit("valid-word")
+              //      console.log("AFTER EMITTING VALID WORD")
+              //    }
+              //    else{
+              //      console.log( " CANNOT PLAY THAT WORD! ")
+              //    }
+
+
+              // }).catch(err => {
+              //   console.log("ERROR" + err)
+              // })
+        
+    //         }).catch(err => {
+    //           console.log("ERR " + err)
+    //         })
+    //       }else{
+    //         console.log( " CANNOT PLAY THAT WORD! ")
+    //       }
+    //     }).catch(err => {
+    //       console.log("ERROR " + err)
+    //     })
+
+    // }).catch(err => {
+    //   console.log("ERROR!! " + err)
+    // })
  
 
     

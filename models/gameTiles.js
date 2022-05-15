@@ -135,6 +135,7 @@ const getCoordinatesFromTileId = (game_id, tile_id) => {
 
 
 const getScoreFromWords = (arr) => {
+
     let words = [];
     for (let word of arr) {
         words.push(getWordWorth(word));
@@ -214,6 +215,17 @@ const getWords = (coordsArray, gameId) => {
                 }
             }
         }
+
+
+        //for the case of first turn where there are no tiles in the board
+        if(horizontalCoords.length == 0 && verticalCoords.length == 0) {
+            returnArr = [];
+            for (let tile of coordsArray) {
+                returnArr.push({ tile_id: Number(tile.id), x: Number(tile.x), y: Number(tile.y)})
+            }
+            return returnArr;
+        }
+        
         arr1 = checkHorizontal(coordsArray, horizontalCoords)
         arr2 = checkVertical(coordsArray, verticalCoords)
 
@@ -322,7 +334,7 @@ function checkHorizontal(playedTiles, horizontalRow) {
 
     playingCoordinates = []
     for ( const tile of playedTiles){
-        playingCoordinates.push( {tile_id: tile.tile_id, x:Number((tile.x)),y: Number((tile.y))} )
+        playingCoordinates.push( {tile_id: Number(tile.id), x:Number((tile.x)),y: Number((tile.y))} )
     }
     for(i = 0; i < playingCoordinates.length;i++) {
         leftSide =[];
@@ -393,7 +405,7 @@ function checkVertical(playedTiles, verticalRow) {
     }
     playingCoordinates = []
     for ( const tile of playedTiles){
-        playingCoordinates.push( {tile_id: tile.tile_id , x:Number((tile.x)),y: Number((tile.y))} )
+        playingCoordinates.push( {tile_id: Number(tile.id) , x:Number((tile.x)),y: Number((tile.y))} )
     }
 
     for(i = 0; i < playingCoordinates.length;i++) {
