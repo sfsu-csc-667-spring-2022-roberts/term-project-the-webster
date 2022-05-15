@@ -36,7 +36,7 @@ console.log("FRONT END ")
 
 const selection = [];
 
-const word = [];
+let word = [];
 const slotTaken = (x, y) => {
   //easiest way ensure valid turns is to use this 
   //with the socket data of what is being used already 
@@ -60,12 +60,18 @@ const submitWord = async () => {
     credentials: "include",
   })
     .then((response) => {
-
+      console.log("SENT TILES ", JSON.stringify(word))
+      console.log("WORD [] length = ", word.length)
+      word = []
+      console.log("WORD ARRAY LENGTH AFTER CLEARING --> ", word.length, "WORD -> ", word )
+      
       console.log("returned response = ")
       return response.json()
 
     })  
     .catch((error) => {
+      word = []
+      console.log("ERROR!!! ❌ WORD ARRAY LENGTH AFTER CLEARING --> ", word.length, "WORD -> ", word )
       console.log(error);
       Promise.reject(error)
     });
