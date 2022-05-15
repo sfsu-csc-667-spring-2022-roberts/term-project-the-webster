@@ -12,9 +12,8 @@ router.get("/", (request, response) => {
   console.log("inside of lobby page ")
 
   if (request.session) {
-    console.log("valid session")
-    console.log("session ID lobby", request.sessionID)
-    console.log("user ID lobby", request.session.user_id)
+ 
+ 
     response.render('lobby', {
       style: 'lobbyStyle',
       // messages: results
