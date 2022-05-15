@@ -1,0 +1,27 @@
+<section class="chat-messages-lobby">
+        <ul class="chat-logs-lobby" id="chat-logs">
+            {{#each this.messageArray}}
+            <div class="message-lobby">
+                <p class="message-header-lobby"> {{this.id}} | @ {{this.timestamp}} </p>
+                <p class="message-content-lobby"> {{this.content}} </p>
+            </div>
+
+            <br class="message-break-lobby">
+            {{/each}}
+        </ul>
+        <div class="chat-incoming-lobby">
+            <div class="chat-outgoing-lobby">
+                <div class="chat-bar-lobby">
+                    <input type="text" id="chat-text-input" class="chat-text-lobby" placeholder="Lets go Dr.Suess">
+                    </input>
+                </div>
+                <div class="chat-send-lobby">
+                    <button id="send-text"> Send</button>
+ 
+                </div>
+            </div>
+        </div>
+ 
+</section>
+
+

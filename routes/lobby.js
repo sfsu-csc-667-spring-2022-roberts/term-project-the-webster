@@ -3,18 +3,17 @@ const router = express.Router();
 const db = require('../db');
 const session = require('express-session');
 
- 
+
 const Game = require("../db/game");
- 
+
 
 router.get("/", (request, response) => {
 
   console.log("inside of lobby page ")
 
   if (request.session) {
-    console.log("valid session")
-    console.log(request.sessionID)
-    console.log(request.session.user_id)
+ 
+ 
     response.render('lobby', {
       style: 'lobbyStyle',
       // messages: results
@@ -26,40 +25,47 @@ router.get("/", (request, response) => {
 
 router.get("/:id", (request, response) => {
   let gameID = request.params.id;
-  let userID = request.session.user_id; 
-  
+  let userID = request.session.user_id;
+
   console.log("inside lobby / id router ")
-  
+
   Game.getGameById(gameID)
-  .then((game) => {
-    let inLobby = game.in_lobby;
-    if (inLobby == true) {
-      Game.getGameUsers2(gameID)
-      .then((gameUsers) => {
-        for (i = 0; i < gameUsers.length; i++) {
-          if (gameUsers[i].user_id == userID) {
-            console.log("user already exists, so redirecting to browseLobby");
-            response.redirect('/browseLobby');
-            return;
-          }
-        }
-        Game.joinGame(gameID, userID)
-        .then(() => {
-          console.log(`inserting ${userID} into game`);
-          Game.getGameUsers2(gameID)
+    .then((game) => {
+      let inLobby = game.in_lobby;
+      if (inLobby == true) {
+        Game.getGameUsers2(gameID)
           .then((gameUsers) => {
-            console.log("getting gameUsers2 for a 2nd and final time before rendering...")
-            response.render('lobby', {
-              style: 'lobbyStyle',
-              players: gameUsers,
-              currUser: userID,
-              gameId: gameID
-            })
+            for (i = 0; i < gameUsers.length; i++) {
+              if (gameUsers[i].user_id == userID) {
+                console.log("user already exists, so redirecting to browseLobby");
+                response.redirect('/browseLobby');
+                return;
+              }
+            }
+            var highestOrder = 0;
+            for (i = 0; i < gameUsers.length; i++) {
+              highestOrder = Math.max(highestOrder, gameUsers[i].order);
+            }
+            Game.joinGame(gameID, userID)
+              .then(() => {
+                Game.updateGameUserOrder(gameID, userID, highestOrder + 1)
+                  .then(() => {
+                    console.log(`inserting ${userID} into game`);
+                    Game.getGameUsers2(gameID)
+                      .then((gameUsers) => {
+                        console.log("getting gameUsers2 for a 2nd and final time before rendering...")
+                        response.render('lobby', {
+                          style: 'lobbyStyle',
+                          players: gameUsers,
+                          currUser: userID,
+                          gameId: gameID
+                        })
+                      })
+                  })
+              })
           })
-        })
-      })
-    }
-  })
+      }
+    })
 })
 
 /*router.get("/:id", (request, response) => {
@@ -90,14 +96,14 @@ router.get("/:id", (request, response) => {
 
 router.get("/leave/:id", (request, response) => {
   if (request.session) {
-      let userId = request.session.user_id;
-      let gameId = request.params.id;
-      Game.removeFromLobby(gameId, userId)
+    let userId = request.session.user_id;
+    let gameId = request.params.id;
+    Game.removeFromLobby(gameId, userId)
       .then(() => {
-          response.redirect("/browseLobby");
+        response.redirect("/browseLobby");
       })
   } else {
-      console.log("NO SESSION");
+    console.log("NO SESSION");
   }
   // Game.removeFromLobby(request.session.id)
 })

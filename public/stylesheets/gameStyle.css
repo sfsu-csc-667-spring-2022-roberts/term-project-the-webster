@@ -7,11 +7,11 @@ html{
    padding:0;
    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
  }
-
  ul {
     margin: 0;
     padding: 0; 
 }
+
 
 /****************************/
 /*     Game Board style    */
@@ -246,10 +246,10 @@ html{
 }
 
 /****************************/
-/*    Chat partial style    */
+/* Chat partial game style  */
 /****************************/
 
-.chat-messages {
+.chat-messages-game {
     grid-area:chat;
     display:flex;
     flex-direction: column;
@@ -313,7 +313,7 @@ html{
     background-color: rgb(78, 78, 78);
  }
  
-.chat-incoming{
+.chat-incoming-game{
     display:flex;
     flex-direction: row;
     align-items: justify;
@@ -326,7 +326,7 @@ html{
     border-top-right-radius: 0%;
 }
 
-.chat-logs{
+.chat-logs-game{
     height: 90%;
     width: 100%;
     margin:auto;
@@ -343,7 +343,7 @@ html{
     display: flex;
 }
   
-.message{
+.message-game{
     border-radius: 5px;
     border-style: solid;
     border-width: 1px;
@@ -353,25 +353,25 @@ html{
     height:10vh;
 }
   
-.message-break{
+.message-break-game{
     height: 20%;
 }
 
-.message-header{
+.message-header-game{
     padding-left: 5px;
     padding-top: 0%;
     padding-bottom: 0%;
     margin: 0%;     
 }
 
-.message-content{
+.message-content-game{
     padding-left: 10px;
     padding-top: 0%;
     padding-bottom: 0%;
     margin: 0%;
 }
 
-.chat-outgoing{
+.chat-outgoing-game{
     display:flex;
     flex-direction: row;
     align-items: justify;
@@ -394,7 +394,7 @@ html{
     border-style: none;
 }
 
-.chat-bar {
+.chat-bar-game {
     align-self: flex-start ; 
     display: flex;
     flex-wrap:nowrap;
@@ -407,7 +407,7 @@ html{
     margin: auto;
 }  
 
-.chat-send {
+.chat-send-game {
     display: flex;
     flex-direction:column;
     flex-wrap:nowrap;
@@ -419,7 +419,7 @@ html{
     background-color: rgb(31, 194, 39);
 }
     
-#send-text {
+#send-text-game {
     justify-content: center;
     align-items: center;
     text-align:center;
@@ -431,11 +431,11 @@ html{
     background-color: rgba(0, 128, 8, .10 );
 }
   
-#send-text:hover {
+#send-text-game:hover {
     cursor: pointer;
 }
     
-#chat-text {
+#chat-text-game {
     justify-content: left;
     align-items: left;
     text-align: left;

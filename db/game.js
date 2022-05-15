@@ -2,7 +2,7 @@ const db = require("./index");
 
 
 
-const getEmptyGrid = () => db.any("SELECT * FROM game_grid ORDER BY x, y ASC");
+const getEmptyGrid = () => db.any("SELECT * FROM game_grid ORDER BY y, x ASC");
 
 const createGame = (userId) =>
   db
@@ -125,20 +125,6 @@ const getAllGameInfo = () => {
   return db.any('SELECT * FROM games INNER JOIN game_users ON games.id = game_users.game_id INNER JOIN users ON game_users.user_id = users.id')
 }
 
-const getInitialHand = (gameId, playerId) => {
-  hand = Array();
-  for(i = 0; i < 7; i++) {
-      game.drawTile(gameId, playerId)
-      .then(results => {
-          console.log(results);
-          hand.push(results[0]);
-      }).catch((err) => {
-          console.log(err);
-      })
-  }
-  return hand;
-}
-
 const getGameState = (gameId) => {
   gameState = [];
   return db.any(`SELECT * FROM game_tiles WHERE game_id=$1`, [gameId])
@@ -158,7 +144,6 @@ const getGameState = (gameId) => {
       })
     })
   })
-
 }
 
 const updateGameUserOrder = (gameId, userId, order) => {
@@ -215,7 +200,12 @@ const incrementGameTurn = (gameId) => {
   })
 }
 
-
+const getUserNameFromId = (userId) => {
+  return db.one("SELECT username FROM users WHERE id=?", [userId])
+  .then(result => {
+    return Promise.resolve(result); 
+  })
+}
 
 
 module.exports = {
@@ -229,7 +219,6 @@ module.exports = {
   getGames,
   getGameUsers,
   getAllGameInfo,
-  getInitialHand,
   getGameById,
   getGameUsers2,
   removeFromLobby,
@@ -238,6 +227,6 @@ module.exports = {
   getGameUserOrder,
   updateGameTurn,
   incrementGameTurn,
-  getGameTurn
-
+  getGameTurn,
+  getUserNameFromId,
 };
