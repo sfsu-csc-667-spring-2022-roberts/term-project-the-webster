@@ -1,4 +1,6 @@
  
+console.log('INSIDE OF CHAT')
+console.log(socket)
 
     const input = document.getElementById('chat-text-input')
 
@@ -8,6 +10,9 @@
        
     socket.emit('ping');
         
+    socket.on('testEVENT', ()=> {
+        console.log('emit worked from .www')
+    })
 
     send_button.addEventListener("click", async function() {
         const message = (input.value) 
@@ -17,15 +22,26 @@
             
           const x = await getUserInput()
           
-          
+         let  url = window.location.href
+          console.log("URL IS --> " + url)
+
+            if(url.includes('/game')){
+                url = 'game';
+            }else if(url.includes('lobby')){
+                url = 'lobby';
+            }
+
+
           socket.emit('chat-message', {
               message: message, 
-              sender: x.username
+              sender: x.username, 
+              destination: url
           })
           }
 
     });
       
+
     async function getUserInput(){
           
       return await fetch('/userInfo').then((result) => {

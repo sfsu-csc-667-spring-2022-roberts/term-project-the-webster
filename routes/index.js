@@ -2,10 +2,13 @@ var express = require('express');
 const { isWordValid } = require('../models/gameBoard');
 var router = express.Router();
 const db = require("../db/index");
+// const { rawListeners } = require('../app');
 
 /* LANDING PAGE . */
 
 router.get('/', function(req, res, next) {
+  req.app.get("io").emit('testEVENT')
+
   res.render('index', { title: 'Team Webster Scrabble' });
   // isWordValid("ab"),
   // isWordValid("ac"),

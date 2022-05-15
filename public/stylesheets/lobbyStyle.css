@@ -92,10 +92,10 @@ body {
 }
 
 /****************************/
-/*    Chat partial style    */
+/* Chat lobby partial style */
 /****************************/
 
-.chat-messages {
+.chat-message {
     grid-area: chat;
     display: flex;
     flex-direction: column;
@@ -106,7 +106,7 @@ body {
     border-radius: 5px;
 }
 
-.chat-incoming {
+.chat-incoming-lobby {
     display: flex;
     flex-direction: row;
     align-items: justify;
@@ -114,14 +114,14 @@ body {
     height: 90%;
 }
 
-.chat-logs {
+.chat-logs-lobby {
     height: 90%;
     width: 100%;
     padding-left: 3%;
     padding: 20px;
 }
 
-.chat-outgoing {
+.chat-outgoing-lobby {
     display: flex;
     flex-direction: row;
     align-items: justify;
@@ -132,7 +132,7 @@ body {
     padding-right: 3%;
 }
 
-.chat-bar {
+.chat-bar-lobby {
     align-self: flex-start;
     display: flex;
     flex-wrap: nowrap;
@@ -145,7 +145,7 @@ body {
     margin: auto;
 }
 
-.chat-text {
+.chat-text-lobby {
     font-size: medium;
     width: 90%;
     height: 90%;
@@ -155,7 +155,7 @@ body {
     border-style: none;
 }
 
-.chat-send {
+.chat-send-lobby {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
@@ -192,25 +192,25 @@ body {
     font-size: 18px;
 }
 
-.message {
+.message-lobby {
     border-radius: 5px;
     border-style: solid;
     border-width: 1px;
     margin: auto;
 }
 
-.message-break {
+.message-break-lobby {
     height: 20%;
 }
 
-.message-header {
+.message-header-lobby {
     padding-left: 5px;
     padding-top: 0%;
     padding-bottom: 0%;
     margin: 0%;
 }
 
-.message-content {
+.message-content-lobby {
     padding-left: 10px;
     padding-top: 0%;
     padding-bottom: 0%;
