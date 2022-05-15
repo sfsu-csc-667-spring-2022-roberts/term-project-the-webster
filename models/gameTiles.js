@@ -161,7 +161,7 @@ const getWordWorth = (word) => {
     }
     return Promise.all(letters).then(results => {
         worth = 0;
-        console.log("results", results);
+        // console.log("results", results);
         for (let point of results) {
             worth += point;
         }
@@ -184,12 +184,47 @@ const getWordWorth = (word) => {
 // playedCoords = [{x:'11',y:'6'}, {x:'11',y:'8'},  {x:'11',y:'9'}]
 // horizontalCoords = [{x:'11',y:'0'}, {x:'11',y:'7'},{x:'11',y:'14'} ]
 
-const getWords = (coordsArray, gameId) => {
+const getWords = (coordsArrays, gameId) => {
     //verify horiozntal XOR very vertical
-    if ( !((verifyHorizontal(coordsArray) && !verifyVertical(coordsArray)) || (!verifyHorizontal(coordsArray) && verifyVertical(coordsArray)))){
-        
+    if ( !((verifyHorizontal(coordsArrays) && !verifyVertical(coordsArrays)) || (!verifyHorizontal(coordsArrays) && verifyVertical(coordsArrays)))){
+
         return false;
     }
+
+
+    let x_set = new Set();
+    let y_set = new Set();
+    let x_same = false
+    let y_same = false
+    for ( const tile of coordsArrays ){
+        x_set.add(tile.x)
+        y_set.add(tile.y)
+    }
+    var coordsArray = [];
+    
+    if(x_set.size == 1){
+        x_same = true
+    }
+    if(y_set.size == 1){
+        y_same = true
+    }
+
+    if (x_same) {
+
+        let newListX = sortJsonByY(coordsArrays)
+        coordsArray = newListX
+    }
+    if( y_same){
+       let newListY = sortJsonByX(coordsArrays)
+       coordsArray = newListY;
+
+    }
+
+    console.log("COORDS ARRAY AFTER", coordsArray)
+    
+    
+   
+
 
     //get all tiles in play
     return game.getInPlayTiles(gameId)
@@ -250,7 +285,7 @@ const getWords = (coordsArray, gameId) => {
     })
 }
 
-const getWordsFromArray = (coordsList, gameId) => {
+const getWordsFromArray = (coordsList) => {
     console.log("coord list", coordsList);
 
     returnArr = [];

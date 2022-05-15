@@ -119,6 +119,15 @@ router.post("/:id/playWord",  (request, response)  => {
       gameTiles.getWordsFromArray(results)
       .then(results => {
         console.log("AHHHHHHHHHHH", results);
+        if(!checkValidWords(results)) {
+          console.log("EMIT BAD SOCKET WORDS ARE NOT VALID");
+          return;
+        }
+        gameTiles.getScoreFromWords(results)
+        .then(results => {
+          console.log("SCORE FROM WORDS", results);
+        })
+
       })
 
     })
@@ -179,6 +188,25 @@ router.post("/:id/playWord",  (request, response)  => {
  
  
 });
+
+function checkValidWords(wordList){
+  let valid_words = []
+
+  for ( const x of wordList){
+      if(gameBoard.isWordValid(x)){
+          valid_words.push(x)
+      }
+  }
+  if(valid_words.length == wordList.length){
+      // console.log(" VALID MOVE ")
+      return true;
+  }
+  else{
+      // console.log(" INVALID WORD")
+      return false;
+  }
+
+}
  
 
 async function wordifyTiles(tiles){

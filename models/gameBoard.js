@@ -8,7 +8,7 @@ fs.readFile(path, 'utf8', function (err, data) {
     dataArray = data.split(/\r?\n/);
   })
 
-const isWordValid = async (word) => {
+const isWordValid = (word) => {
     console.log("path: " + path);
     var test = dataArray.includes(word);
     console.log(word + " : " + test);

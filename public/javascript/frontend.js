@@ -35,8 +35,8 @@ console.log("FRONT END ")
 
 
 const selection = [];
-const word = [];
 
+const word = [];
 const slotTaken = (x, y) => {
   //easiest way ensure valid turns is to use this 
   //with the socket data of what is being used already 
@@ -46,6 +46,7 @@ const slotTaken = (x, y) => {
 };
 
 const submitWord = async () => {
+  
   if (word.length === 0) {
     alert("You must enter a word.");
     return;
