@@ -9,7 +9,7 @@ const gameScore = require("../models/scoreBoard");
 
 router.get("/", (request, response) => {
 
-    gameTiles.getInitialHand(4,4).then((res) => {
+    gameTiles.getInitialHand(1,1).then((res) => {
         console.log("res: " + res);
     }).catch((err) => {
         console.log(err);

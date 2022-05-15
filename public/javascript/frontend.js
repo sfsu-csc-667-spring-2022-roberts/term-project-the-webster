@@ -50,7 +50,7 @@ const submitWord = async () => {
     alert("You must enter a word.");
     return;
   }
-   console.log(`${window.location.pathname}/playWord`)
+  console.log(`${window.location.pathname}/playWord`)
 
   return await fetch(`${window.location.pathname}/playWord`, {
     body: JSON.stringify(word),
@@ -63,7 +63,7 @@ const submitWord = async () => {
       console.log("returned response = ")
       return response.json()
 
-    })  
+    })
     .catch((error) => {
       console.log(error);
       Promise.reject(error)
@@ -75,16 +75,16 @@ document
   .getElementById("play-word-button")
   .addEventListener("click", (event) => {
 
-   submitWord().then(result => {
-     console.log("before RESULT")
-     console.log(result)
-     console.log("after RESULT")
-   
+    submitWord().then(result => {
+      console.log("before RESULT")
+      console.log(result)
+      console.log("after RESULT")
+
     })
-   .catch(err =>{
-     console.log(err)
-   });
-    
+      .catch(err => {
+        console.log(err)
+      });
+
 
 
   });
@@ -112,7 +112,7 @@ document.getElementById("game-board").addEventListener("click", (event) => {
 
     letterP.innerText = selectedTile.children[0].innerText;
     valueP.innerText = selectedTile.children[1].innerText;
-   
+
     event.target.appendChild(letterP);
     event.target.appendChild(valueP);
     event.target.classList.add("played-square");
@@ -148,15 +148,31 @@ document
     }
   });
 
- 
-  
-socket.on("valid-word" , ()=> {
 
-   alert("VALID WORD PLAYED :)");
+
+socket.on("valid-word", async () => {
+
+  alert("VALID WORD PLAYED :)");
+  return await fetch(`${window.location.pathname}/nextTurn`, {
+    body: JSON.stringify(word),
+    method: "post",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+  })
+  .then((response) => {
+
+    console.log("returned response = ")
+    return response.json()
+
+  })
+    .catch((error) => {
+      console.log(error);
+      Promise.reject(error)
+    });
 })
- 
-  function clearPlayedTiles(word){ 
-    word = [];
-    return word;
-  }
- 
+
+function clearPlayedTiles(word) {
+  word = [];
+  return word;
+}
+

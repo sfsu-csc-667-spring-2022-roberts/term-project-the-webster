@@ -95,6 +95,17 @@ router.get("/:id/join", (request, response) => {
   }
 });
 
+router.post("/:id/nextTurn", (request, response) => {
+  console.log(request.params);
+  const gameID = request.params.id;
+  console.log(gameID);
+  game.incrementGameTurn(gameID)
+  .then((gameTurn) => {
+    console.log("turn.......");
+    console.log(gameTurn);
+  })
+})
+
 router.post("/:id/playWord",  (request, response)  => {
 
   const { id } = request.params;
