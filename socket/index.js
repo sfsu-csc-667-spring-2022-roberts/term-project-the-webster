@@ -21,11 +21,13 @@ io.on('connection', socket => {
     //  console.log(`cookie = ${cook}`)
     //  console.log(`ref = ${ref}`)
      const user = cook
+
     // console.log(`user socket cookie = ${user}`)
      cookieObj  = {};
 
      if (cook) {
       // console.log(cook)
+ 
      
        const split = cook.split('; ');
 
@@ -45,7 +47,9 @@ io.on('connection', socket => {
           if(results.length >0){
         
           const sess = results[0];
+ 
             // console.log(sess)
+ 
             if(sess['sess']['user_id']){
               const _session = sess['sess'];
               const _user_id = sess['sess']['user_id'];
