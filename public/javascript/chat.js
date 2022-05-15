@@ -1,10 +1,11 @@
- 
+
+
 console.log('INSIDE OF CHAT')
 console.log(socket)
 
     const input = document.getElementById('chat-text-input')
 
-    const send_button = document.getElementById('send-text')
+    const send_button = document.getElementById('send-text-game')
     const chat_logs = document.getElementById('chat-logs')
 
        
@@ -16,7 +17,7 @@ console.log(socket)
 
     send_button.addEventListener("click", async function() {
         const message = (input.value) 
-        
+        console.log("RIGHT CLICK HERE!");
         if(message != ""){
          
             
@@ -37,6 +38,7 @@ console.log(socket)
               sender: x.username, 
               destination: url
           })
+          console.log("RIGHT OVER HERE!");
           }
 
     });
