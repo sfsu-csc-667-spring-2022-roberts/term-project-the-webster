@@ -33,6 +33,7 @@ console.log("FRONT END ")
 //   provide some visual indication of current player
 // });
 
+const firstTurn = false;
 
 const selection = [];
 const word = [];
@@ -169,6 +170,17 @@ socket.on("valid-word", async () => {
       console.log(error);
       Promise.reject(error)
     });
+})
+
+socket.on("first-turn", async () => {
+  firstTurn = true;
+  console.log(firstTurn);
+})
+
+socket.on("turn-update", gameTurn => {
+  console.log("gameTurn----");
+  console.log(gameTurn);
+  console.log(gameTurn.newGameTurn);
 })
 
 function clearPlayedTiles(word) {

@@ -225,7 +225,7 @@ module.exports = {
   updateGameUserOrder,
   getGameUserOrder,
   updateGameTurn,
-  incrementGameTurn,
+  // incrementGameTurn,
   getGameTurn,
   getUserNameFromId,
 };

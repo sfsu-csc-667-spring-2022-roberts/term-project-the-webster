@@ -20,52 +20,62 @@ router.get("/create", (request, response) => {
 
   // let currentUser = 1; // don't hard code this, get from params
   if (request.session) {
-    
+
     let currentUser = request.session.user_id;
     console.log("current user is ", currentUser);
     game.createGame(currentUser)
-    .then((game_id) => {
-      // do socket thingy
-      response.redirect(`/lobby/${game_id}`);
-    })
+      .then((game_id) => {
+        // do socket thingy
+        response.redirect(`/lobby/${game_id}`);
+      })
   } else {
     console.log("no sesson in create");
   }
-  
+
 
 });
 
 router.get("/:id", (request, response) => {
   //window.location.pathname
   let id = request.params;
-  if(request.session){
+  if (request.session) {
     var userId = request.session.user_id;
     var gameId = request.params.id;
   } //HANDLE POTENTIAL ERROR FROM NO SESSION 
   let gameTiles = [];
   let playerHand = [];
-  console.log( "in game route ",scoreBoard.getPlayers(id.id));
+  console.log("in game route ", scoreBoard.getPlayers(id.id));
   game.getEmptyGrid()
     .then((cells) => {
-      gameTilesModel.parsePlayerHandForHTML(gameId,userId)
-      .then(playerTiles => {
-        playerHand = playerTiles;
-        console.log(` PLAYER HAND = ${playerHand}`)
-      })
-      .then(useless => {
-        response.render("game", {
-            style: "gameStyle", 
-            boardSquares: cells,
-            //tiles: playerHand,
-            tiles: playerHand,
-            tilesInBag: gameTiles.getNumTilesInBag,
-            messages: chat.getMessages(),
-            //isReady: true,
-            //broken call 
-            //players: scoreBoard.getPlayers(id.id),
+      game.getGameTurn(gameId)
+        .then(gameTurn => {
+          if (gameTurn == 0) {
+            request.app.get("io").emit("first-turn")
+          } else {
+
+          }
+        }).then(() => {
+          gameTilesModel.parsePlayerHandForHTML(gameId, userId)
+            .then(playerTiles => {
+              playerHand = playerTiles;
+              console.log(` PLAYER HAND = ${playerHand}`)
+            }).then(() => {
+            })
+            .then(useless => {
+              response.render("game", {
+                style: "gameStyle",
+                boardSquares: cells,
+                //tiles: playerHand,
+                tiles: playerHand,
+                tilesInBag: gameTiles.getNumTilesInBag,
+                messages: chat.getMessages(),
+                //isReady: true,
+                //broken call 
+                //players: scoreBoard.getPlayers(id.id),
+              });
             });
-      });
-    
+        })
+
       Promise.resolve(1);
     })
     .catch((error) => {
@@ -74,20 +84,20 @@ router.get("/:id", (request, response) => {
 });
 
 router.get("/:id/join", (request, response) => {
-  console.log("join  ",request.params.id);
+  console.log("join  ", request.params.id);
   if (request.session) {
     let userId = request.session.user_id;
     var gameId = request.params.id;
 
     game.joinGame(gameId, userId)
-    .then(() => {
-      response.redirect(`/game/${gameId}`);
-      // Broadcast to game socket that a user has joind the game
-    })
-    .catch((error) => {
-      console.log(error);
-      response.redirect("/browseLobby");
-    });
+      .then(() => {
+        response.redirect(`/game/${gameId}`);
+        // Broadcast to game socket that a user has joind the game
+      })
+      .catch((error) => {
+        console.log(error);
+        response.redirect("/browseLobby");
+      });
   }
   else {
     console.log("NO SESSION DETECTED IN JOIN")
@@ -100,120 +110,121 @@ router.post("/:id/nextTurn", (request, response) => {
   const gameID = request.params.id;
   console.log(gameID);
   game.getGameTurn(gameID)
-  .then(result => {
-    let gameTurn = result.current_turn;
-    console.log("current game turn");
-    console.log(gameTurn); 
-    game.updateGameTurn(gameID, gameTurn + 1)
-    .then(newGameTurn => {
-      console.log("please work");
-      console.log(newGameTurn);
+    .then(result => {
+      let gameTurn = result.current_turn;
+      console.log("current game turn");
+      console.log(gameTurn);
+      game.updateGameTurn(gameID, gameTurn + 1)
+        .then(newGameTurn => {
+          console.log("please work");
+          console.log(newGameTurn);
+          request.app.get("io").sockets.to("room" + gameID).emit("turn-update", { newGameTurn: newGameTurn });
+        })
     })
-  })
   response
-  .status(200);
+    .status(200);
 })
 
-router.post("/:id/playWord",  (request, response)  => {
+router.post("/:id/playWord", (request, response) => {
 
   const { id } = request.params;
-  const  wordData  = request.body;
+  const wordData = request.body;
   let word_placed;
   console.log(request.body)
- 
+
   console.log(`HANDLE THIS WORD IN GAME ${id}`);
-   
-    const res_wordData  = { wordData }
 
-    const tiles = res_wordData["wordData"]
-    wordifyTiles(tiles).then(result => {
-      word_placed = result.toLowerCase()
+  const res_wordData = { wordData }
 
-        gameBoard.isWordValid(word_placed)
-        .then(result => {
-          console.log("IS WORD VALID ? " + result)
-          if(result == true){
-           getPointsPerWord(tiles)
+  const tiles = res_wordData["wordData"]
+  wordifyTiles(tiles).then(result => {
+    word_placed = result.toLowerCase()
+
+    gameBoard.isWordValid(word_placed)
+      .then(result => {
+        console.log("IS WORD VALID ? " + result)
+        if (result == true) {
+          getPointsPerWord(tiles)
             .then(result => {
-              console.log(word_placed + " is worth " +  result + " points.")
-             areTilesAdjacent(tiles)
-              .then(result => {
+              console.log(word_placed + " is worth " + result + " points.")
+              areTilesAdjacent(tiles)
+                .then(result => {
 
-                 if(result){
-                   console.log("  WORD IS VALID ")
-                   console.log("b4 EMITTING VALID WORD")                   
-                   request.app.get("io").emit("valid-word")
-                   console.log("AFTER EMITTING VALID WORD")
-                 }
-                 else{
-                   console.log( " CANNOT PLAY THAT WORD! ")
-                 }
+                  if (result) {
+                    console.log("  WORD IS VALID ")
+                    console.log("b4 EMITTING VALID WORD")
+                    request.app.get("io").emit("valid-word")
+                    console.log("AFTER EMITTING VALID WORD")
+                  }
+                  else {
+                    console.log(" CANNOT PLAY THAT WORD! ")
+                  }
 
 
-              }).catch(err => {
-                console.log("ERROR" + err)
-              })
-          
+                }).catch(err => {
+                  console.log("ERROR" + err)
+                })
+
 
             }).catch(err => {
               console.log("ERR " + err)
             })
-          }else{
-            console.log( " CANNOT PLAY THAT WORD! ")
-          }
-        }).catch(err => {
-          console.log("ERROR " + err)
-        })
+        } else {
+          console.log(" CANNOT PLAY THAT WORD! ")
+        }
+      }).catch(err => {
+        console.log("ERROR " + err)
+      })
 
-    }).catch(err => {
-      console.log("ERROR!! " + err)
-    })
- 
+  }).catch(err => {
+    console.log("ERROR!! " + err)
+  })
 
-    
+
+
   response
-  .status(200)
-  .json(res_wordData);
- 
+    .status(200)
+    .json(res_wordData);
+
 
   // Send a game update via websocket
- // socket.emit("game-updated", {
-    /* game state data */
- 
-    //makeTilesInPlay(tiles, id);
- 
- 
-});
- 
+  // socket.emit("game-updated", {
+  /* game state data */
 
-async function wordifyTiles(tiles){
+  //makeTilesInPlay(tiles, id);
+
+
+});
+
+
+async function wordifyTiles(tiles) {
   let word = "";
-  for( const x of tiles){
-    word+=String(x.letter)
+  for (const x of tiles) {
+    word += String(x.letter)
   }
 
   return word;
 }
 
- 
-async function isAdjacentHorizontally(tiles){
+
+async function isAdjacentHorizontally(tiles) {
 
   let x_coords = []
-  let row_val  = tiles[0].x
+  let row_val = tiles[0].x
 
-  for ( const i of tiles){
-      if(row_val != i.x){
-        return false
-      }
-      console.log(i.x + " == " + row_val)
+  for (const i of tiles) {
+    if (row_val != i.x) {
+      return false
+    }
+    console.log(i.x + " == " + row_val)
     x_coords.push(i.y)
-    
+
 
   }
 
   console.log(x_coords)
   const length = x_coords.length
-  const last = x_coords[length -1]
+  const last = x_coords[length - 1]
   const first = (x_coords[0])
 
   const diff = (last - first + 1)
@@ -223,14 +234,14 @@ async function isAdjacentHorizontally(tiles){
 }
 
 
-async function isAdjacentVertically(tiles){
+async function isAdjacentVertically(tiles) {
 
-  
+
   let y_coords = []
   let col_val = tiles[0].y
 
-  for ( const i of tiles){
-    if(col_val != i.y){
+  for (const i of tiles) {
+    if (col_val != i.y) {
       return false
     }
     console.log(i.y + " == " + col_val)
@@ -245,20 +256,20 @@ async function isAdjacentVertically(tiles){
 
   console.log(y_coords)
   const length = y_coords.length
-  const last = y_coords[length -1]
+  const last = y_coords[length - 1]
   const first = (y_coords[0])
 
   const diff = (last - first + 1)
 
- 
+
   return (diff == length)
 
 
 
 }
 
-async function areTilesAdjacent(tiles){
- 
+async function areTilesAdjacent(tiles) {
+
   const x = await isAdjacentHorizontally(tiles)
 
   const y = await (isAdjacentVertically(tiles))
@@ -266,60 +277,60 @@ async function areTilesAdjacent(tiles){
   console.log(x)
   console.log(y)
 
-  return x || y 
+  return x || y
 }
 
 
- 
-async function getPointsPerWord(tiles){
+
+async function getPointsPerWord(tiles) {
   let points = 0;
   let word_multiplier = 1;
   let total_points;
-  for ( const i of tiles){
- 
+  for (const i of tiles) {
+
     const _x = i.x
     const _y = i.y
-    await scoreBoard.getMultiplier(_x,_y).then(result => {
+    await scoreBoard.getMultiplier(_x, _y).then(result => {
 
-    const multipliers = (result[0])
-    
-    console.log(multipliers.letter_multiplier)
-    console.log(multipliers.word_multiplier)
-    
-    word_multiplier *= Number(multipliers.word_multiplier)
-    
+      const multipliers = (result[0])
+
+      console.log(multipliers.letter_multiplier)
+      console.log(multipliers.word_multiplier)
+
+      word_multiplier *= Number(multipliers.word_multiplier)
+
       const initial_val = Number(i.value)
 
       const adjusted_val = initial_val * Number(multipliers.letter_multiplier)
-       
+
       points += adjusted_val
 
-     
+
       total_points = points * word_multiplier
 
-      
+
     }).catch(err => {
       console.log("ERROR " + err)
     })
 
   }
- 
+
   return total_points;
- 
+
 }
 
 async function makeTilesInPlay(tiles, gameId) {
   let promises = [];
-        for (i=0; i < tiles.length; i++) {
-          promises.push(game.placeTile(tiles[i].id, tiles[i].x, tiles[i].y, gameId));
-        }
-        // placeTile = (tile_id, x, y, game_id)
-        return Promise.all(promises)
-        .then(results => {
-          if(results){return Promise.resolve(true)}
-        }).catch(err =>{
-          console.log(err);
-        })
+  for (i = 0; i < tiles.length; i++) {
+    promises.push(game.placeTile(tiles[i].id, tiles[i].x, tiles[i].y, gameId));
+  }
+  // placeTile = (tile_id, x, y, game_id)
+  return Promise.all(promises)
+    .then(results => {
+      if (results) { return Promise.resolve(true) }
+    }).catch(err => {
+      console.log(err);
+    })
 }
 
 
