@@ -17,7 +17,7 @@ const TILES = [
   { letter: "N", count: 6, value: 1 },
   { letter: "O", count: 8, value: 1 },
   { letter: "P", count: 2, value: 3 },
-  { letter: "Q", count: 1, value: 10 },
+  { letter: "Q", count: 1, value: 9 },
   { letter: "R", count: 6, value: 1 },
   { letter: "S", count: 4, value: 1 },
   { letter: "T", count: 6, value: 1 },
@@ -26,7 +26,7 @@ const TILES = [
   { letter: "W", count: 2, value: 4 },
   { letter: "X", count: 1, value: 8 },
   { letter: "Y", count: 2, value: 4 },
-  { letter: "Z", count: 1, value: 10 },
+  { letter: "Z", count: 1, value: 9 },
  // { letter: " ", count: 2, value: 0}
 ];
 

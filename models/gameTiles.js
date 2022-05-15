@@ -13,24 +13,11 @@ const getNumTilesInBag = () => {
 const getInitialHand = (gameId, playerId) => {
     hand = Array();
     game.drawTile(gameId, playerId, 7)
-    .then((results) => {
-        console.log("-----------------------------------------");
-        console.log(results);
+    .then(() => {
     })
-    /*for(i = 0; i < 7; i++) {
-        game.drawTile(gameId, playerId)
-        .then(results => {
-            hand.push(results[0]);
-        }).catch((err) => {
-            console.log(err);
-        })
-    }*/
-    // return hand;
 }
 
 
-
- 
 //returns how much points a letter is worth 
 const getLetterWorth = (letter) => {
     return db.one(`SELECT value FROM tiles WHERE letter=$1 LIMIT 1`, [letter])

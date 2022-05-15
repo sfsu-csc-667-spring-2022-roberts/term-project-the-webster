@@ -47,57 +47,57 @@ router.get("/:id", (request, response) => {
   console.log("in game route ", scoreBoard.getPlayers(id.id));
   game.getEmptyGrid()
     .then((cells) => {
-      game.getGameTurn(gameId)
-        .then(gameTurn => {
-          currentTurn = gameTurn.current_turn;
-          console.log("gameturn");
-          console.log(currentTurn);
-          if (currentTurn == 0) {
-            console.log("----first turn ------");
-            request.app.get("io").to("room" + gameId).emit("first-turn");
-            // maybe needs .then() for 
-            gameTiles.getInitialHand(gameId, userId);
-            // request.app.get("io").to("room" + gameId).emit("first-turn");
-            // ask jack about this
-          } else {
-            request.app.get("io").to("room" + gameId).emit("not-first-turn");
-          }
-        }).then(() => {
-          game.getGameUsers2(gameId)
-            .then(gameUsers => {
-              console.log("----gameUsers----");
-              console.log(gameUsers);
-              var currentUser;
-              for (i = 0; i < gameUsers.length; i++) {
-                if (gameUsers[i].user_id == userId) {
-                  currentUser = gameUsers[i];
-                }
+        game.getPlayerHand(gameId, userId)
+        .then(tileCount =>{
+        game.getGameTurn(gameId)
+          .then(gameTurn => {
+            currentTurn = gameTurn.current_turn;
+            console.log("gameturn");
+            console.log(currentTurn);
+            if (currentTurn == 0) {
+              console.log("----first turn ------");
+              request.app.get("io").to("room" + gameId).emit("first-turn");
+              if(tileCount.length == 0) {
+              gameTiles.getInitialHand(gameId, userId);
               }
-              var turn = currentTurn == currentUser.order;
-              request.app.get("io").emit("", { turn : turn });
-            })
-        })
-        .then(() => {
-          gameTiles.parsePlayerHandForHTML(gameId, userId)
-            .then(playerTiles => {
-              playerHand = playerTiles;
-              console.log(` PLAYER HAND = ${playerHand}`)
-            }).then(() => {
-              response.render("game", {
-                style: "gameStyle",
-                boardSquares: cells,
-                //tiles: playerHand,
-                tiles: playerHand,
-                tilesInBag: gameTiles.getNumTilesInBag,
-                messages: chat.getMessages(),
-                //isReady: true,
-                //broken call 
-                //players: scoreBoard.getPlayers(id.id),
+              // request.app.get("io").to("room" + gameId).emit("first-turn");
+            } else {
+              request.app.get("io").to("room" + gameId).emit("not-first-turn");
+              console.log("---- not the first turn ------");
+            }
+          }).then(() => {
+            game.getGameUsers2(gameId)
+              .then(gameUsers => {
+                var currentUser;
+                for (i = 0; i < gameUsers.length; i++) {
+                  if (gameUsers[i].user_id == userId) {
+                    currentUser = gameUsers[i];
+                  }
+                }
+                var turn = currentTurn == currentUser.order;
+                request.app.get("io").emit("", { turn : turn });
+              })
+          })
+          .then(() => {
+            gameTiles.parsePlayerHandForHTML(gameId, userId)
+              .then(playerTiles => {
+                playerHand = playerTiles;
+              }).then(() => {
+                response.render("game", {
+                  style: "gameStyle",
+                  boardSquares: cells,
+                  //tiles: playerHand,
+                  tiles: playerHand,
+                  tilesInBag: gameTiles.getNumTilesInBag,
+                  messages: chat.getMessages(),
+                  //isReady: true,
+                  //broken call 
+                  //players: scoreBoard.getPlayers(id.id),
+                });
               });
-            });
-        })
-
-      Promise.resolve(1);
+          })
+        Promise.resolve(1);
+      })
     })
     .catch((error) => {
       Promise.reject(error);
