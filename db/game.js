@@ -2,7 +2,7 @@ const db = require("./index");
 
 
 
-const getEmptyGrid = () => db.any("SELECT * FROM game_grid ORDER BY x, y ASC");
+const getEmptyGrid = () => db.any("SELECT * FROM game_grid ORDER BY y, x ASC");
 
 const createGame = (userId) =>
   db
@@ -144,7 +144,6 @@ const getGameState = (gameId) => {
       })
     })
   })
-
 }
 
 const updateGameUserOrder = (gameId, userId, order) => {
@@ -201,7 +200,12 @@ const incrementGameTurn = (gameId) => {
   })
 }
 
-
+const getUserNameFromId = (userId) => {
+  return db.one("SELECT username FROM users WHERE id=?", [userId])
+  .then(result => {
+    return Promise.resolve(result); 
+  })
+}
 
 
 module.exports = {
@@ -223,6 +227,6 @@ module.exports = {
   getGameUserOrder,
   updateGameTurn,
   incrementGameTurn,
-  getGameTurn
-
+  getGameTurn,
+  getUserNameFromId,
 };

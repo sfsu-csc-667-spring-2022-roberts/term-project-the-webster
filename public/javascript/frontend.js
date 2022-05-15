@@ -142,3 +142,8 @@ document
       }
     }
   });
+
+  function clearPlayedTiles(word){ 
+    word = [];
+    return word;
+  }

@@ -121,6 +121,7 @@ const getCoordinatesFromTileId = (game_id, tile_id) => {
 
 }
  
+ 
 // playedCoords = [{x:'7',y:'0'}, {x:'7',y:'1'},  {x:'7',y:'2'}, {x:'7',y:'3'}]
 // horizontalCoords = [{x:'7',y:'4'}, {x:'7',y:'6'}, {x:'7',y:'7'}, {x:'7',y:'8'}]
 
@@ -359,18 +360,19 @@ function sortJsonByY(arr){
     let sortedInput = deep_cpy.slice().sort((a, b) => a.y - b.y);
     return sortedInput;
 }
-
+ 
 module.exports = {
     getInitialBag,
     getNumTilesInBag,
     getLetterWorth,
     getInitialHand,
-  
+ 
     getLetterFromTileId,
     getCoordinatesFromTileId,
     parsePlayerHandForHTML,
  
     getCoordinatesFromTileId,
     getWords
+ 
  
 }
