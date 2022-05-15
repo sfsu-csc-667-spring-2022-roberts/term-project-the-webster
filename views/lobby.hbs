@@ -18,6 +18,12 @@
         <div class="player-section">
           <p class="player-text">Order</p>
         </div>
+        <div class="player-section">
+          <p class="player-text">Wins</p>
+        </div>
+        <div class="player-section">
+          <p class="player-text">Highscore</p>
+        </div>
       </div>
       {{#each players}}
       <div class="player">
@@ -26,6 +32,12 @@
         </div>
         <div class="player-section">
           <p class="player-text">{{order}}</p>
+        </div>
+        <div class="player-section">
+          <p class="player-text">{{wins}}</p>
+        </div>
+        <div class="player-section">
+          <p class="player-text">{{high_score}}</p>
         </div>
       </div>
       {{/each}}
