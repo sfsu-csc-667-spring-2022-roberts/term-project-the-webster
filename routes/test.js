@@ -9,13 +9,20 @@ const gameScore = require("../models/scoreBoard");
 
 router.get("/", (request, response) => {
 
-    gameTiles.getInitialHand(4,4).then((res) => {
-        console.log("res: " + res);
-    }).catch((err) => {
-        console.log(err);
-    });
+    playedCoords = [ {tile_id: 11, x: '6',y:'6' },{tile_id: 13,x: '6',y:'8' } , {tile_id: 15,x: '6',y:'9' } , {tile_id: 4, x: '6',y:'10' }  ]
 
-  
+
+    gameTiles.getWords(playedCoords, 1)
+    .then(results => {
+        if(results != undefined)
+        {
+            // console.log(results);
+            gameTiles.getWordsFromArray(results)
+            .then(resut => {
+                console.log(resut);
+            });
+        }
+    })
   
 })
 

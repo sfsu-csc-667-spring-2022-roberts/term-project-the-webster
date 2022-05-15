@@ -50,6 +50,18 @@ const getLetterWorth = (letter) => {
     }*/
 }
 
+
+const getLetterFromCoords = (coords, gameId) => {
+    return db.one(`SELECT tile_id FROM game_tiles WHERE x_coordinate=$1 AND y_coordinate=$2 AND game_id=$3 `,
+    [coords.x, coords.y, gameId])
+    .then(result => {
+        return Promise.resolve(result);
+    })
+    .catch(err => {
+        console.log("ERROR IN getLetterFromCoords in models/gameTiles");
+        return Promise.resolve(err);
+    })
+}
  
  
 
@@ -138,6 +150,7 @@ const getWords = (coordsArray, gameId) => {
         
         return false;
     }
+
     //get all tiles in play
     return game.getInPlayTiles(gameId)
     .then(results => {
@@ -186,6 +199,46 @@ const getWords = (coordsArray, gameId) => {
     })
 }
 
+const getWordsFromArray = (coordsList, gameId) => {
+
+    returnArr = [];
+    wordsArr = [];
+    //take the word list for each things get the letter from the db using coords
+    for (let list of coordsList) {
+        wordsArr.push(getWordFromArrayHelper(list));
+    }
+    return Promise.all(wordsArr).then(results => {
+        for (let word of results) {
+            let string = word.join("");
+            returnArr.push(string.toLowerCase());
+        }
+        return returnArr;
+    })
+    .catch(err => {
+        console.log("ERROR IN model/gameTiles getWordsFromArray");
+        Promise.resolve(err);
+    })
+}
+
+const getWordFromArrayHelper = (list) => {
+    promises = [];
+    for (let coord of list) {
+        promises.push(getLetterFromTileId(coord.tile_id));
+    }
+    return Promise.all(promises).then(results => {
+        word = [];
+        for(let letter of results) {
+            word.push(letter.letter);
+        }
+        string = word.join("");
+        return Promise.resolve(word);
+    })
+    .catch(err => {
+        console.log("ERROR IN model/gameTiles getWordFromArray Helper function");
+        console.log(err);
+    })
+}
+
 function multiDimensionalUnique(arr) {
     var uniques = [];
     var itemsFound = {};
@@ -216,9 +269,6 @@ function verifyVertical(arr) {
 }
 
 function checkHorizontal(playedTiles, horizontalRow) {
-    // for (i=0; i < horizontalRow.length; i++) {
-
-    // }     //  | B R A V [E]   S E E        |
 
     if (horizontalRow.length == 0) {
         return false;
@@ -228,14 +278,13 @@ function checkHorizontal(playedTiles, horizontalRow) {
     boardCoordinates = []
   
     for ( const tile of horizontalRow){
-        boardCoordinates.push({ x: Number((tile.x_coordinate)), y: Number((tile.y_coordinate)) })
+        boardCoordinates.push({tile_id: tile.tile_id , x: Number((tile.x_coordinate)), y: Number((tile.y_coordinate)) })
     }
 
     playingCoordinates = []
     for ( const tile of playedTiles){
-        playingCoordinates.push( {x:Number((tile.x)),y: Number((tile.y))} )
+        playingCoordinates.push( {tile_id: tile.tile_id, x:Number((tile.x)),y: Number((tile.y))} )
     }
-
     for(i = 0; i < playingCoordinates.length;i++) {
         leftSide =[];
         rightSide = [];
@@ -243,15 +292,32 @@ function checkHorizontal(playedTiles, horizontalRow) {
         previousTile = {x: currentTile.x, y: currentTile.y - 1 };
         nextTile = {x: currentTile.x, y: currentTile.y + 1 };
 
-        while(  (includesJson(boardCoordinates, previousTile) || includesJson(playingCoordinates, previousTile) ) && previousTile.y > -1) {
-            let toPushTile = {...previousTile}
+        while(  ((includesJson(boardCoordinates, previousTile) != -1 ) || (includesJson(playingCoordinates, previousTile) != -1) ) && previousTile.y > -1) {
+            let tileId = -1;
+            if (includesJson(boardCoordinates, previousTile) != - 1) {
+                tileId = includesJson(boardCoordinates, previousTile);
+            }
+
+            if (includesJson(playingCoordinates, previousTile) != - 1) {
+                tileId = includesJson(playingCoordinates, previousTile);
+            }
+            let toPushTile = {tile_id: tileId, x: previousTile.x, y: previousTile.y};
+            
             leftSide.push(toPushTile);
             previousTile.y--;
         }
 
         // iterating right
-        while( (includesJson(boardCoordinates, nextTile)  || includesJson(playingCoordinates, nextTile))  && nextTile.y < 15) {
-            let toPushTile = {...nextTile};
+        while( ((includesJson(boardCoordinates, nextTile) != -1 ) || (includesJson(playingCoordinates, nextTile)) != -1)  && nextTile.y < 15) {
+            let tileId = -1;
+            if (includesJson(boardCoordinates, nextTile) != - 1) {
+                tileId = includesJson(boardCoordinates, nextTile);
+            }
+
+            if (includesJson(playingCoordinates, nextTile) != - 1) {
+                tileId = includesJson(playingCoordinates, nextTile);
+            }
+            let toPushTile = {tile_id: tileId, x: nextTile.x, y: nextTile.y};
             rightSide.push(toPushTile)
             nextTile.y++; 
         }   
@@ -284,11 +350,11 @@ function checkVertical(playedTiles, verticalRow) {
     returnArray = [];
     boardCoordinates = []
     for ( const tile of verticalRow){
-        boardCoordinates.push({ x: Number((tile.x_coordinate)), y: Number((tile.y_coordinate)) })
+        boardCoordinates.push({tile_id: tile.tile_id , x: Number((tile.x_coordinate)), y: Number((tile.y_coordinate)) })
     }
     playingCoordinates = []
     for ( const tile of playedTiles){
-        playingCoordinates.push( {x:Number((tile.x)),y: Number((tile.y))} )
+        playingCoordinates.push( {tile_id: tile.tile_id , x:Number((tile.x)),y: Number((tile.y))} )
     }
 
     for(i = 0; i < playingCoordinates.length;i++) {
@@ -298,8 +364,16 @@ function checkVertical(playedTiles, verticalRow) {
         previousTile = {x: currentTile.x-1, y: currentTile.y };
         nextTile = {x: currentTile.x + 1, y: currentTile.y };
         // iterating left
-        while( (includesJson(boardCoordinates, previousTile) || includesJson(playingCoordinates, previousTile) ) && previousTile.x > -1) {
-            let toPushTile = {...previousTile}
+        while( ((includesJson(boardCoordinates, previousTile) != -1) || (includesJson(playingCoordinates, previousTile) != -1) ) && previousTile.x > -1) {
+            let tileId = -1;
+            if (includesJson(boardCoordinates, previousTile) != - 1) {
+                tileId = includesJson(boardCoordinates, previousTile);
+            }
+
+            if (includesJson(playingCoordinates, previousTile) != - 1) {
+                tileId = includesJson(playingCoordinates, previousTile);
+            }
+            let toPushTile = {tile_id: tileId, x: previousTile.x, y: previousTile.y};
             aboveSide.push(toPushTile)
             previousTile.x--;
         }
@@ -307,8 +381,16 @@ function checkVertical(playedTiles, verticalRow) {
 
         // iterating right
 
-        while( (includesJson(boardCoordinates, nextTile)  || includesJson(playingCoordinates, nextTile))  && nextTile.x < 15) {
-            let toPushTile = {...nextTile}
+        while( ((includesJson(boardCoordinates, nextTile) != -1)  || includesJson(playingCoordinates, nextTile) != -1)  && nextTile.x < 15) {
+            let tileId = -1;
+            if (includesJson(boardCoordinates, nextTile) != - 1) {
+                tileId = includesJson(boardCoordinates, nextTile);
+            }
+
+            if (includesJson(playingCoordinates, nextTile) != - 1) {
+                tileId = includesJson(playingCoordinates, nextTile);
+            }
+            let toPushTile = {tile_id: tileId, x: nextTile.x, y: nextTile.y};
             aboveSide.push(toPushTile)
             nextTile.x++;
         }   
@@ -338,11 +420,10 @@ function checkVertical(playedTiles, verticalRow) {
 function includesJson(arr, target) {
     for ( const item  of arr){
         if(item.x == target.x && item.y == target.y){
-            return true
+            return item.tile_id;
         }
-
     }
-    return false;
+    return -1;
 }
 
 
@@ -372,7 +453,8 @@ module.exports = {
     parsePlayerHandForHTML,
  
     getCoordinatesFromTileId,
-    getWords
+    getWords,
+    getWordsFromArray
  
  
 }
