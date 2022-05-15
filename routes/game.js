@@ -55,6 +55,7 @@ router.get("/:id", (request, response) => {
           if (currentTurn == 0) {
             console.log("----first turn ------");
             request.app.get("io").to("room" + gameId).emit("first-turn");
+            // maybe needs .then() for 
             gameTiles.getInitialHand(gameId, userId);
             // request.app.get("io").to("room" + gameId).emit("first-turn");
             // ask jack about this

@@ -12,16 +12,20 @@ const getNumTilesInBag = () => {
 
 const getInitialHand = (gameId, playerId) => {
     hand = Array();
-    for(i = 0; i < 7; i++) {
+    game.drawTile(gameId, playerId, 7)
+    .then((results) => {
+        console.log("-----------------------------------------");
+        console.log(results);
+    })
+    /*for(i = 0; i < 7; i++) {
         game.drawTile(gameId, playerId)
         .then(results => {
             hand.push(results[0]);
         }).catch((err) => {
             console.log(err);
         })
-    }
-    console.log(hand);
-    return hand;
+    }*/
+    // return hand;
 }
 
 

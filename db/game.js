@@ -33,13 +33,17 @@ const placeTile = (tile_id, x, y, game_id) =>
   });
 
 //get a random tile from game_tiles and insert it into the player's hand
-const drawTile = (game_id, player_id) => {
-  return db.one(`SELECT tile_id FROM game_tiles WHERE game_id=$1 AND in_bag=true ORDER BY RANDOM() limit 1`, [game_id])
-  .then( results => {
-    console.log("in select statement -> ",results);
-    return db.any(`UPDATE game_tiles SET in_bag=false, user_id=$1 WHERE game_id=$2 AND tile_id=$3 RETURNING tile_id`,
-    [player_id, game_id, results.tile_id]);
-  })
+const drawTile = (game_id, player_id, count) => {
+  // return db.one(`SELECT tile_id FROM game_tiles WHERE game_id=$1 AND in_bag=true ORDER BY RANDOM() limit $2`, [game_id, count])
+  // .then( results => {
+    // console.log("in select statement -> ",results);
+    // db.any(`INSERT INTO game_tiles(tile_id, game_id) SELECT id , $1 FROM tiles`,[game_id]);
+    // WHERE game_id=$2 AND tile_id=$3
+    return db.any(`UPDATE game_tiles SET in_bag = false, user_id=$1 FROM
+    (SELECT tile_id FROM game_tiles WHERE game_id=$2 AND in_bag=true ORDER BY RANDOM() limit $3) AS data_table
+    WHERE game_tiles.tile_id = data_table.tile_id RETURNING game_tiles.tile_id`,
+    [player_id, game_id, count])
+  //})
   .then((tile_id) => {
     return Promise.resolve(tile_id);
   })
