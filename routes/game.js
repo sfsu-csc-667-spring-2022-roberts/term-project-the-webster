@@ -35,7 +35,36 @@ router.get("/create", (request, response) => {
 
 });
 
-router.get("/:id", (request, response) => {
+const turnHandler = async (request, gameId, userId, tileCount, currentTurn) => {
+  if (currentTurn == 0) {
+    console.log("----first turn ------");
+    request.app.get("io").to("room" + gameId).emit("first-turn");
+    if (tileCount.length == 0) {
+      await gameTiles.getInitialHand(gameId, userId)
+      .then(result => {
+        console.log("result in turnHandler:");
+        console.log(result);
+        return Promise.resolve(result);
+      })
+      .catch(err => {
+        console.log("err: " + err);
+      })
+    }
+    // request.app.get("io").to("room" + gameId).emit("first-turn");
+  } else {
+    request.app.get("io").to("room" + gameId).emit("not-first-turn");
+    console.log("---- not the first turn ------");
+    gameTiles.getPlayerHand(gameId, userId)
+    .then(result => {
+      return Promise.resolve(result);
+    })
+    .catch(err => {
+      console.log("err: " + err);
+    })
+  }
+}
+
+router.get("/:id", async (request, response) => {
   //window.location.pathname
   let id = request.params;
   if (request.session) {
@@ -45,27 +74,18 @@ router.get("/:id", (request, response) => {
   let playerHand = [];
   var currentTurn;
   var cells;
+  var tileCount;
   console.log("in game route ", scoreBoard.getPlayers(id.id));
   game.getPlayerHand(gameId, userId)
-    .then(tileCount => {
+    .then(tileCountResult => {
+      tileCount = tileCountResult;
       console.log("tileCount: " + tileCount);
       game.getGameTurn(gameId)
-        .then(gameTurn => {
+        .then(async gameTurn => {
           currentTurn = gameTurn.current_turn;
-          console.log("gameturn");
-          console.log(currentTurn);
-          if (currentTurn == 0) {
-            console.log("----first turn ------");
-            request.app.get("io").to("room" + gameId).emit("first-turn");
-            if (tileCount.length == 0) {
-              gameTiles.getInitialHand(gameId, userId);
-            }
-            // request.app.get("io").to("room" + gameId).emit("first-turn");
-          } else {
-            request.app.get("io").to("room" + gameId).emit("not-first-turn");
-            console.log("---- not the first turn ------");
-          }
-        }).then(() => {
+          await turnHandler(request, gameId, userId, tileCount, currentTurn)
+          .then((result) => {
+            playerHand = result;
           game.getEmptyGrid()
             .then((cellsResult) => {
               cells = cellsResult;
@@ -106,6 +126,7 @@ router.get("/:id", (request, response) => {
                   });
                 });
             })
+          });
           Promise.resolve(1);
         })
     })

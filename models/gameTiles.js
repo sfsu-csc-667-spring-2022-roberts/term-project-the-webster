@@ -10,10 +10,18 @@ const getNumTilesInBag = () => {
     return 100;
 }
 
-const getInitialHand = (gameId, playerId) => {
-    hand = Array();
-    game.drawTile(gameId, playerId, 7)
-    .then(() => {
+const getInitialHand = async (gameId, playerId) => {
+    return await game.drawTile(gameId, playerId, 7)
+    .then(async () => {
+        return await game.getPlayerHand(gameId, playerId)
+        .then(hand => {
+            console.log("-----hand: ");
+            console.log(hand);
+            return Promise.resolve(hand);
+        })
+        .catch(err => {
+            console.log("err in initial hand: " + err);
+        })
     })
 }
 

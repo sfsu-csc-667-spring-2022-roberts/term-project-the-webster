@@ -54,7 +54,7 @@ const drawTile = (game_id, player_id, count) => {
 }
 
 //returns an array of tile_id jsons of all tile_ids in the player's hand
-const getPlayerHand = (game_id, player_id) => {
+const getPlayerHand = async (game_id, player_id) => {
   return db.any(`SELECT tile_id FROM game_tiles WHERE game_id=$1 AND user_id=$2 AND in_play=false`, [game_id, player_id])
   .then(results => {
     return Promise.resolve(results);
