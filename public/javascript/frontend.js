@@ -35,13 +35,14 @@ console.log("FRONT END ")
 
 
 const selection = [];
-const word = [];
+const words = [] 
+let word = [];
 
 const slotTaken = (x, y) => {
   //easiest way ensure valid turns is to use this 
   //with the socket data of what is being used already 
   //then only allow for letters placed next to a placed letter
-  const found = word.find((entry) => entry.x === x && entry.y === y);
+  const found = words.find((entry) => entry.x === x && entry.y === y);
   return found !== undefined;
 };
 
@@ -59,7 +60,16 @@ const submitWord = async () => {
     credentials: "include",
   })
     .then((response) => {
-
+      console.log("WORDS IN RESPONSE!! ", word)
+      console.log(word.length)
+      console.log("------------------------------")
+      console.log(word)
+      console.log("------------------------------")
+      word = []
+      console.log("----------CLEARING WORD ARRAY----------")
+      console.log(word)
+      console.log("----------WORD BANK ----------")
+      console.log(words)
       console.log("returned response = ")
       return response.json()
 
@@ -120,6 +130,7 @@ document.getElementById("game-board").addEventListener("click", (event) => {
     document.getElementById("tile-wrapper").removeChild(selectedTile);
 
     word.push({ ...selectedTile.dataset, x, y });
+    words.push({ ...selectedTile.dataset, x, y });
   }
   console.log({ word, selection });
 });
