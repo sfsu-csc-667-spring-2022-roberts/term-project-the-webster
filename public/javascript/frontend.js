@@ -1,38 +1,4 @@
 
-/*socket.on('test-event1', async () => {
-  console.log(` id is ${socket.id}`)
-  
-  socket.emit('hey')
-
-})*/
-
-console.log("FRONT END ")
-console.log(socket)
-console.log("FRONT END ")
-
-
-
-
-// io.on("game-updated", (payload) => {
-//   // Update all the various game board divs, update player's tile rack,
-//   // provide some visual indication of current player
-
-// });
-
-// const game = require("../../db/game")
-
-// const createGame = (currentUser) => {
-//   game.createGame(currentUser)
-//   .then((game_id) => {
-//     return game_id;
-//   })
-// }
-
-// io.on("game-updated", (payload) => {
-//   Update all the various game board divs, update player's tile rack,
-//   provide some visual indication of current player
-// });
-
 var userOrder;
 
 let firstTurn = false;
@@ -57,9 +23,6 @@ const selection = [];
 const word = [];
 
 const slotTaken = (x, y) => {
-  //easiest way ensure valid turns is to use this 
-  //with the socket data of what is being used already 
-  //then only allow for letters placed next to a placed letter
   const found = word.find((entry) => entry.x === x && entry.y === y);
   return found !== undefined;
 };
@@ -124,7 +87,6 @@ document.getElementById("game-board").addEventListener("click", (event) => {
       alert("Tile must be placed in center");
       return;
     }
-    // Record letters stored at this coordinate
     if (slotTaken(x, y)) {
       alert("A tile has been placed in that slot.");
       return;
@@ -161,8 +123,6 @@ document
 
     if (Array.from(element.classList).includes("selected-tile")) {
       element.classList.remove("selected-tile");
-      //I think this is to un-select a tile and right now it
-      //triggers Alert(place your tile before selecting a new tile)
     } else if (Array.from(element.classList).includes("played-tile")) {
       alert("This tile has been used already.");
       return;
@@ -177,10 +137,23 @@ document
     }
   });
 
-
+const fillBoardFromDB = (gameState) =>  { 
+  allSquares = document.getElementById("game-board").children;
+  for(i = 0; i < gameState.length; i++ ) {
+    for(j = 0; j < allSquares.length; j++) {
+      if( (gameState[i].x_coordinate == allSquares[j].dataset.x ) &&
+          (gameState[i].y_coordinate == allSquares[j].dataset.y )){ 
+            let letterP = document.createElement("p");
+            allSquares[j].classList.add("played-square");
+            letterP.innerText = gameState[i].letter;
+            allSquares[j].appendChild(letterP);
+          } 
+    }
+  }
+}
 
 socket.on("valid-word", async data => {
-  console.log("FRONTENDDDDDDDD ",data);
+  fillBoardFromDB(data.tileData);
   alert("VALID WORD PLAYED :)");
   return await fetch(`${window.location.pathname}/nextTurn`, {
     body: JSON.stringify(word),

@@ -54,7 +54,7 @@ const turnHandler = async (request, gameId, userId, tileCount, currentTurn) => {
   } else {
     request.app.get("io").to("room" + gameId).emit("not-first-turn");
     console.log("---- not the first turn ------");
-    gameTiles.getPlayerHand(gameId, userId)
+    game.getPlayerHand(gameId, userId)
     .then(result => {
       return Promise.resolve(result);
     })
@@ -213,7 +213,7 @@ router.post("/:id/playWord", (request, response) => {
                   console.log("AAAABBBOOOOOOOOOOOOOOOVE", result);
                   if (result) {
                     gameTiles.getTileDataForHTML(id).then( (tileData) => {
-                      console.log("tileData from DB ");
+                      console.log("tileData in gameroute socket ");
                       console.log(tileData)
                       // Promise.resolve(tileData);
                    
