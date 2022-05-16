@@ -2,10 +2,24 @@ const express = require("express");
 const router = express.Router();
 const db = require('../db');
 
+
+
+
+console.log(socket);
+
 router.get("/", (request, response) => {
-   //   res.render('index', { title: 'Team Websters Scrabble' });
-    response.render('login', { title: 'login  ' , 
-    block: '' });
+
+     
+     response.render('login', {
+        style: 'style' , 
+        block: '', 
+        });
+
+        let fix = 
+     response.render("login", {
+        style: "style",
+});
+
     
 });
 

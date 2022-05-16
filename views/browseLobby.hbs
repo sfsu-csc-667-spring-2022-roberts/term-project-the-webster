@@ -1,0 +1,46 @@
+<h1 id="title">Game Search</h1>
+<div class="page-container">
+    <div class="options-container">
+        <form action="/game/create">
+            <button type="submit" class="button">Create Lobby</button>
+        </form>
+        <!-- cannot hit enter for this -->
+        <form class="button">
+            <input type="text" id="code" name="code" placeholder="Use room code">
+            <input type="button" value="Join" onclick="joinWithCode(document.getElementById('code').value)">
+        </form>
+        <script>
+            function joinWithCode(gameId) {
+                // window.location.href = `/game/${gameId}/join`, true;
+                window.location.href = `/lobby/${gameId}`, true;
+            }
+        </script>
+        </body>
+    </div>
+    <div class="lobby-search-header">
+        <div class="lobby-section" >Lobby ID</div>
+        <div class="lobby-section">Game Started</div>
+        <div class="lobby-section">Players</div>
+        <div class="button-section"></div>
+    </div>
+    <div class="lobby-search">
+        {{#each lobbies}}
+        <div class="lobby" id="lobby">
+            <div class="lobby-section" id="lobby-id">
+                {{id}}
+            </div>
+            <div class="lobby-section">
+                {{in_lobby}}
+            </div>
+            <div class="lobby-section">
+                test3
+            </div>
+            <button class="button-section" id="join-lobby">
+                Join
+            </button>
+            <script>
+            </script>
+        </div>
+        {{/each}}
+    </div>
+</div>

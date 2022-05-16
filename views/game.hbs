@@ -1,0 +1,14 @@
+<div class="board-tiles-messages">
+    <form id="game-board"  >
+        {{#each boardSquares}}
+            <div class="game-board-tile l-{{this.letter_multiplier}}-w-{{this.word_multiplier}}"
+            data-x="{{this.x}}" data-y="{{this.y}}" id="square({{this.x}},{{this.y}})">
+
+            </div>
+        {{/each}}
+    </form>
+    {{> tileRack}}
+    {{> chatMessagesGameBoard messageArray=messages ready=isReady players=players tileId=userId}}
+</div>
+
+

@@ -1,0 +1,59 @@
+<h1 class="lobby-title">Game Lobby</h1>
+<h1 class="lobby-title">Room Code AE25</h1>
+
+<form method="POST" action="/users/logout"> <input type="submit" value="Submit"> log out </input> </form>
+
+<ul id="messages"></ul>
+<form id="form" action="">
+  <input id="input" autocomplete="off" /><button>Send</button>
+</form>
+
+<section class="lobby-chat-container">
+  <div class="lobby-window">
+    <div class="inner-lobby">
+      <div class="lobby-header">
+        <div class="player-section">
+          <p class="player-text">Username</p>
+        </div>
+        <div class="player-section">
+          <p class="player-text">Order</p>
+        </div>
+        <div class="player-section">
+          <p class="player-text">Wins</p>
+        </div>
+        <div class="player-section">
+          <p class="player-text">Highscore</p>
+        </div>
+      </div>
+      {{#each players}}
+      <div class="player">
+        <div class="player-section">
+          <p class="player-text">{{username}}</p>
+        </div>
+        <div class="player-section">
+          <p class="player-text">{{order}}</p>
+        </div>
+        <div class="player-section">
+          <p class="player-text">{{wins}}</p>
+        </div>
+        <div class="player-section">
+          <p class="player-text">{{high_score}}</p>
+        </div>
+      </div>
+      {{/each}}
+      <button class="start-button" onclick="startGame({{gameId}})">Start Game</button>
+      <button class="leave-button" onclick="leave({{gameId}})">Leave</button>
+    </div>
+  </div>
+  {{> chatMessagesLobby messageArray=messages}}
+</section>
+<script>
+  function startGame(gameId) {
+    window.location.href = `/game/${gameId}`, true;
+  }
+</script>
+<script>
+  function leave(gameId) {
+    window.location.href = `/lobby/leave/${gameId}`, true;
+  }
+</script>
