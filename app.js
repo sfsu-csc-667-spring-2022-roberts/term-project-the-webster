@@ -20,7 +20,8 @@ const db = require("./db/index");
 var app = express();
 
 const pgPool = new pg.Pool({
-  database: "postgres://vexvcnxvdkiqbm:cbb599f5cb8721fe7591366a0a7238450dd8c6d2535ada100664f3b733407787@ec2-3-209-61-239.compute-1.amazonaws.com:5432/d3683ft6866jug"
+  //database: "postgres://vexvcnxvdkiqbm:cbb599f5cb8721fe7591366a0a7238450dd8c6d2535ada100664f3b733407787@ec2-3-209-61-239.compute-1.amazonaws.com:5432/d3683ft6866jug";
+  connectionString: "postgres://vexvcnxvdkiqbm:cbb599f5cb8721fe7591366a0a7238450dd8c6d2535ada100664f3b733407787@ec2-3-209-61-239.compute-1.amazonaws.com:5432/d3683ft6866jug"
 });
 
 const session_middleware = session({
