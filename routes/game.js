@@ -38,7 +38,7 @@ router.get("/create", (request, response) => {
 const turnHandler = async (request, gameId, userId, tileCount, currentTurn) => {
   if (currentTurn == 0) {
     console.log("----first turn ------");
-    request.app.get("io").to("room" + gameId).emit("first-turn");
+    // request.app.get("io").to("room" + gameId).emit("first-turn");
     if (tileCount.length == 0) {
       await gameTiles.getInitialHand(gameId, userId)
       .then(result => {
