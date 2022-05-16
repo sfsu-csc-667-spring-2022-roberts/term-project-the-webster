@@ -99,8 +99,8 @@ const getGameUsers = (game_id) => {
   })
 }
 
-const getGameUsers2 = (game_id) => {
-  return db.any('SELECT * FROM game_users INNER JOIN users ON users.id = user_id WHERE game_id =$1', [game_id])
+const getGameUsers2 = async (game_id) => {
+  return db.any('SELECT * FROM game_users INNER JOIN users ON users.id = game_users.user_id WHERE game_id =$1', [game_id])
   .then(results => {
     return Promise.resolve(results);
   })
