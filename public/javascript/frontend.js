@@ -32,13 +32,6 @@ const slotTaken = (x, y) => {
   return found !== undefined;
 };
 
-// window.onload = (event) => {
-//   socket.on("load-board-state", () => {
-//     console.log("load-board state frontend");
-//     firstTurn = false;
-//   })
-// }
-
 const submitWord = async () => {
   if (word.length === 0) {
     alert("You must enter a word.");
@@ -166,7 +159,9 @@ const isNotYourTurn = (turnValue) =>{
   }
 }
 
-const replenishHand = (handData) =>{
+const replenishHand = (data) =>{
+ if (data.playerId){
+  handData = data.playerHand;
   tileWrapper = document.getElementById("tile-wrapper");
   tilesInHand = tileWrapper.children;
   tilesInHandLength = tilesInHand.length;
@@ -198,9 +193,7 @@ const replenishHand = (handData) =>{
         valueP.classList.add("tile-value");
         tileDiv.appendChild(valueP);
         tileWrapper.appendChild(tileDiv);
-        // tileDiv.outerHTML = `<div class="tile" data-id="${needsTile[i].tileId}" data-letter="${needsTile[i].letter}" data-value="${needsTile[i].value}>`;
-        // letterP.outerHTML = `<p class="tile-letter">${needsTile[i].letter}>`;
-        // valueP.outerHTML = `<p class="tile-value">${needsTile[i].value}>`;
+    }
   }
 }
  
@@ -219,11 +212,12 @@ const fillBoardFromDB = (gameState) =>  {
   }
 }
 
+
+
 socket.on("valid-word", async data => {
-  console.log("CAN WE HANG", data)
   fillBoardFromDB(data.tileDataForHTML);
   console.log("FRONT END SOCKET", data.playerHand);
-  replenishHand(data.playerHand);
+  replenishHand(data);
   alert("VALID WORD PLAYED :)");
   return await fetch(`${window.location.pathname}/nextTurn`, {
     body: JSON.stringify(word),

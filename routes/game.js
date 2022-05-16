@@ -122,6 +122,7 @@ router.get("/:id", async (request, response) => {
                         tiles: playerHand,
                         tilesInBag: gameTiles.getNumTilesInBag,
                         messages: chat.getMessages(),
+                        userId:userId,
                         //players: scoreBoard.getPlayers(id.id),
                       });
                     });

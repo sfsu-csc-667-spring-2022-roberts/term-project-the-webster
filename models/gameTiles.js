@@ -180,8 +180,8 @@ const getWords = (coordsArray, gameId) => {
         console.log("ERR", err)
     })
     
-    if ( firstTurn == false && !((verifyHorizontal(coordsArray) && !verifyVertical(coordsArray) && coordsArray.length > 1) ||
-     (!verifyHorizontal(coordsArray) && verifyVertical(coordsArray) && coordsArray.length > 1) )){
+    if ( coordsArray.length > 1 && firstTurn == false && !((verifyHorizontal(coordsArray) && !verifyVertical(coordsArray)) ||
+     (!verifyHorizontal(coordsArray) && verifyVertical(coordsArray) ) )){
        
         console.log(" DIAGONAL / INVALID TILE PLACEMENT! ")
         return "invalid move";
