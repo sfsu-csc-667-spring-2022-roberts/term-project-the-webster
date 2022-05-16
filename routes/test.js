@@ -10,7 +10,7 @@ const gameScore = require("../models/scoreBoard");
 router.get("/", (request, response) => {
 
 
-    gameTiles.getInitialHand(2,1);
+    gameTiles.getInitialHand(2,4);
     // playedCoords = [ {tile_id: 11, x: '6',y:'6' },{tile_id: 13,x: '6',y:'8' } , {tile_id: 15,x: '6',y:'9' } , {tile_id: 4, x: '6',y:'10' }  ]
 
 

@@ -62,20 +62,20 @@ UserModel.usernameExists = (username) =>
     .catch( (err) => Promise.resolve(err));
 };
 
-UserModel.getUserIdFromSession = async (sessionId) => {
-let  user_id = 0;
-return db.any(`SELECT * FROM session where sid=$1`, [socket_id])
-  .then(results => {  
-        console.log(results[0].sess.user_id)
-        user_id= results[0].sess.user_id
-    return user_id
-  }).catch(err => {
-      console.log("ERROR getting user id", err)
-  })
+// UserModel.getUserIdFromSession = async (sessionId) => {
+// let  user_id = 0;
+// return db.any(`SELECT * FROM session where sid=$1`, [socket_id])
+//   .then(results => {  
+//         console.log(results[0].sess.user_id)
+//         user_id= results[0].sess.user_id
+//     return user_id
+//   }).catch(err => {
+//       console.log("ERROR getting user id", err)
+//   })
 
 
   
-}
+// }
 
 
 module.exports = UserModel;
