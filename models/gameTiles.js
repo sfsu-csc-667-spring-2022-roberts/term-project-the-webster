@@ -7,7 +7,7 @@ const getInitialBag = () => {
 }
 
 const getNumTilesInBag = () => {
-    return 99;
+    return 100;
 }
 
 const getInitialHand = async (gameId, playerId) => {
