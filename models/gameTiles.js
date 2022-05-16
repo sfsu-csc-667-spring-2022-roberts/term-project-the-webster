@@ -1,6 +1,6 @@
 const game = require("../db/game");
 const db = require("../db");
-
+const gameBoard = require("./gameBoard")
 
 const getInitialBag = () => {
     //might require getting a game Id first 
@@ -65,7 +65,7 @@ const getLetterFromCoords = (coords, gameId) => {
  
  
 
-const getLetterFromTileId = (tile_id) => {
+const getLetterFromTileId = async (tile_id) => {
     return db.one(`SELECT letter FROM tiles WHERE id=$1`, [tile_id])
     .then(result => {
         // console.log("LETTER IS ", result)
@@ -77,7 +77,7 @@ const getLetterFromTileId = (tile_id) => {
     })
   }
   
-const getCoordinatesFromTileId = (game_id, tile_id) => {
+const getCoordinatesFromTileId = async (game_id, tile_id) => {
  
     return db.any(`SELECT x_coordinate, y_coordinate FROM game_tiles WHERE game_id=$1 AND tile_id=$2`,
     [game_id,tile_id])
@@ -187,8 +187,8 @@ const getWordWorth = (word) => {
 const getWords = (coordsArray, gameId) => {
     //verify horiozntal XOR very vertical
     if ( !((verifyHorizontal(coordsArray) && !verifyVertical(coordsArray)) || (!verifyHorizontal(coordsArray) && verifyVertical(coordsArray)))){
-        
-        return false;
+        console.log("NO DIAGONAL!!!!!!!!!")
+        return ["invalid move"];
     }
 
     //get all tiles in play
@@ -223,7 +223,17 @@ const getWords = (coordsArray, gameId) => {
             for (let tile of coordsArray) {
                 returnArr.push({ tile_id: Number(tile.id), x: Number(tile.x), y: Number(tile.y)})
             }
-            return returnArr;
+            if(returnArr[0].x == returnArr[returnArr.length -1].x){
+                console.log("FIRST TURN X's are the same!!! ")
+                returnArr = sortJsonByY(returnArr)
+            }
+            if(returnArr[0].y == returnArr[returnArr.length -1].y){
+                console.log("FIRST TURN Y's are the same!!! ") 
+                returnArr = sortJsonByX(returnArr)
+            }
+            console.log("SHOULD BE SORTED NOW PLZ")
+
+            return [returnArr];
         }
         
         arr1 = checkHorizontal(coordsArray, horizontalCoords)
@@ -242,7 +252,7 @@ const getWords = (coordsArray, gameId) => {
             }
         }
         clean = multiDimensionalUnique(wordSet);
-        return clean;
+        return [clean];
     })
     .catch(err => {
         console.log("ERROR IN models/gameTiles",err);
@@ -380,7 +390,7 @@ function checkHorizontal(playedTiles, horizontalRow) {
         }
 
         // console.log("LEFT SIDE THERE0", leftSide);
-        if(leftSide.length > 1) {
+      //  if(leftSide.length > 1) {
             tempArr = [];
             for (y of leftSide) {
                 tempArr.push( y);
@@ -389,7 +399,7 @@ function checkHorizontal(playedTiles, horizontalRow) {
             newTempArr = sortJsonByY(tempArr);
             returnArray.push(newTempArr);
         }
-    }
+  //  }
     return returnArray;
 }
 
@@ -452,14 +462,14 @@ function checkVertical(playedTiles, verticalRow) {
             aboveSide.push(tile);
         }
 
-        if (aboveSide.length > 1) {
+    //    if (aboveSide.length > 1) {
             tempArr = [];
             for (x of aboveSide) {
                 tempArr.push(x);
             }
             newTempArr = sortJsonByX(tempArr);
             returnArray.push(newTempArr);
-        }
+      //  }
     }
     return returnArray;
 }
@@ -482,15 +492,53 @@ function includesJson(arr, target) {
 
  
 function sortJsonByX(arr){
+    console.log("SORTING BY X")
     let deep_cpy = [...arr]
     let sortedInput = deep_cpy.slice().sort((a, b) => a.x - b.x);
+    console.log("SORTED X INPUT IS", sortedInput)
     return sortedInput;
 }
 
 function sortJsonByY(arr){
+    console.log("SORTING BY Y")
     let deep_cpy = [...arr]
     let sortedInput = deep_cpy.slice().sort((a, b) => a.y - b.y);
+    console.log("SORTED Y  INPUT IS", sortedInput)
     return sortedInput;
+}
+
+
+async function checkValidWords(wordList){
+    let valid_words = [];
+    
+    for ( const x of wordList ){
+        console.log("CHECKING word validity of ", x)
+       await gameBoard.isWordValid(x)
+        .then(results => {
+            if(results == true){
+                console.log(x , "IS VALID WORD!")
+                valid_words.push(x)
+            }
+       }).catch(err => {
+           console.log("ERROR", err)
+       })
+
+    }
+    
+    console.log(valid_words)
+
+    if(valid_words.length == wordList.length){
+        console.log(" VALID MOVE ")
+        return true
+    }
+    else{
+        console.log(" INVALID WORD")
+        return false
+    }
+
+
+
+
 }
  
 module.exports = {
@@ -502,7 +550,7 @@ module.exports = {
     getLetterFromTileId,
     getCoordinatesFromTileId,
     parsePlayerHandForHTML,
- 
+    checkValidWords,
     getCoordinatesFromTileId,
     getWords,
     getWordsFromArray,

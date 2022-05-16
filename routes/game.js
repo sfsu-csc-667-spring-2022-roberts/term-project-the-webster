@@ -95,13 +95,14 @@ router.get("/:id/join", (request, response) => {
   }
 });
 
-router.post("/:id/playWord",  (request, response)  => {
+router.post("/:id/playWord",  async (request, response)  => {
 
   const { id } = request.params;
   const  wordData  = request.body;
+  
   let word_placed;
   console.log(request.body)
- 
+  let letters = [];
   console.log(`HANDLE THIS WORD IN GAME ${id}`);
    
     const res_wordData  = { wordData }
@@ -111,49 +112,50 @@ router.post("/:id/playWord",  (request, response)  => {
     // console.log("TILES ARE", tiles);
     gameTiles.getWords(tiles, id)
     .then(results => {
-      console.log("Results", results);
-    })
-    // wordifyTiles(tiles).then(result => {
-    //   word_placed = result.toLowerCase()
+    
+      console.log(" GET WORDS RETURNS-> ", results);
+      console.log("FGHJNBVGU")
+      getLetters(results).then(results => {
+        console.log("GET LETTERS RESULTS ", results)
 
-        // gameBoard.isWordValid(word_placed)
-        // .then(result => {
-        //   console.log("IS WORD VALID ? " + result)
-        //   if(result == true){
-        //    getPointsPerWord(tiles)
-        //     .then(result => {
-        //       console.log(word_placed + " is worth " +  result + " points.")
-            //  areTilesAdjacent(tiles)
-              // .then(result => {
-
-              //    if(result){
-              //      console.log("  WORD IS VALID ")
-              //      console.log("b4 EMITTING VALID WORD")                   
-              //      request.app.get("io").emit("valid-word")
-              //      console.log("AFTER EMITTING VALID WORD")
-              //    }
-              //    else{
-              //      console.log( " CANNOT PLAY THAT WORD! ")
-              //    }
-
-
-              // }).catch(err => {
-              //   console.log("ERROR" + err)
-              // })
+        console.log("WORDIFYING THESE TILES! ! ")
+        extractWords(results)
+        .then(results => {
+          console.log("EXTRACTED WORDS ARE ==> ", results)
+          areWordsValid(results)
+          .then(results => {
+            console.log("RESULTS FROM ARE WORDS VALID", results)
+            if(results == true){
+              console.log("-----_  VALID MOVE  _------")
+            }
+            else{
+              console.log("INVALID MOVE")
+            }
+            
+          })
+         
+        })
+        .catch(err => {
+          console.log("ERROR extracting words", err)
+        })
         
-    //         }).catch(err => {
-    //           console.log("ERR " + err)
-    //         })
-    //       }else{
-    //         console.log( " CANNOT PLAY THAT WORD! ")
-    //       }
-    //     }).catch(err => {
-    //       console.log("ERROR " + err)
-    //     })
+        
 
-    // }).catch(err => {
-    //   console.log("ERROR!! " + err)
-    // })
+        console.log("after")
+
+      }).catch(err => {
+        console.log("ERROR getting letters helper function", err)
+      })
+ 
+    
+    }).catch(err => {
+      console.log("ERROR ", err)
+    })
+
+
+             
+   //      request.app.get("io").emit("valid-word")
+          
  
 
     
@@ -171,11 +173,54 @@ router.post("/:id/playWord",  (request, response)  => {
  
 });
  
+async function getLetters(words){
+  const _words = []
+const letters = []
+console.log("WORDS")
+console.log(words)
+console.log(words.length)
+  for ( const x of words){
+  for ( const tile of x ){
+    console.log("TILE " , tile , )
+   await gameTiles.getLetterFromTileId(tile.tile_id)
+    .then(results => {
+      // letters.push(results.letter)
+      console.log(results.letter)
+      letters.push(String(results.letter))
+      
+      console.log("\n")
+    }).catch(err => {
+      console.log("ERROR GETTING LETTERS FROM TILE ID", err)
+    })
+  } 
+  _words.push(letters)
+}
+
+  return _words
+
+}
+
+
+async function extractWords(arr){
+  const words = [] 
+
+  for ( const x of arr){
+   await wordifyTiles(x).then(results => {
+     
+      words.push(results)
+    })
+
+  }
+
+
+return words
+  
+}
 
 async function wordifyTiles(tiles){
   let word = "";
   for( const x of tiles){
-    word+=String(x.letter)
+    word+=String(x).toLowerCase()
   }
 
   return word;
@@ -255,7 +300,27 @@ async function areTilesAdjacent(tiles){
   return x || y 
 }
 
+async function areWordsValid(words){
 
+  let valid_word = false
+
+  await gameTiles.checkValidWords(words)
+
+  .then(results => {
+    console.log("CHECK VALID WORDS RESULTS" , results)
+    if(results == true){ 
+      console.log("WORD IS VALID -->  returning true!!! ")
+     valid_word = true
+    }
+  })
+  .catch(err => {
+    console.log("ERROR ", err)
+  })
+  
+  return valid_word
+
+
+}
  
 async function getPointsPerWord(tiles){
   let points = 0;
