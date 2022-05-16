@@ -7,7 +7,7 @@ const game = require("../db/game");
 const gameBoard = require("../models/gameBoard");
 const scoreBoard = require("../models/scoreBoard");
 const chat = require("../models/chat");
-
+const user = require("../models/Users")
 const gameTiles = require("../models/gameTiles");
 const session = require("express-session");
 // const frontend = require("../public/javascript/frontend")
@@ -97,9 +97,30 @@ router.get("/:id/join", (request, response) => {
 
 router.post("/:id/playWord",  async (request, response)  => {
 
+  let userId = 0
+
+  await user.getUserIdFromSession(request.sessionID).then(results => {
+    console.log("USER ID IS ==> ", results)
+    userId = results
+  }).catch(err => {
+    console.log("ERROR", err)
+  })
+   
+
   const { id } = request.params;
   const  wordData  = request.body;
-  
+    console.log("FORMAT IS ", wordData)
+  game.getGameTurn(id).then(results => {
+    console.log("CURRENT TURN RESULTS ==> ", results.current_turn)
+    if(results.current_turn ) {
+
+    }
+    }).catch(err => {
+    console.log("ERROR", err)
+  })
+
+
+
   let word_placed;
   console.log(request.body)
   let letters = [];
@@ -112,25 +133,39 @@ router.post("/:id/playWord",  async (request, response)  => {
     // console.log("TILES ARE", tiles);
     gameTiles.getWords(tiles, id)
     .then(results => {
-     
+     const get_words = results 
       console.log("GET WORDS RETURNS-> ", results);
       console.log("FGHJNBVGU")
       getLetters(results).then(results => {
         console.log("GET LETTERS RESULTS ", results)
 
-         
+        
         extractWords(results)
         .then(results => {
-          
+          const word_arr = results
+          // console.log("PASSING these to get score ==> ", word_arr)
           areWordsValid(results)
 
           .then(results => {
             
             if(results == true){
 
-              console.log("VALID MOVE")
-              
 
+              console.log("VALID MOVE")
+
+              // gameTiles.getScoreFromWords(word_arr)
+              // .then(results => {
+              //   console.log(" score  = " ,results)
+              // }).catch(err => {
+              //   console.log("ERROR", err)
+              // })
+
+              console.log("wordData", get_words);
+              getPointsPerWord(wordData).then(results => {
+                console.log("SCORE IS => " , results)
+              }).catch(err => {
+                console.log("ERROR", err)
+              })
               // request.app.get("io").emit("valid-word")
 
             }
@@ -183,12 +218,12 @@ async function getLetters(words){
   const _words = []
 const letters = []
 console.log("WORDS")
-console.log(words)
-console.log(words.length)
+// console.log(words)
+// console.log(words.length)
   for ( const x of words){
   for ( const tile of x ){
     console.log("TILE " , tile , )
-   await gameTiles.getLetterFromTileId(tile.tile_id)
+   await gameTiles.getLetterFromTileId(tile.id)
     .then(results => {
       // letters.push(results.letter)
       console.log(results.letter)
@@ -329,6 +364,7 @@ async function areWordsValid(words){
 }
 
 async function getPointsPerWord(tiles){
+
   let points = 0;
   let word_multiplier = 1;
   let total_points;

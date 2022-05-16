@@ -185,6 +185,8 @@ const getWordWorth = (word) => {
 // horizontalCoords = [{x:'11',y:'0'}, {x:'11',y:'7'},{x:'11',y:'14'} ]
 
 const getWords = (coordsArray, gameId) => {
+
+    console.log("INPUT TO GET WORDS", coordsArray);
     //verify horiozntal XOR very vertical
     if ( !((verifyHorizontal(coordsArray) && !verifyVertical(coordsArray)) || (!verifyHorizontal(coordsArray) && verifyVertical(coordsArray)))){
         console.log("NO DIAGONAL!!!!!!!!!")
@@ -231,9 +233,8 @@ const getWords = (coordsArray, gameId) => {
                 console.log("FIRST TURN Y's are the same!!! ") 
                 returnArr = sortJsonByX(returnArr)
             }
-            console.log("SHOULD BE SORTED NOW PLZ")
-
-            return [returnArr];
+            let modifiedReturnArr = addValueTo2DArrayJson([returnArr]);
+            return modifiedReturnArr;
         }
         
         arr1 = checkHorizontal(coordsArray, horizontalCoords)
@@ -252,11 +253,56 @@ const getWords = (coordsArray, gameId) => {
             }
         }
         clean = multiDimensionalUnique(wordSet);
-        return [clean];
+        let modifiedReturnArr = addValueTo2DArrayJson(clean);
+        return modifiedReturnArr;
     })
     .catch(err => {
         console.log("ERROR IN models/gameTiles",err);
 
+    })
+}
+
+const addValueTo2DArrayJson = (arr) => {
+    promises = [];
+    for (let innerArr of arr) {
+        promises.push(addValueToJson(innerArr));
+    }
+    return Promise.all(promises).then(results => {
+        let returnArr = [];
+        for (let ele of results) {
+            returnArr.push(ele);
+        }
+        return returnArr;
+    })
+    .catch(err => {
+        return Promise.resolve(err);
+    })
+} 
+
+const addValueToJson = async (arr) => {
+    let values = [];
+    for (let tile of arr) {
+        values.push( await getPointFromTileId(tile.tile_id));
+    }
+    return Promise.all(values).then(results => {
+        let returnArr = [];
+        for (let i = 0; i < arr.length; i++) {
+            returnArr.push({id: arr[i].tile_id, value: results[i].value, x: arr[i].x, y: arr[i].y })
+        }
+        return Promise.resolve(returnArr);
+    })
+    .catch(err => {
+        console.log("ERROR IN addValueToJson in models/gameTiles");
+        return Promise.resolve(err);
+    })
+
+}
+
+const getPointFromTileId = async (tileId) => {
+    return db.one(`SELECT value FROM tiles WHERE id=$1`, [tileId])
+    .catch(err => {
+        console.log("ERROR IN getPointFromTileId in models/gameTiles");
+        return Promise.resolve(err);
     })
 }
 
