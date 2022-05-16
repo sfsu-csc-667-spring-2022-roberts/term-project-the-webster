@@ -179,8 +179,8 @@ document
 
 
 
-socket.on("valid-word", async () => {
-
+socket.on("valid-word", async data => {
+  console.log("FRONTENDDDDDDDD ",data);
   alert("VALID WORD PLAYED :)");
   return await fetch(`${window.location.pathname}/nextTurn`, {
     body: JSON.stringify(word),
@@ -200,8 +200,4 @@ socket.on("valid-word", async () => {
     });
 })
 
-function clearPlayedTiles(word) {
-  word = [];
-  return word;
-}
 

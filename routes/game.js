@@ -75,7 +75,7 @@ router.get("/:id", async (request, response) => {
   var currentTurn;
   var cells;
   var tileCount;
-  console.log("in game route ", scoreBoard.getPlayers(id.id));
+  
   game.getPlayerHand(gameId, userId)
     .then(tileCountResult => {
       tileCount = tileCountResult;
@@ -187,7 +187,7 @@ router.post("/:id/nextTurn", (request, response) => {
 })
 
 router.post("/:id/playWord", (request, response) => {
-
+  // request.app.get("io").emit("valid-word")
   const { id } = request.params;
   const wordData = request.body;
   let word_placed;
@@ -210,12 +210,17 @@ router.post("/:id/playWord", (request, response) => {
               console.log(word_placed + " is worth " + result + " points.")
               areTilesAdjacent(tiles)
                 .then(result => {
-
+                  console.log("AAAABBBOOOOOOOOOOOOOOOVE", result);
                   if (result) {
+                    gameTiles.getTileDataForHTML(id).then( (tileData) => {
+                      console.log("tileData from DB ");
+                      console.log(tileData)
+                      // Promise.resolve(tileData);
+                   
                     console.log("  WORD IS VALID ")
-                    console.log("b4 EMITTING VALID WORD")
-                    request.app.get("io").emit("valid-word")
+                    request.app.get("io").emit("valid-word", {tileData:tileData});
                     console.log("AFTER EMITTING VALID WORD")
+                  })
                   }
                   else {
                     console.log(" CANNOT PLAY THAT WORD! ")

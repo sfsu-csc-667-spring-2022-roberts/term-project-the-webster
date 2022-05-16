@@ -24,7 +24,7 @@ const joinGame = (gameId, userId) =>
 
 const placeTile = (tile_id, x, y, game_id) => 
   db.any(
-    `UPDATE game_tiles SET x_coordinate=$1, y_coordinate=$2, in_play=true WHERE game_id=$4 AND tile_id=$3`,
+    `UPDATE game_tiles SET x_coordinate=$1, y_coordinate=$2, in_play=true, in_bag=false WHERE game_id=$4 AND tile_id=$3`,
     [x, y, tile_id, game_id]
   )
   .catch((err) => {

@@ -330,6 +330,32 @@ function checkVertical(playedTiles, verticalRow) {
     return returnArray;
 }
 
+const getTileDataForHTML = (gameId) => {
+    var p = [];
+    var tileData = [];
+    var targetArr = [];
+    return game.getInPlayTiles(1).then( (tileData)  => {
+        ///     tile, x, y, game
+        for(i = 0; i < tileData.length; i++) {
+            p.push(getLetterFromTileId(tileData[i].tile_id));
+        }
+        return Promise.all(p)
+        .then(results => {
+            for(i=0; i < tileData.length; i++){
+                let obj = {};
+                obj["tile_id"] = tileData[i].tile_id;
+                obj["x_coordinate"] = tileData[i].x_coordinate;
+                obj["y_coordinate"]  = tileData[i].y_coordinate;
+                obj["letter"] = results[i].letter;
+                targetArr.push(obj);
+            }
+            return Promise.resolve(targetArr);
+        })
+    }).catch(err => {
+        console.log(err); 
+    })
+
+}
 // testArr = [{ x:7, y:5  }, {x:8, y:9}]
 
 // const x = {x:7, y:5}
@@ -369,5 +395,6 @@ module.exports = {
     getCoordinatesFromTileId,
     parsePlayerHandForHTML,
     getCoordinatesFromTileId,
-    getWords
+    getWords,
+    getTileDataForHTML,
 }
