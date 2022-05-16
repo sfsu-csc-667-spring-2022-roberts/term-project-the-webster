@@ -160,9 +160,9 @@ const isNotYourTurn = (turnValue) =>{
 }
 
 const replenishHand = (data) =>{
- if (data.playerId){
-  handData = data.playerHand;
   tileWrapper = document.getElementById("tile-wrapper");
+  if(data.playerId == tileWrapper.dataset.id){
+  handData = data.playerHand;
   tilesInHand = tileWrapper.children;
   tilesInHandLength = tilesInHand.length;
   let needsTile = []; 
