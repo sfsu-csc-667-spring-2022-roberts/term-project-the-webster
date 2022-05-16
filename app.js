@@ -9,7 +9,7 @@ var session = require("express-session");
 var pgSession = require("connect-pg-simple")(session);
 var flash = require("express-flash");
 // const socket = require('socket.io')
-const config = require(__dirname + '/config/config.json')[env];
+//const config = require(__dirname + '/config/config.json')[env];
 
 if (process.env.NODE_ENV === "development") {
   require("dotenv").config();
@@ -20,7 +20,7 @@ const db = require("./db/index");
 var app = express();
 
 const pgPool = new pg.Pool({
-  database: config.database,
+  database: "d3683ft6866jug"
 });
 
 const session_middleware = session({
