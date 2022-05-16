@@ -1,5 +1,3 @@
-
-
 <div class="board-tiles-messages">
     <form id="game-board"  >
         {{#each boardSquares}}
@@ -10,7 +8,7 @@
         {{/each}}
     </form>
     {{> tileRack}}
-    {{> chatMessagesGameBoard messageArray=messages ready=isReady players=players}}
+    {{> chatMessagesGameBoard messageArray=messages ready=isReady players=players tileId=userId}}
 </div>
 
 

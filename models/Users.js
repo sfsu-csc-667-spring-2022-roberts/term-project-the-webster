@@ -2,7 +2,6 @@ const db = require('../db');
 const bcrypt = require('bcrypt');
 const UserModel = {};
 
-
 //TO DO make this return results of query
 UserModel.create = (username, password ) => 
 {
@@ -16,16 +15,13 @@ UserModel.create = (username, password ) =>
         
         if(results && results.affectedRows)
         {
-          
             return Promise.resolve(results.insertId);
         }
         else 
         {
-         
             return Promise.resolve(-1);
         }
     })
-   
     .catch( (err) => Promise.resolve(err));
 }
 
@@ -48,9 +44,7 @@ UserModel.usernameExists = (username) =>
         console.log(results);
         if (results)
         {
-         
             userId = results.id;
-        
             return bcrypt.compare(password, results.password);
         }
         else 
@@ -61,21 +55,5 @@ UserModel.usernameExists = (username) =>
     })
     .catch( (err) => Promise.resolve(err));
 };
-
-// UserModel.getUserIdFromSession = async (sessionId) => {
-// let  user_id = 0;
-// return db.any(`SELECT * FROM session where sid=$1`, [socket_id])
-//   .then(results => {  
-//         console.log(results[0].sess.user_id)
-//         user_id= results[0].sess.user_id
-//     return user_id
-//   }).catch(err => {
-//       console.log("ERROR getting user id", err)
-//   })
-
-
-  
-// }
-
 
 module.exports = UserModel;

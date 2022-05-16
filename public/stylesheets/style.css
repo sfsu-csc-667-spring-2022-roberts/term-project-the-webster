@@ -482,7 +482,7 @@ grid-gap: 1px;
   flex-direction:column;
 }
 
-#tile-wrapper{
+.tile-wrapper{
   grid-area:tiles;
   display:flex;
   align-items:center;

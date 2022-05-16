@@ -8,8 +8,6 @@ const getPlayers = async (gameId) => {
     console.log("get plaaaaayers", data[0].user_id);
     let list = [];
     for(player in data ){
-      //use promise.all for this portion
-     // getUserNameFromId(player.userId)
       list.push(player);
     }
     console.log(list);
