@@ -33,6 +33,8 @@ console.log("FRONT END ")
 //   provide some visual indication of current player
 // });
 
+var userOrder;
+
 let firstTurn = false;
 
 socket.on("turn-update", gameTurn => {
@@ -41,10 +43,10 @@ socket.on("turn-update", gameTurn => {
   console.log(gameTurn.newGameTurn);
 })
 
-/*socket.on("first-turn", () => {
+socket.on("first-turn", () => {
   console.log("it is the first turn -- socket");
   firstTurn = true;
-})*/
+})
 
 socket.on("not-first-turn", () => {
   console.log("it is NOT the first turn -- socket");
@@ -61,10 +63,6 @@ const slotTaken = (x, y) => {
   const found = word.find((entry) => entry.x === x && entry.y === y);
   return found !== undefined;
 };
-
-window.onload = (event) => {
-  firstTurn = true;
-}
 
 const submitWord = async () => {
   if (word.length === 0) {
@@ -158,6 +156,7 @@ document
   .getElementById("tile-wrapper")
   .addEventListener("click", ({ target }) => {
     console.log("CLIIIIIIIIIIIIIIICK tile rack ");
+
     const element = target.tagName === "P" ? target.parentElement : target;
 
     if (Array.from(element.classList).includes("selected-tile")) {
