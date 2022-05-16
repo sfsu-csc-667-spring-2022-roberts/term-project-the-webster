@@ -32,12 +32,12 @@ const slotTaken = (x, y) => {
   return found !== undefined;
 };
 
-window.onload = (event) => {
-  socket.on("load-board-state", () => {
-    console.log("load-board state frontend");
-    firstTurn = false;
-  })
-}
+// window.onload = (event) => {
+//   socket.on("load-board-state", () => {
+//     console.log("load-board state frontend");
+//     firstTurn = false;
+//   })
+// }
 
 const submitWord = async () => {
   if (word.length === 0) {
@@ -59,11 +59,6 @@ const submitWord = async () => {
       console.log(word)
       console.log("------------------------------")
       word = []
-      console.log("----------CLEARING WORD ARRAY----------")
-      console.log(word)
-      console.log("----------WORD BANK ----------")
-      console.log(words)
-      console.log("returned response = ")
       return response.json()
 
     })
@@ -77,7 +72,6 @@ const submitWord = async () => {
 document
   .getElementById("play-word-button")
   .addEventListener("click", (event) => {
-    console.log("IN FRONTEND ", word,words);
     submitWord().then(result => {
       console.log("before RESULT")
       console.log(result)
@@ -87,9 +81,6 @@ document
       .catch(err => {
         console.log(err)
       });
-
-
-
   });
 
 document.getElementById("game-board").addEventListener("click", (event) => {
@@ -161,14 +152,60 @@ document
 
 const isYourTurn = (turnValue) =>{
   if(turnValue){
-    bagWrapper = document.querySelector(".bag-icon-wrapper");
+    let bagWrapper = document.querySelector(".bag-icon-wrapper");
     bagWrapper.ClassList.remove("bag-not-your-turn");
     bagWrapper.ClassList.add("bag-your-turn");
   }
 }
 
+const isNotYourTurn = (turnValue) =>{
+  if(!turnValue){
+   let  bagWrapper = document.querySelector(".bag-icon-wrapper");
+    bagWrapper.ClassList.remove("bag-your-turn");
+    bagWrapper.ClassList.add("bag-not-your-turn");
+  }
+}
+
+const replenishHand = (handData) =>{
+  tileWrapper = document.getElementById("tile-wrapper");
+  tilesInHand = tileWrapper.children;
+  tilesInHandLength = tilesInHand.length;
+  let needsTile = []; 
+  for(i=0; i < handData.length; i++){
+    let found = false;
+    for(j = 0; j < tilesInHandLength; j++) {
+      if(handData[i].tileId == tilesInHand[j].dataset.id){
+        found = true;
+      }
+    }
+    if (found == false) {
+      needsTile.push(handData[i]);
+    }
+  }
+  console.log("needsTile", needsTile);
+  for(i=0; i < needsTile.length; i++){
+        let tileDiv = document.createElement("div");
+        tileDiv.dataset.id = needsTile[i].tileId;
+        tileDiv.dataset.letter = needsTile[i].letter;
+        tileDiv.dataset.value = needsTile[i].value;
+        tileDiv.classList.add("tile");
+        let letterP = document.createElement("p");
+        letterP.innerText = needsTile[i].letter;
+        letterP.classList.add("tile-letter");
+        tileDiv.appendChild(letterP);
+        let valueP = document.createElement("p");
+        valueP.innerText = needsTile[i].value;
+        valueP.classList.add("tile-value");
+        tileDiv.appendChild(valueP);
+        tileWrapper.appendChild(tileDiv);
+        // tileDiv.outerHTML = `<div class="tile" data-id="${needsTile[i].tileId}" data-letter="${needsTile[i].letter}" data-value="${needsTile[i].value}>`;
+        // letterP.outerHTML = `<p class="tile-letter">${needsTile[i].letter}>`;
+        // valueP.outerHTML = `<p class="tile-value">${needsTile[i].value}>`;
+  }
+}
+ 
 const fillBoardFromDB = (gameState) =>  { 
-  allSquares = document.getElementById("game-board").children;
+  let allSquares = document.getElementById("game-board").children;
   for(i = 0; i < gameState.length; i++ ) {
     for(j = 0; j < allSquares.length; j++) {
       if( (gameState[i].x_coordinate == allSquares[j].dataset.x ) &&
@@ -183,9 +220,10 @@ const fillBoardFromDB = (gameState) =>  {
 }
 
 socket.on("valid-word", async data => {
-  console.log("IN FRONTEND FOR VALIDWOR", data);
-  console.log("IN FRONTEND ", word,words);
+  console.log("CAN WE HANG", data)
   fillBoardFromDB(data.tileDataForHTML);
+  console.log("FRONT END SOCKET", data.playerHand);
+  replenishHand(data.playerHand);
   alert("VALID WORD PLAYED :)");
   return await fetch(`${window.location.pathname}/nextTurn`, {
     body: JSON.stringify(word),

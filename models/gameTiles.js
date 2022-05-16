@@ -160,10 +160,33 @@ const getWordWorth = (word) => {
  
 const getWords = (coordsArray, gameId) => {   
     //verify horiozntal XOR very vertical
-    if ( !((verifyHorizontal(coordsArray) && !verifyVertical(coordsArray)) || (!verifyHorizontal(coordsArray) && verifyVertical(coordsArray)))){
-        console.log("NO DIAGONAL!!!!!!!!!") 
-        return ["invalid move"];
+ 
+    
+    let firstTurn = false
+    let checkSurrounding = false
+    game.getInPlayTiles(gameId).then(results => {
+        console.log("RESULTS OF INITIAL GET IN PLAY TILES CHECK " , results)
+        if(results.length == 0 && coordsArray.length < 2){
+            
+           return "invalid move";
+        }
+
+
+        if(firstTurn == false && coordsArray.length >= 1){
+            checkSurrounding = true
+        }
+
+    }).catch(err => {
+        console.log("ERR", err)
+    })
+    
+    if ( firstTurn == false && !((verifyHorizontal(coordsArray) && !verifyVertical(coordsArray) && coordsArray.length > 1) ||
+     (!verifyHorizontal(coordsArray) && verifyVertical(coordsArray) && coordsArray.length > 1) )){
+       
+        console.log(" DIAGONAL / INVALID TILE PLACEMENT! ")
+        return "invalid move";
     }
+
     //get all tiles in play
     return game.getInPlayTiles(gameId)
     .then(results => {
@@ -480,6 +503,24 @@ function checkVertical(playedTiles, verticalRow) {
     return returnArray;
 }
 
+const getPlayerHandLetters = (gameId, playerId) => {
+    let tiles = []
+    return db.any(game.getPlayerHand(gameId, playerId))
+    .then(results => {
+        promise = [];
+        for (let tile of results) {
+            promise.push(game.getLetterFromCoords(tile.tile_id));
+        }
+        return Promise.all(promise)
+        .then(results => {
+            console.log("RESULTS HERE ARE", results);
+            return results;
+        })
+    }).catch(err => {
+        console.log("ERR", err)
+    })
+}
+
 const getTileDataForHTML = async (gameId) => {
     var p = [];
     var tileData = [];
@@ -518,6 +559,7 @@ function includesJson(arr, target) {
     }
     return -1;
 }
+
 
 
 //{EAAI, HAL, UAY, SI}
@@ -588,7 +630,8 @@ module.exports = {
  
     checkValidWords,
     getWordsFromArray,
-    getScoreFromWords
+    getScoreFromWords,
+    getPlayerHandLetters
  
  
  
