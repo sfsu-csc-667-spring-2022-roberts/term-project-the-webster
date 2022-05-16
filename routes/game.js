@@ -346,8 +346,26 @@ router.post("/:id/playWord", async (request, response) => {
 
 
     response_json = res_wordData
+      console.log("RES WORD DATA" , res_wordData)
 
+    // play tiles
+     
+      await makeTilesInPlay(res_wordData, id)
+      .then(results => {
+        console.log("RESULTS ", results)
+      })
+      .catch(err => {
+        console.log("ERROR MAKING TILES IN PLAY ", err)
+      })
+   
+    // call  gameTiles.getTileDataForHTML
 
+    //update current in game db 
+    //update user's hand with new tiles 
+    //update score for that user 
+
+  // emit socket with game state
+  
     response
     .status(200)
     .json(response_json);
@@ -367,32 +385,32 @@ router.post("/:id/playWord", async (request, response) => {
 });
 
  
-// async function getLetters(words) {
-//   const _words = []
-//   const letters = []
-//   console.log("WORDS")
-//   // console.log(words)
-//   // console.log(words.length)
-//   for (const x of words) {
-//     for (const tile of x) {
-//       // console.log("TILE " , tile , )
-//       await gameTiles.getLetterFromTileId(tile.id)
-//         .then(results => {
-//           // letters.push(results.letter)
-//           // console.log(results.letter)
-//           letters.push(String(results.letter))
+async function getLetters(words) {
+  const _words = []
+  const letters = []
+  //console.log("WORDS")
+  // console.log(words)
+  // console.log(words.length)
+  for (const x of words) {
+    for (const tile of x) {
+      // console.log("TILE " , tile , )
+      await gameTiles.getLetterFromTileId(tile.id)
+        .then(results => {
+          // letters.push(results.letter)
+          // console.log(results.letter)
+          letters.push(String(results.letter))
 
-//           console.log("\n")
-//         }).catch(err => {
-//           console.log("ERROR GETTING LETTERS FROM TILE ID", err)
-//         })
-//     }
-//     _words.push(letters)
-//   }
+          console.log("\n")
+        }).catch(err => {
+          console.log("ERROR GETTING LETTERS FROM TILE ID", err)
+        })
+    }
+    _words.push(letters)
+  }
 
-//   return _words
+  return _words
 
-// }
+}
 
 
 async function extractWords(arr) {
