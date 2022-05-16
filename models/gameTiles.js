@@ -10,23 +10,22 @@ const getNumTilesInBag = () => {
     return 100;
 }
 
-const getInitialHand = (gameId, playerId) => {
-    hand = Array();
-    for(i = 0; i < 7; i++) {
-        game.drawTile(gameId, playerId)
-        .then(results => {
-            hand.push(results[0]);
-        }).catch((err) => {
-            console.log(err);
+const getInitialHand = async (gameId, playerId) => {
+    return await game.drawTile(gameId, playerId, 7)
+    .then(async () => {
+        return await game.getPlayerHand(gameId, playerId)
+        .then(hand => {
+            console.log("-----hand: ");
+            console.log(hand);
+            return Promise.resolve(hand);
         })
-    }
-    console.log(hand);
-    return hand;
+        .catch(err => {
+            console.log("err in initial hand: " + err);
+        })
+    })
 }
 
 
-
- 
 //returns how much points a letter is worth 
 const getLetterWorth = (letter) => {
     return db.one(`SELECT value FROM tiles WHERE letter=$1 LIMIT 1`, [letter])
@@ -520,6 +519,32 @@ function checkVertical(playedTiles, verticalRow) {
     return returnArray;
 }
 
+const getTileDataForHTML = (gameId) => {
+    var p = [];
+    var tileData = [];
+    var targetArr = [];
+    return game.getInPlayTiles(1).then( (tileData)  => {
+        ///     tile, x, y, game
+        for(i = 0; i < tileData.length; i++) {
+            p.push(getLetterFromTileId(tileData[i].tile_id));
+        }
+        return Promise.all(p)
+        .then(results => {
+            for(i=0; i < tileData.length; i++){
+                let obj = {};
+                obj["tile_id"] = tileData[i].tile_id;
+                obj["x_coordinate"] = tileData[i].x_coordinate;
+                obj["y_coordinate"]  = tileData[i].y_coordinate;
+                obj["letter"] = results[i].letter;
+                targetArr.push(obj);
+            }
+            return Promise.resolve(targetArr);
+        })
+    }).catch(err => {
+        console.log(err); 
+    })
+
+}
 // testArr = [{ x:7, y:5  }, {x:8, y:9}]
 
 // const x = {x:7, y:5}
@@ -592,15 +617,18 @@ module.exports = {
     getNumTilesInBag,
     getLetterWorth,
     getInitialHand,
- 
     getLetterFromTileId,
     getCoordinatesFromTileId,
     parsePlayerHandForHTML,
-    checkValidWords,
+ 
     getCoordinatesFromTileId,
     getWords,
+    getTileDataForHTML,
+ 
+    checkValidWords,
     getWordsFromArray,
     getScoreFromWords
+ 
  
  
 }

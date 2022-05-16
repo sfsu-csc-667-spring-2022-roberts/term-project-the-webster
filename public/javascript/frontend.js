@@ -1,48 +1,32 @@
 
-/*socket.on('test-event1', async () => {
-  console.log(` id is ${socket.id}`)
-  
-  socket.emit('hey')
+var userOrder;
 
-})*/
+let firstTurn = false;
 
-console.log("FRONT END ")
-console.log(socket)
-console.log("FRONT END ")
+socket.on("turn-update", gameTurn => {
+  console.log("TURN-UPDATE SOCKET");
+  console.log(gameTurn);
+  console.log(gameTurn.newGameTurn);
+})
 
+socket.on("first-turn", () => {
+  console.log("it is the first turn -- socket");
+  firstTurn = true;
+})
 
-
-
-// io.on("game-updated", (payload) => {
-//   // Update all the various game board divs, update player's tile rack,
-//   // provide some visual indication of current player
-
-// });
-
-// const game = require("../../db/game")
-
-// const createGame = (currentUser) => {
-//   game.createGame(currentUser)
-//   .then((game_id) => {
-//     return game_id;
-//   })
-// }
-
-// io.on("game-updated", (payload) => {
-//   Update all the various game board divs, update player's tile rack,
-//   provide some visual indication of current player
-// });
-
+socket.on("not-first-turn", () => {
+  console.log("it is NOT the first turn -- socket");
+  firstTurn = false;
+})
 
 const selection = [];
-const words = [] 
+const words = []; 
 let word = [];
 
 const slotTaken = (x, y) => {
-  //easiest way ensure valid turns is to use this 
-  //with the socket data of what is being used already 
-  //then only allow for letters placed next to a placed letter
+ 
   const found = words.find((entry) => entry.x === x && entry.y === y);
+ 
   return found !== undefined;
 };
 
@@ -51,7 +35,7 @@ const submitWord = async () => {
     alert("You must enter a word.");
     return;
   }
-   console.log(`${window.location.pathname}/playWord`)
+  console.log(`${window.location.pathname}/playWord`)
 
   return await fetch(`${window.location.pathname}/playWord`, {
     body: JSON.stringify(word),
@@ -73,7 +57,7 @@ const submitWord = async () => {
       console.log("returned response = ")
       return response.json()
 
-    })  
+    })
     .catch((error) => {
       console.log(error);
       Promise.reject(error)
@@ -85,16 +69,16 @@ document
   .getElementById("play-word-button")
   .addEventListener("click", (event) => {
 
-   submitWord().then(result => {
-     console.log("before RESULT")
-     console.log(result)
-     console.log("after RESULT")
-   
+    submitWord().then(result => {
+      console.log("before RESULT")
+      console.log(result)
+      console.log("after RESULT")
+
     })
-   .catch(err =>{
-     console.log(err)
-   });
-    
+      .catch(err => {
+        console.log(err)
+      });
+
 
 
   });
@@ -106,7 +90,15 @@ document.getElementById("game-board").addEventListener("click", (event) => {
     selection.length === 1
   ) {
     const { x, y } = event.target.dataset;
-    // Record letters stored at this coordinate
+
+    console.log("x: " + x);
+    console.log("y: " + y);
+    console.log("firstTurn: " + firstTurn);
+
+    if ((firstTurn == true) && (x != 7 || y != 7))   {
+      alert("Tile must be placed in center");
+      return;
+    }
     if (slotTaken(x, y)) {
       alert("A tile has been placed in that slot.");
       return;
@@ -122,7 +114,7 @@ document.getElementById("game-board").addEventListener("click", (event) => {
 
     letterP.innerText = selectedTile.children[0].innerText;
     valueP.innerText = selectedTile.children[1].innerText;
-   
+
     event.target.appendChild(letterP);
     event.target.appendChild(valueP);
     event.target.classList.add("played-square");
@@ -139,12 +131,11 @@ document
   .getElementById("tile-wrapper")
   .addEventListener("click", ({ target }) => {
     console.log("CLIIIIIIIIIIIIIIICK tile rack ");
+
     const element = target.tagName === "P" ? target.parentElement : target;
 
     if (Array.from(element.classList).includes("selected-tile")) {
       element.classList.remove("selected-tile");
-      //I think this is to un-select a tile and right now it
-      //triggers Alert(place your tile before selecting a new tile)
     } else if (Array.from(element.classList).includes("played-tile")) {
       alert("This tile has been used already.");
       return;
@@ -159,15 +150,40 @@ document
     }
   });
 
- 
-  
-socket.on("valid-word" , ()=> {
-
-   alert("VALID WORD PLAYED :)");
-})
- 
-  function clearPlayedTiles(word){ 
-    word = [];
-    return word;
+const fillBoardFromDB = (gameState) =>  { 
+  allSquares = document.getElementById("game-board").children;
+  for(i = 0; i < gameState.length; i++ ) {
+    for(j = 0; j < allSquares.length; j++) {
+      if( (gameState[i].x_coordinate == allSquares[j].dataset.x ) &&
+          (gameState[i].y_coordinate == allSquares[j].dataset.y )){ 
+            let letterP = document.createElement("p");
+            allSquares[j].classList.add("played-square");
+            letterP.innerText = gameState[i].letter;
+            allSquares[j].appendChild(letterP);
+          } 
+    }
   }
- 
+}
+
+socket.on("valid-word", async data => {
+  fillBoardFromDB(data.tileData);
+  alert("VALID WORD PLAYED :)");
+  return await fetch(`${window.location.pathname}/nextTurn`, {
+    body: JSON.stringify(word),
+    method: "post",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+  })
+  .then((response) => {
+
+    console.log("returned response = ")
+    return response.json()
+
+  })
+    .catch((error) => {
+      console.log(error);
+      Promise.reject(error)
+    });
+})
+
+
