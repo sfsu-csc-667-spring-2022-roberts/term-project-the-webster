@@ -112,21 +112,27 @@ router.post("/:id/playWord",  async (request, response)  => {
     // console.log("TILES ARE", tiles);
     gameTiles.getWords(tiles, id)
     .then(results => {
-    
-      console.log(" GET WORDS RETURNS-> ", results);
+     
+      console.log("GET WORDS RETURNS-> ", results);
       console.log("FGHJNBVGU")
       getLetters(results).then(results => {
         console.log("GET LETTERS RESULTS ", results)
 
-        console.log("WORDIFYING THESE TILES! ! ")
+         
         extractWords(results)
         .then(results => {
-          console.log("EXTRACTED WORDS ARE ==> ", results)
+          
           areWordsValid(results)
+
           .then(results => {
-            console.log("RESULTS FROM ARE WORDS VALID", results)
+            
             if(results == true){
-              console.log("-----_  VALID MOVE  _------")
+
+              console.log("VALID MOVE")
+              
+
+              // request.app.get("io").emit("valid-word")
+
             }
             else{
               console.log("INVALID MOVE")
@@ -141,7 +147,7 @@ router.post("/:id/playWord",  async (request, response)  => {
         
         
 
-        console.log("after")
+       
 
       }).catch(err => {
         console.log("ERROR getting letters helper function", err)
@@ -154,7 +160,7 @@ router.post("/:id/playWord",  async (request, response)  => {
 
 
              
-   //      request.app.get("io").emit("valid-word")
+
           
  
 
@@ -321,7 +327,7 @@ async function areWordsValid(words){
 
 
 }
- 
+
 async function getPointsPerWord(tiles){
   let points = 0;
   let word_multiplier = 1;
