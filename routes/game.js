@@ -98,28 +98,67 @@ router.get("/:id/join", (request, response) => {
 router.post("/:id/playWord",  async (request, response)  => {
 
   let userId = 0
-
+  let current_turn = -1;
+  let validTurn = false
   await user.getUserIdFromSession(request.sessionID).then(results => {
     console.log("USER ID IS ==> ", results)
     userId = results
   }).catch(err => {
     console.log("ERROR", err)
   })
+    
+ const { id } = request.params;
+ const  wordData  = request.body;
+ let player_data = []
+
+
+  await game.getGameTurn(id).then(results => {
+  console.log("CURRENT TURN RESULTS ==> ", results.current_turn)
+    current_turn = results.current_turn
+
+  }).catch(err => {
+  console.log("ERROR", err)
+})
+
+
+
+    await getGameUsers(id)
+    .then(results => {
+      for ( const x of results){
+        player_data.push(x)
+      }
+      for ( const i of player_data){
+        if(current_turn == 0 && i.order == 4 && i.user_id == userId){
+          validTurn = true 
+        }
+        if ( i.order == current_turn){
+          if(i.user_id == userId){
+            // player's turn
+            validTurn = true 
+          }
+        }
+      }
+      
+    }).catch (err => {
+      console.log("ERR GETTING GAME USERS", err)
+    })
+
+
+
+    console.log("PLAYER DATA == ", player_data)
+
    
 
-  const { id } = request.params;
-  const  wordData  = request.body;
-    console.log("FORMAT IS ", wordData)
-  game.getGameTurn(id).then(results => {
-    console.log("CURRENT TURN RESULTS ==> ", results.current_turn)
-    if(results.current_turn ) {
 
+      // if curr turn = 0 --> player 4's turn
+      // else curr turn = player's order
+
+    if(validTurn == false){
+      console.log("\n\n\n NOT YOUR turn \n\n\n" );
+      request.app.get("io").sockets.to("room" +id).emit("invalid-turn")
+      return; 
     }
-    }).catch(err => {
-    console.log("ERROR", err)
-  })
-
-
+    
 
   let word_placed;
   console.log(request.body)
@@ -135,7 +174,7 @@ router.post("/:id/playWord",  async (request, response)  => {
     .then(results => {
      const get_words = results 
       console.log("GET WORDS RETURNS-> ", results);
-      console.log("FGHJNBVGU")
+      
       getLetters(results).then(results => {
         console.log("GET LETTERS RESULTS ", results)
 
@@ -163,6 +202,10 @@ router.post("/:id/playWord",  async (request, response)  => {
               console.log("wordData", get_words);
               getPointsPerWord(wordData).then(results => {
                 console.log("SCORE IS => " , results)
+
+
+
+
               }).catch(err => {
                 console.log("ERROR", err)
               })
@@ -413,6 +456,25 @@ async function makeTilesInPlay(tiles, gameId) {
         }).catch(err =>{
           console.log(err);
         })
+}
+
+
+async function getGameUsers(id) {
+  let x = []
+  await game.getGameUsers2(id)
+  .then(results => {
+    console.log("GAME USER DATAAAAA _________ ")
+    console.log(results);
+    for ( const res of results){
+      x.push(res)
+    }
+
+    
+  }).catch(err => {
+    console.log("ERROR", err)
+  })
+  return x
+ 
 }
 
 
