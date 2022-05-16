@@ -22,15 +22,21 @@ const joinGame = (gameId, userId) =>
     [gameId, userId]
   );
 
-const placeTile = (tile_id, x, y, game_id) => 
-  db.any(
-    `UPDATE game_tiles SET x_coordinate=$1, y_coordinate=$2, in_play=true, in_bag=false WHERE game_id=$4 AND tile_id=$3`,
+const placeTile = async (tile_id, x, y, game_id) => {
+  console.log("INPUTS TO PLACETILES ARE", tile_id, x, y, game_id);
+  return db.any(
+    `UPDATE game_tiles SET x_coordinate=$1, y_coordinate=$2, in_play=true, in_bag=false WHERE game_id=$4 AND tile_id=$3 RETURNING tile_id`,
     [x, y, tile_id, game_id]
   )
+  .then(results => {
+    // console.log("THEN", results);
+    return Promise.resolve(results);
+  })
   .catch((err) => {
     console.log("ERROR IN PLACE TILE IN DB/GAME.JS");
     return Promise.resolve(err);
   });
+}
 
 //get a random tile from game_tiles and insert it into the player's hand
 const drawTile = (game_id, player_id, count) => {
@@ -171,7 +177,7 @@ const getGameUserOrder = (gameId, userId) => {
   })
 }
 
-const updateGameTurn = (gameId, turn) => {
+const updateGameTurn = async (gameId, turn) => {
   return db.one(`UPDATE games SET current_turn=$1 WHERE id=$2 RETURNING current_turn`, [turn, gameId])
   .then((result) => {
     return Promise.resolve(result);
@@ -189,7 +195,7 @@ const getGameTurn = (gameId) => {
   })
 }
 
-/*const incrementGameTurn = (gameId) => {
+const incrementGameTurn = (gameId) => {
   return getGameTurn(gameId)
   .then(results => {
     updateGameTurn(gameId, results.current_turn + 1)
@@ -201,7 +207,7 @@ const getGameTurn = (gameId) => {
       return Promise.resolve(err);
     })
   })
-}*/
+}
 
 const getUserNameFromId = (userId) => {
   return db.one("SELECT username FROM users WHERE id=?", [userId])
@@ -229,7 +235,7 @@ module.exports = {
   updateGameUserOrder,
   getGameUserOrder,
   updateGameTurn,
-  // incrementGameTurn,
+  incrementGameTurn,
   getGameTurn,
   getUserNameFromId,
 };

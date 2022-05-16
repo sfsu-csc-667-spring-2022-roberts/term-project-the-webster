@@ -221,6 +221,14 @@ html{
     border:0;
 }
 
+.bag-your-turn{
+    background-color:green;
+}
+
+.bag-not-your-turn{
+    background-color:red;
+}
+
 .bag-icon-wrapper > p{
     display:flex;
     transform:translate(-7vh, 2.5vh);

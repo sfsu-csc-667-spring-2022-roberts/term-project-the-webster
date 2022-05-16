@@ -37,16 +37,6 @@ const getLetterWorth = (letter) => {
         console.log("ERROR IN model/gameTiles IN getLetterWorth");
         return Promise.resolve(err);
     })
-    /*for (i = 0; i < 7; i++) {
-        console.log("in loop before the promise ")
-        game.drawTile(gameId, playerId)
-            .then(results => {
-                console.log(results);
-                hand.push(results);
-            }).catch((err) => {
-                console.log(err);
-            })
-    }*/
 }
 
 
@@ -67,7 +57,6 @@ const getLetterFromCoords = (coords, gameId) => {
 const getLetterFromTileId = async (tile_id) => {
     return db.one(`SELECT letter FROM tiles WHERE id=$1`, [tile_id])
     .then(result => {
-        // console.log("LETTER IS ", result)
         return Promise.resolve(result);
     })
     .catch(err => {
@@ -102,7 +91,6 @@ const getCoordinatesFromTileId = async (game_id, tile_id) => {
         for (i=0; i < handData.length; i++) {
             promises.push(getLetterFromTileId(handData[i].tile_id));
         }
-
         return Promise.all(promises).then(results => {
             for (let result of results ) {
                 letterList.push(result.letter);
@@ -129,9 +117,7 @@ const getCoordinatesFromTileId = async (game_id, tile_id) => {
         }
         return Promise.resolve(htmlData);
     })
-
 }
-
 
 const getScoreFromWords = (arr) => {
 
@@ -172,32 +158,17 @@ const getWordWorth = (word) => {
     })
 }
  
- 
-// playedCoords = [{x:'7',y:'0'}, {x:'7',y:'1'},  {x:'7',y:'2'}, {x:'7',y:'3'}]
-// horizontalCoords = [{x:'7',y:'4'}, {x:'7',y:'6'}, {x:'7',y:'7'}, {x:'7',y:'8'}]
-
-
-// playedCoords = [{x: '3',y:'6' } , {x: '4',y:'6' } , {x: '6',y:'6' } , {x: '7',y:'6' } ]
-// verticalCoords = [{x:'0', y: '6'},{x:'5',y:'6'}, {x:'11',y:'6'}, {x:'14', y: '6'}]
-
-// playedCoords = [{x:'11',y:'6'}, {x:'11',y:'8'},  {x:'11',y:'9'}]
-// horizontalCoords = [{x:'11',y:'0'}, {x:'11',y:'7'},{x:'11',y:'14'} ]
-
-const getWords = (coordsArray, gameId) => {
-
-    console.log("INPUT TO GET WORDS", coordsArray);
+const getWords = (coordsArray, gameId) => {   
     //verify horiozntal XOR very vertical
     if ( !((verifyHorizontal(coordsArray) && !verifyVertical(coordsArray)) || (!verifyHorizontal(coordsArray) && verifyVertical(coordsArray)))){
-        console.log("NO DIAGONAL!!!!!!!!!")
+        console.log("NO DIAGONAL!!!!!!!!!") 
         return ["invalid move"];
     }
-
     //get all tiles in play
     return game.getInPlayTiles(gameId)
     .then(results => {
         horizontalCoords = [];
         verticalCoords = [];
-
         for (let coords of coordsArray) {
             for (let playedTile of results) {
 
@@ -216,8 +187,6 @@ const getWords = (coordsArray, gameId) => {
                 }
             }
         }
-
-
         //for the case of first turn where there are no tiles in the board
         if(horizontalCoords.length == 0 && verticalCoords.length == 0) {
             returnArr = [];
@@ -306,7 +275,6 @@ const getPointFromTileId = async (tileId) => {
 }
 
 const getWordsFromArray = (coordsList, gameId) => {
-
     returnArr = [];
     wordsArr = [];
     //take the word list for each things get the letter from the db using coords
@@ -375,7 +343,6 @@ function verifyVertical(arr) {
 }
 
 function checkHorizontal(playedTiles, horizontalRow) {
-
     if (horizontalRow.length == 0) {
         return false;
     }
@@ -391,6 +358,7 @@ function checkHorizontal(playedTiles, horizontalRow) {
     for ( const tile of playedTiles){
         playingCoordinates.push( {tile_id: Number(tile.id), x:Number((tile.x)),y: Number((tile.y))} )
     }
+
     for(i = 0; i < playingCoordinates.length;i++) {
         leftSide =[];
         rightSide = [];
@@ -412,7 +380,6 @@ function checkHorizontal(playedTiles, horizontalRow) {
             leftSide.push(toPushTile);
             previousTile.y--;
         }
-
         // iterating right
         while( ((includesJson(boardCoordinates, nextTile) != -1 ) || (includesJson(playingCoordinates, nextTile)) != -1)  && nextTile.y < 15) {
             let tileId = -1;
@@ -433,7 +400,6 @@ function checkHorizontal(playedTiles, horizontalRow) {
         for ( const tile of rightSide ){
             leftSide.push(tile);
         }
-
         // console.log("LEFT SIDE THERE0", leftSide);
       //  if(leftSide.length > 1) {
             tempArr = [];
@@ -483,10 +449,7 @@ function checkVertical(playedTiles, verticalRow) {
             aboveSide.push(toPushTile)
             previousTile.x--;
         }
-
-
         // iterating right
-
         while( ((includesJson(boardCoordinates, nextTile) != -1)  || includesJson(playingCoordinates, nextTile) != -1)  && nextTile.x < 15) {
             let tileId = -1;
             if (includesJson(boardCoordinates, nextTile) != - 1) {
@@ -499,14 +462,12 @@ function checkVertical(playedTiles, verticalRow) {
             let toPushTile = {tile_id: tileId, x: nextTile.x, y: nextTile.y};
             aboveSide.push(toPushTile)
             nextTile.x++;
-        }   
-            
+        }      
         aboveSide.push(currentTile);
 
         for ( const tile of belowSide ){
             aboveSide.push(tile);
         }
-
     //    if (aboveSide.length > 1) {
             tempArr = [];
             for (x of aboveSide) {
@@ -519,11 +480,11 @@ function checkVertical(playedTiles, verticalRow) {
     return returnArray;
 }
 
-const getTileDataForHTML = (gameId) => {
+const getTileDataForHTML = async (gameId) => {
     var p = [];
     var tileData = [];
     var targetArr = [];
-    return game.getInPlayTiles(1).then( (tileData)  => {
+    return game.getInPlayTiles(gameId).then( (tileData)  => {
         ///     tile, x, y, game
         for(i = 0; i < tileData.length; i++) {
             p.push(getLetterFromTileId(tileData[i].tile_id));
@@ -563,18 +524,18 @@ function includesJson(arr, target) {
 
  
 function sortJsonByX(arr){
-    console.log("SORTING BY X")
+    
     let deep_cpy = [...arr]
     let sortedInput = deep_cpy.slice().sort((a, b) => a.x - b.x);
-    console.log("SORTED X INPUT IS", sortedInput)
+    
     return sortedInput;
 }
 
 function sortJsonByY(arr){
-    console.log("SORTING BY Y")
+    
     let deep_cpy = [...arr]
     let sortedInput = deep_cpy.slice().sort((a, b) => a.y - b.y);
-    console.log("SORTED Y  INPUT IS", sortedInput)
+    
     return sortedInput;
 }
 

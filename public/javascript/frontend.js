@@ -19,6 +19,8 @@ socket.on("not-first-turn", () => {
   firstTurn = false;
 })
 
+
+
 const selection = [];
 const words = []; 
 let word = [];
@@ -29,6 +31,13 @@ const slotTaken = (x, y) => {
  
   return found !== undefined;
 };
+
+window.onload = (event) => {
+  socket.on("load-board-state", () => {
+    console.log("load-board state frontend");
+    firstTurn = false;
+  })
+}
 
 const submitWord = async () => {
   if (word.length === 0) {
@@ -68,7 +77,7 @@ const submitWord = async () => {
 document
   .getElementById("play-word-button")
   .addEventListener("click", (event) => {
-
+    console.log("IN FRONTEND ", word,words);
     submitWord().then(result => {
       console.log("before RESULT")
       console.log(result)
@@ -150,6 +159,14 @@ document
     }
   });
 
+const isYourTurn = (turnValue) =>{
+  if(turnValue){
+    bagWrapper = document.querySelector(".bag-icon-wrapper");
+    bagWrapper.ClassList.remove("bag-not-your-turn");
+    bagWrapper.ClassList.add("bag-your-turn");
+  }
+}
+
 const fillBoardFromDB = (gameState) =>  { 
   allSquares = document.getElementById("game-board").children;
   for(i = 0; i < gameState.length; i++ ) {
@@ -166,7 +183,9 @@ const fillBoardFromDB = (gameState) =>  {
 }
 
 socket.on("valid-word", async data => {
-  fillBoardFromDB(data.tileData);
+  console.log("IN FRONTEND FOR VALIDWOR", data);
+  console.log("IN FRONTEND ", word,words);
+  fillBoardFromDB(data.tileDataForHTML);
   alert("VALID WORD PLAYED :)");
   return await fetch(`${window.location.pathname}/nextTurn`, {
     body: JSON.stringify(word),
