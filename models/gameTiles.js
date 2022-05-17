@@ -490,8 +490,8 @@ function checkVertical(playedTiles, verticalRow) {
         for ( const tile of belowSide ){
                     aboveSide.push(tile);
         }
-       */
-        for ( let i = 1; i < belowSide.length; i++){
+       */        // 1
+        for ( let i = 0; i < belowSide.length; i++){
             aboveSide.push(belowSide[i]);
         }
     //    if (aboveSide.length > 1) {
@@ -552,10 +552,7 @@ const getTileDataForHTML = async (gameId) => {
     })
 
 }
-// testArr = [{ x:7, y:5  }, {x:8, y:9}]
-
-// const x = {x:7, y:5}
-
+ 
 function includesJson(arr, target) {
     for ( const item  of arr){
         if(item.x == target.x && item.y == target.y){
@@ -567,7 +564,7 @@ function includesJson(arr, target) {
 
 
 
-//{EAAI, HAL, UAY, SI}
+ 
 
  
 function sortJsonByX(arr){
@@ -592,6 +589,7 @@ async function checkValidWords(wordList){
         
     for ( const x of wordList ){
         console.log("CHECKING word validity of ", x)
+        if(x.length > 1){
        await gameBoard.isWordValid(x)
         .then(results => {
             if(results == true){
@@ -601,6 +599,7 @@ async function checkValidWords(wordList){
        }).catch(err => {
            console.log("ERROR", err)
        })
+    }
 
     }
     
