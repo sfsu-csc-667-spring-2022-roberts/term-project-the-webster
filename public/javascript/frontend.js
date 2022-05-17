@@ -1,28 +1,13 @@
-
-
 var userOrder;
-
 let firstTurn = false;
-
 let game_id = 0;
 
-
-
-
-
-socket.on("turn-update", gameTurn => {
-  
-})
-
-
 const selection = [];
-const words = []; 
+const words = [];
 let word = [];
 
 const slotTaken = (x, y) => {
- 
   const found = words.find((entry) => entry.x === x && entry.y === y);
- 
   return found !== undefined;
 };
 
@@ -31,8 +16,6 @@ const submitWord = async () => {
     alert("You must enter a word.");
     return;
   }
-  
-
   return await fetch(`${window.location.pathname}/playWord`, {
     body: JSON.stringify(word),
     method: "post",
@@ -62,14 +45,13 @@ document
   });
 
 document.getElementById("game-board").addEventListener("click", (event) => {
-
   if (
     Array.from(event.target.classList).includes("game-board-tile") &&
     selection.length === 1
   ) {
     const { x, y } = event.target.dataset;
 
-    if ((firstTurn == true) && (x != 7 || y != 7))   {
+    if ((firstTurn == true) && (x != 7 || y != 7)) {
       alert("Tile must be placed in center");
       return;
     }
@@ -111,7 +93,6 @@ document
       alert("This tile has been used already.");
       return;
     }
-
     if (Array.from(element.classList).includes("tile")) {
       if (selection.length === 1) {
         alert("Place your tile before selecting a new tile.");
@@ -121,136 +102,116 @@ document
     }
   });
 
-const isYourTurn = (turnValue) =>{
-  if(turnValue){
+const isYourTurn = (turnValue) => {
+  if (turnValue) {
     let bagWrapper = document.querySelector(".bag-icon-wrapper");
     bagWrapper.ClassList.remove("bag-not-your-turn");
     bagWrapper.ClassList.add("bag-your-turn");
   }
 }
 
-const isNotYourTurn = (turnValue) =>{
-  if(!turnValue){
-   let  bagWrapper = document.querySelector(".bag-icon-wrapper");
+const isNotYourTurn = (turnValue) => {
+  if (!turnValue) {
+    let bagWrapper = document.querySelector(".bag-icon-wrapper");
     bagWrapper.ClassList.remove("bag-your-turn");
     bagWrapper.ClassList.add("bag-not-your-turn");
   }
 }
 
-const replenishHand = (data) =>{
+const replenishHand = (data) => {
   tileWrapper = document.getElementById("tile-wrapper");
-  if(data.playerId == tileWrapper.dataset.id){
-  handData = data.playerHand;
-  tilesInHand = tileWrapper.children;
-  tilesInHandLength = tilesInHand.length;
-  let needsTile = []; 
-  for(i=0; i < handData.length; i++){
-    let found = false;
-    for(j = 0; j < tilesInHandLength; j++) {
-      if(handData[i].tileId == tilesInHand[j].dataset.id){
-        found = true;
+  if (data.playerId == tileWrapper.dataset.id) {
+    handData = data.playerHand;
+    tilesInHand = tileWrapper.children;
+    tilesInHandLength = tilesInHand.length;
+    let needsTile = [];
+    for (i = 0; i < handData.length; i++) {
+      let found = false;
+      for (j = 0; j < tilesInHandLength; j++) {
+        if (handData[i].tileId == tilesInHand[j].dataset.id) {
+          found = true;
+        }
+      }
+      if (found == false) {
+        needsTile.push(handData[i]);
       }
     }
-    if (found == false) {
-      needsTile.push(handData[i]);
-    }
-  }
 
-  for(i=0; i < needsTile.length; i++){
-        let tileDiv = document.createElement("div");
-        tileDiv.dataset.id = needsTile[i].tileId;
-        tileDiv.dataset.letter = needsTile[i].letter;
-        tileDiv.dataset.value = needsTile[i].value;
-        tileDiv.classList.add("tile");
-        let letterP = document.createElement("p");
-        letterP.innerText = needsTile[i].letter;
-        letterP.classList.add("tile-letter");
-        tileDiv.appendChild(letterP);
-        let valueP = document.createElement("p");
-        valueP.innerText = needsTile[i].value;
-        valueP.classList.add("tile-value");
-        tileDiv.appendChild(valueP);
-        tileWrapper.appendChild(tileDiv);
+    for (i = 0; i < needsTile.length; i++) {
+      let tileDiv = document.createElement("div");
+      tileDiv.dataset.id = needsTile[i].tileId;
+      tileDiv.dataset.letter = needsTile[i].letter;
+      tileDiv.dataset.value = needsTile[i].value;
+      tileDiv.classList.add("tile");
+      let letterP = document.createElement("p");
+      letterP.innerText = needsTile[i].letter;
+      letterP.classList.add("tile-letter");
+      tileDiv.appendChild(letterP);
+      let valueP = document.createElement("p");
+      valueP.innerText = needsTile[i].value;
+      valueP.classList.add("tile-value");
+      tileDiv.appendChild(valueP);
+      tileWrapper.appendChild(tileDiv);
     }
   }
 }
- 
-const fillBoardFromDB = (gameState) =>  { 
+
+const fillBoardFromDB = (gameState) => {
   let allSquares = document.getElementById("game-board").children;
-  for(i = 0; i < gameState.length; i++ ) {
-    for(j = 0; j < allSquares.length; j++) {
-      if( (gameState[i].x_coordinate == allSquares[j].dataset.x ) &&
-          (gameState[i].y_coordinate == allSquares[j].dataset.y ) &&
-          (!allSquares[j].classList.contains("played-square")   ) ){ 
-            let letterP = document.createElement("p");
-            allSquares[j].classList.add("played-square");
-            letterP.innerText = gameState[i].letter;
-            allSquares[j].appendChild(letterP);
-          } 
+  for (i = 0; i < gameState.length; i++) {
+    for (j = 0; j < allSquares.length; j++) {
+      if ((gameState[i].x_coordinate == allSquares[j].dataset.x) &&
+        (gameState[i].y_coordinate == allSquares[j].dataset.y) &&
+        (!allSquares[j].classList.contains("played-square"))) {
+        let letterP = document.createElement("p");
+        allSquares[j].classList.add("played-square");
+        letterP.innerText = gameState[i].letter;
+        allSquares[j].appendChild(letterP);
+      }
     }
   }
 }
-
 
 
 socket.on("invalid-word", async data => {
   const x = await getUserInput()
   const username = x.username
-  window.alert(`${username} played an invalid word! \n PLEASE REFRESH TO TRY AGAIN`)
+  window.alert(`invalid word was played! \nPLEASE REFRESH TO TRY AGAIN`)
 })
 
-
-async function getUserInput(){
-          
+async function getUserInput() {
   return await fetch('/userInfo').then((result) => {
-       
-
-        return result.json()
-
-      }).catch(err => {
-          
-        console.log(err)
-      })
-          
-      }
-
-
-
-
+    return result.json()
+  }).catch(err => {
+    console.log(err)
+  })
+}
 
 socket.on("valid-word", async data => {
   game_id = data.id
   fillBoardFromDB(data.tileDataForHTML);
   replenishHand(data);
-  console.log( "player id is --> ",data.playerId)
   const x = await getUserInput()
   const username = x.username
   const score = data.playerScore[0].score
-  alert(` Valid Word! ${username} has ${score} points.` );
+  alert(` Valid Word! Current Player has ${score} points.`);
   return await fetch(`${window.location.pathname}/nextTurn`, {
     body: JSON.stringify(word),
     method: "post",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
   })
-  .then((response) => {
-    return response.json()
-
-  })
+    .then((response) => {
+      return response.json()
+    })
     .catch((error) => {
       console.log(error);
       Promise.reject(error)
     });
 })
 
-
-
-
 window.onload = (event) => {
   const url = (event.target.URL)
   const targetIdx = url.indexOf('/game')
   const id = url.slice(targetIdx + 6)
-
 }
-
-

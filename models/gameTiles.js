@@ -24,7 +24,6 @@ const getInitialHand = async (gameId, playerId) => {
 }
 
 
-//returns how much points a letter is worth 
 const getLetterWorth = (letter) => {
     return db.one(`SELECT value FROM tiles WHERE letter=$1 LIMIT 1`, [letter])
     .then(result => {
@@ -156,8 +155,6 @@ const getWordWorth = (word) => {
 }
  
 const getWords = (coordsArray, gameId) => {   
-    //verify horiozntal XOR very vertical
- 
     
     let firstTurn = false
     let checkSurrounding = false
@@ -297,7 +294,7 @@ const getPointFromTileId = async (tileId) => {
 const getWordsFromArray = (coordsList, gameId) => {
     returnArr = [];
     wordsArr = [];
-    //take the word list for each things get the letter from the db using coords
+   
     for (let list of coordsList) {
         wordsArr.push(getWordFromArrayHelper(list));
     }
@@ -420,8 +417,7 @@ function checkHorizontal(playedTiles, horizontalRow) {
         for ( const tile of rightSide ){
             leftSide.push(tile);
         }
-        // console.log("LEFT SIDE THERE0", leftSide);
-      //  if(leftSide.length > 1) {
+       
             tempArr = [];
             for (y of leftSide) {
                 tempArr.push( y);
@@ -430,7 +426,7 @@ function checkHorizontal(playedTiles, horizontalRow) {
             newTempArr = sortJsonByY(tempArr);
             returnArray.push(newTempArr);
         }
-  //  }
+
   console.log("RETURN ARRAY FROM VERTICAL FUNCTION --> ", returnArray)
     return returnArray;
 }
@@ -470,7 +466,8 @@ function checkVertical(playedTiles, verticalRow) {
             aboveSide.push(toPushTile)
             previousTile.x--;
         }
-        // iterating right
+       
+
         while( ((includesJson(boardCoordinates, nextTile) != -1)  || includesJson(playingCoordinates, nextTile) != -1)  && nextTile.x < 15) {
             let tileId = -1;
             if (includesJson(boardCoordinates, nextTile) != - 1) {
@@ -486,15 +483,11 @@ function checkVertical(playedTiles, verticalRow) {
         }      
        aboveSide.push(currentTile);
 
-       /* 
-        for ( const tile of belowSide ){
-                    aboveSide.push(tile);
-        }
-       */        // 1
+       
         for ( let i = 0; i < belowSide.length; i++){
             aboveSide.push(belowSide[i]);
         }
-    //    if (aboveSide.length > 1) {
+   
             tempArr = [];
             for (x of aboveSide) {
                 tempArr.push(x);
@@ -502,7 +495,7 @@ function checkVertical(playedTiles, verticalRow) {
             console.log("TEMP ARRAY IS FROM HORIZONTAL THINGY ", tempArr)
             newTempArr = sortJsonByX(tempArr);
             returnArray.push(newTempArr);
-      //  }
+ 
     }
     console.log("RETURN ARRAY FROM HORIZONTAL FUNCTION --> ", returnArray)
     return returnArray;
@@ -531,7 +524,7 @@ const getTileDataForHTML = async (gameId) => {
     var tileData = [];
     var targetArr = [];
     return game.getInPlayTiles(gameId).then( (tileData)  => {
-        ///     tile, x, y, game
+       
         for(i = 0; i < tileData.length; i++) {
             p.push(getLetterFromTileId(tileData[i].tile_id));
         }
@@ -627,11 +620,9 @@ module.exports = {
     getLetterFromTileId,
     getCoordinatesFromTileId,
     parsePlayerHandForHTML,
- 
     getCoordinatesFromTileId,
     getWords,
     getTileDataForHTML,
- 
     checkValidWords,
     getWordsFromArray,
     getScoreFromWords,

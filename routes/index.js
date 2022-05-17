@@ -10,9 +10,7 @@ router.get('/', function (req, res, next) {
   res.render('index', { title: 'Team Webster Scrabble' });
   if (req.session.user_id) {
     res.redirect("/browseLobby")
-  } else {
-    // do nothing
-  }
+  } 
 
 });
 

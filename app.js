@@ -20,7 +20,7 @@ const db = require("./db/index");
 var app = express();
 
 const pgPool = new pg.Pool({
-  connectionString: process.env.DATABASE_URL
+ connectionString: process.env.DATABASE_URL
 });
 
 const session_middleware = session({
@@ -62,14 +62,12 @@ app.use(function (req, res, next) {
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
-var testRouter = require("./routes/test");
 var lobbyRouter = require("./routes/lobby");
 var browseLobbyRouter = require("./routes/browseLobby");
 var gameRouter = require("./routes/game");
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-app.use("/test", testRouter);
 app.use("/lobby", session_middleware, lobbyRouter);
 app.use("/browseLobby", browseLobbyRouter);
 app.use("/game", gameRouter);
