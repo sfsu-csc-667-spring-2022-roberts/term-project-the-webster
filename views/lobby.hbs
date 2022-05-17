@@ -1,12 +1,6 @@
 <h1 class="lobby-title">Game Lobby</h1>
-<h1 class="lobby-title">Room Code AE25</h1>
 
-<form method="POST" action="/users/logout"> <input type="submit" value="Submit"> log out </input> </form>
-
-<ul id="messages"></ul>
-<form id="form" action="">
-  <input id="input" autocomplete="off" /><button>Send</button>
-</form>
+<form method="POST" action="/users/logout"> <button type="submit" value="Submit"> log out </button> </form>
 
 <section class="lobby-chat-container">
   <div class="lobby-window">
@@ -45,7 +39,6 @@
       <button class="leave-button" onclick="leave({{gameId}})">Leave</button>
     </div>
   </div>
-  {{> chatMessagesLobby messageArray=messages}}
 </section>
 <script>
   function startGame(gameId) {

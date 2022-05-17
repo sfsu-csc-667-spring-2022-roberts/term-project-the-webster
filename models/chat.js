@@ -8,8 +8,6 @@ const sendMessage = (user_id, game_id, message) => {
 };
 
 const getMessages = (game_id) => {
-  //might require a game ID 
-  // console.log("GET MESSAGE RUNNING");
   let baseSQL = (`SELECT sender_id, text FROM messages WHERE game_id=$1 ORDER BY sender_id`);
   return db.any(baseSQL, [game_id])
   .then(results => {

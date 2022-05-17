@@ -1,17 +1,17 @@
 <div class="tile-rack-bag-wrapper">
     <div class="tile-rack-wrapper">
         <div id="tile-wrapper" data-id="{{userId}}" class="tile-wrapper">
-        {{#each tiles}}
-        <div class="tile" data-id="{{tileId}}" data-letter="{{this.letter}}" data-value="{{this.value}}">
-            <p class="tile-letter">{{this.letter}}</p>
-            <p class="tile-value">{{this.value}}</p>
-        </div>
-        {{/each}}
+            {{#each tiles}}
+            <div class="tile" data-id="{{tileId}}" data-letter="{{this.letter}}" data-value="{{this.value}}">
+                <p class="tile-letter">{{this.letter}}</p>
+                <p class="tile-value">{{this.value}}</p>
+            </div>
+            {{/each}}
         </div>
         <div class="tile-rack"></div>
     </div>
     <button class="bag-icon-wrapper">
-        <img id="bag-icon" src="/bag-icon.png" alt="" width="90" height="90"/>
+        <img id="bag-icon" src="/bag-icon.png" alt="" width="90" height="90" />
         <p>{{tilesInBag}}</p>
     </button>
     <button type="submit" form="tile-form" id="play-word-button">

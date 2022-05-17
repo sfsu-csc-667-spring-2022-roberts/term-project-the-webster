@@ -40,6 +40,7 @@ console.log(socket)
               sender: x.username, 
               destination: url
           })
+          input.value = ""
           console.log("RIGHT OVER HERE!");
           }
 
@@ -61,15 +62,10 @@ console.log(socket)
           }
     
 
-    socket.on('pong', () => {
-        console.log(" 🏓 🏓 🏓  * PINGPONG  * 🏓 🏓 🏓")
-    })
-   
-
     socket.on('message_back', data => {
       console.log("GOT MESSAGE BACK ", data)
         const _li = document.createElement('li')
-        _li.textContent = data.sender + " : " + data.message
+        _li.textContent = " - " + data.sender + "  : " + data.message
         console.log(_li)
         if(data.destination.includes("game")){
 

@@ -1,7 +1,5 @@
 const db = require("./index");
 
-
-
 const getEmptyGrid = () => db.any("SELECT * FROM game_grid ORDER BY y, x ASC");
 
 const createGame = (userId) =>
@@ -29,7 +27,6 @@ const placeTile = async (tile_id, x, y, game_id) => {
     [x, y, tile_id, game_id]
   )
   .then(results => {
-    // console.log("THEN", results);
     return Promise.resolve(results);
   })
   .catch((err) => {
@@ -38,18 +35,11 @@ const placeTile = async (tile_id, x, y, game_id) => {
   });
 }
 
-//get a random tile from game_tiles and insert it into the player's hand
 const drawTile = (game_id, player_id, count) => {
-  // return db.one(`SELECT tile_id FROM game_tiles WHERE game_id=$1 AND in_bag=true ORDER BY RANDOM() limit $2`, [game_id, count])
-  // .then( results => {
-    // console.log("in select statement -> ",results);
-    // db.any(`INSERT INTO game_tiles(tile_id, game_id) SELECT id , $1 FROM tiles`,[game_id]);
-    // WHERE game_id=$2 AND tile_id=$3
     return db.any(`UPDATE game_tiles SET in_bag = false, user_id=$1 FROM
     (SELECT tile_id FROM game_tiles WHERE game_id=$2 AND in_bag=true ORDER BY RANDOM() limit $3) AS data_table
     WHERE game_tiles.tile_id = data_table.tile_id RETURNING game_tiles.tile_id`,
     [player_id, game_id, count])
-  //})
   .then((tile_id) => {
     return Promise.resolve(tile_id);
   })
@@ -74,7 +64,6 @@ const getPlayerHand = async (game_id, player_id) => {
 const getInPlayTiles = (game_id) => {
   return db.any(`SELECT tile_id, x_coordinate, y_coordinate FROM game_tiles WHERE game_id=$1 AND in_play=true`, [game_id])
   .then((results) => {
-    // console.log("RESULTS ARE" ,results);
     return Promise.resolve(results);
   })
   .catch((err) => {
@@ -160,7 +149,6 @@ const updateGameUserOrder = (gameId, userId, order) => {
   return db.any(`UPDATE game_users SET "order"=$1 WHERE game_id=$2 AND user_id=$3`,[order, gameId, userId])
   .catch(err => {
     console.log("ERROR IN updateGameUserOrder in db/game.js");
-    console.log(err);
     return Promise.resolve(err);
   })
 }
@@ -168,7 +156,6 @@ const updateGameUserOrder = (gameId, userId, order) => {
 const getGameUserOrder = (gameId, userId) => {
   return db.one(`SELECT "order" FROM game_users WHERE game_id=$1 AND user_id=$2`, [gameId, userId])
   .then(results => {
-    // console.log("getGameUserOrder is", results);
     return Promise.resolve(results.order);
   })
   .catch(err => {
