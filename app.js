@@ -56,17 +56,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(function (req, res, next) {
-  if (req.session) {
-    // console.log(req.session)
-    if (req.session.user_id) {
-      // console.log("user is logged in. ")
-    } else {
-      // console.log("user is not logged in.")
-    }
-  } else {
-    // console.log("no valid session")
-  }
-
   next();
 });
 
