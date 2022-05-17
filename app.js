@@ -19,8 +19,7 @@ const db = require("./db/index");
 var app = express();
 
 const pgPool = new pg.Pool({
-  database: "scrabble",
-  // connectionString: our db url
+  connectionString: process.env.DATABASE_URL
 });
 
 const session_middleware = session({
