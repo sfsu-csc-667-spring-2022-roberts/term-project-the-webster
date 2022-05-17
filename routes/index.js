@@ -60,4 +60,8 @@ router.get('/userInfo', async function (req, res){
 	
 })
 
+router.get('/error', async function (req, res){
+  res.render("error");
+})
+
 module.exports = router;
