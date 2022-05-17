@@ -15,8 +15,6 @@ const getInitialHand = async (gameId, playerId) => {
     .then(async () => {
         return await game.getPlayerHand(gameId, playerId)
         .then(hand => {
-            console.log("-----hand: ");
-            console.log(hand);
             return Promise.resolve(hand);
         })
         .catch(err => {
@@ -30,7 +28,6 @@ const getInitialHand = async (gameId, playerId) => {
 const getLetterWorth = (letter) => {
     return db.one(`SELECT value FROM tiles WHERE letter=$1 LIMIT 1`, [letter])
     .then(result => {
-        // console.log(result.value);
         return Promise.resolve(result.value);
     })
     .catch(err => {
@@ -434,6 +431,7 @@ function checkHorizontal(playedTiles, horizontalRow) {
             returnArray.push(newTempArr);
         }
   //  }
+  console.log("RETURN ARRAY FROM VERTICAL FUNCTION --> ", returnArray)
     return returnArray;
 }
 
@@ -483,23 +481,30 @@ function checkVertical(playedTiles, verticalRow) {
                 tileId = includesJson(playingCoordinates, nextTile);
             }
             let toPushTile = {tile_id: tileId, x: nextTile.x, y: nextTile.y};
-            aboveSide.push(toPushTile)
+           aboveSide.push(toPushTile)
             nextTile.x++;
         }      
-        aboveSide.push(currentTile);
+       aboveSide.push(currentTile);
 
+       /* 
         for ( const tile of belowSide ){
-            aboveSide.push(tile);
+                    aboveSide.push(tile);
+        }
+       */
+        for ( let i = 1; i < belowSide.length; i++){
+            aboveSide.push(belowSide[i]);
         }
     //    if (aboveSide.length > 1) {
             tempArr = [];
             for (x of aboveSide) {
                 tempArr.push(x);
             }
+            console.log("TEMP ARRAY IS FROM HORIZONTAL THINGY ", tempArr)
             newTempArr = sortJsonByX(tempArr);
             returnArray.push(newTempArr);
       //  }
     }
+    console.log("RETURN ARRAY FROM HORIZONTAL FUNCTION --> ", returnArray)
     return returnArray;
 }
 
@@ -584,7 +589,7 @@ function sortJsonByY(arr){
 
 async function checkValidWords(wordList){
     let valid_words = [];
-    
+        
     for ( const x of wordList ){
         console.log("CHECKING word validity of ", x)
        await gameBoard.isWordValid(x)

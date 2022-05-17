@@ -20,6 +20,7 @@ var app = express();
 
 const pgPool = new pg.Pool({
   database: "scrabble",
+  // connectionString: our db url
 });
 
 const session_middleware = session({

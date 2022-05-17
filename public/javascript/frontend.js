@@ -1,24 +1,18 @@
 
+
 var userOrder;
 
 let firstTurn = false;
 
+let game_id = 0;
+
+
+
+
+
 socket.on("turn-update", gameTurn => {
-  console.log("TURN-UPDATE SOCKET");
-  console.log(gameTurn);
-  console.log(gameTurn.newGameTurn);
+  
 })
-
-socket.on("first-turn", () => {
-  console.log("it is the first turn -- socket");
-  firstTurn = true;
-})
-
-socket.on("not-first-turn", () => {
-  console.log("it is NOT the first turn -- socket");
-  firstTurn = false;
-})
-
 
 
 const selection = [];
@@ -37,7 +31,7 @@ const submitWord = async () => {
     alert("You must enter a word.");
     return;
   }
-  console.log(`${window.location.pathname}/playWord`)
+  
 
   return await fetch(`${window.location.pathname}/playWord`, {
     body: JSON.stringify(word),
@@ -46,11 +40,6 @@ const submitWord = async () => {
     credentials: "include",
   })
     .then((response) => {
-      console.log("WORDS IN RESPONSE!! ", word)
-      console.log(word.length)
-      console.log("------------------------------")
-      console.log(word)
-      console.log("------------------------------")
       word = []
       return response.json()
 
@@ -66,10 +55,6 @@ document
   .getElementById("play-word-button")
   .addEventListener("click", (event) => {
     submitWord().then(result => {
-      console.log("before RESULT")
-      console.log(result)
-      console.log("after RESULT")
-
     })
       .catch(err => {
         console.log(err)
@@ -77,16 +62,12 @@ document
   });
 
 document.getElementById("game-board").addEventListener("click", (event) => {
-  console.log("CLIIIIIIIIIIIIIIICK game board ");
+
   if (
     Array.from(event.target.classList).includes("game-board-tile") &&
     selection.length === 1
   ) {
     const { x, y } = event.target.dataset;
-
-    console.log("x: " + x);
-    console.log("y: " + y);
-    console.log("firstTurn: " + firstTurn);
 
     if ((firstTurn == true) && (x != 7 || y != 7))   {
       alert("Tile must be placed in center");
@@ -117,14 +98,11 @@ document.getElementById("game-board").addEventListener("click", (event) => {
     word.push({ ...selectedTile.dataset, x, y });
     words.push({ ...selectedTile.dataset, x, y });
   }
-  console.log({ word, selection });
 });
 
 document
   .getElementById("tile-wrapper")
   .addEventListener("click", ({ target }) => {
-    console.log("CLIIIIIIIIIIIIIIICK tile rack ");
-
     const element = target.tagName === "P" ? target.parentElement : target;
 
     if (Array.from(element.classList).includes("selected-tile")) {
@@ -177,7 +155,7 @@ const replenishHand = (data) =>{
       needsTile.push(handData[i]);
     }
   }
-  console.log("needsTile", needsTile);
+
   for(i=0; i < needsTile.length; i++){
         let tileDiv = document.createElement("div");
         tileDiv.dataset.id = needsTile[i].tileId;
@@ -202,7 +180,8 @@ const fillBoardFromDB = (gameState) =>  {
   for(i = 0; i < gameState.length; i++ ) {
     for(j = 0; j < allSquares.length; j++) {
       if( (gameState[i].x_coordinate == allSquares[j].dataset.x ) &&
-          (gameState[i].y_coordinate == allSquares[j].dataset.y )){ 
+          (gameState[i].y_coordinate == allSquares[j].dataset.y ) &&
+          (!allSquares[j].classList.contains("played-square")   ) ){ 
             let letterP = document.createElement("p");
             allSquares[j].classList.add("played-square");
             letterP.innerText = gameState[i].letter;
@@ -214,11 +193,40 @@ const fillBoardFromDB = (gameState) =>  {
 
 
 
+socket.on("invalid-word", async data => {
+  const x = await getUserInput()
+  const username = x.username
+  window.alert(`${username} played an invalid word! \n PLEASE REFRESH TO TRY AGAIN`)
+})
+
+
+async function getUserInput(){
+          
+  return await fetch('/userInfo').then((result) => {
+       
+
+        return result.json()
+
+      }).catch(err => {
+          
+        console.log(err)
+      })
+          
+      }
+
+
+
+
+
 socket.on("valid-word", async data => {
+  game_id = data.id
   fillBoardFromDB(data.tileDataForHTML);
-  console.log("FRONT END SOCKET", data.playerHand);
   replenishHand(data);
-  alert("VALID WORD PLAYED :)");
+  console.log( "player id is --> ",data.playerId)
+  const x = await getUserInput()
+  const username = x.username
+  const score = data.playerScore[0].score
+  alert(` Valid Word! ${username} has ${score} points.` );
   return await fetch(`${window.location.pathname}/nextTurn`, {
     body: JSON.stringify(word),
     method: "post",
@@ -226,8 +234,6 @@ socket.on("valid-word", async data => {
     credentials: "include",
   })
   .then((response) => {
-
-    console.log("returned response = ")
     return response.json()
 
   })
@@ -236,5 +242,15 @@ socket.on("valid-word", async data => {
       Promise.reject(error)
     });
 })
+
+
+
+
+window.onload = (event) => {
+  const url = (event.target.URL)
+  const targetIdx = url.indexOf('/game')
+  const id = url.slice(targetIdx + 6)
+
+}
 
 

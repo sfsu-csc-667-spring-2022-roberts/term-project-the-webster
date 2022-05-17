@@ -15,8 +15,16 @@ a {
 
 ul {
   margin: 0;
-  padding: 0; 
+  padding-left:0; 
+  list-style: none;
 }
+
+li {
+  padding-left:25px;
+  padding-top:6px;
+  padding-bottom:4px;
+}
+
 
 /****************************/
 /* login/register page style */
@@ -95,9 +103,11 @@ ul {
 .page-container{
   display: flex;
   flex-direction: column;
+  justify-self:center;
   justify-content: center;
   align-items: center;
   align-self: center;
+  padding-top:70px;
   width: 100%;
   height: 100%;
 }
@@ -112,10 +122,17 @@ ul {
   background-color:rgb(230, 230, 230);
   border: 1px solid black;
   border-radius: 5px;
+  background-color:rgb(201, 145, 57);
 }
 
 .button {
   margin: 50px;
+}
+
+.browse-title{
+  align-self: center;
+  justify-self: center;
+  transform:translate(750px);
 }
 
 .lobby-search-header {
@@ -138,6 +155,7 @@ ul {
   overflow-y: auto;
   overflow-x: hidden;
   border-radius: 5px;
+  background-color:rgb(201, 145, 57);
 }
 
 .lobby {
@@ -279,6 +297,7 @@ grid-gap: 1px;
   padding:auto;
   width:20vw;
   height:10vh;
+  padding-left:30px;
 }
 
 .message-break-game{
@@ -370,6 +389,7 @@ grid-gap: 1px;
   font-family: Arial, sans-serif;
   color:black;
   font-size: 18px;
+  width:auto;
 }
 
 /****************************/
@@ -407,25 +427,25 @@ grid-gap: 1px;
 }
 
 .l-2-w-1{
-  background-color:orangered;
+  background-color:rgb(178, 48, 1);
   margin:0;
   padding:0;
-  box-shadow:0 0 0px 2px orangered inset;
+  box-shadow:0 0 0px 2px rgb(178, 48, 1) inset;
 }
 
 .l-1-w-2{
-  background-color:red;
+  background-color:rgba(50,87,109,255);
   align-content:center;
   margin:0;
   padding:0;
-  box-shadow:0 0 0px 2px red inset;
+  box-shadow:0 0 0px 2px rgba(50,87,109,255) inset;
 }
 
 .l-3-w-1{
-  background-color:plum;
+  background-color:rgb(190, 0, 0);
   margin:0;
   padding:0;
-  box-shadow:0 0 0px 2px plum inset;
+  box-shadow:0 0 0px 2px rgb(190, 0, 0) inset;
 }
 
 .l-1-w-3{
@@ -436,10 +456,10 @@ grid-gap: 1px;
 }
 
 .l-2-w-2{
-  background-color:darkgreen;
+  background-color:rgba(85,115,20,255);
   margin:0;
   padding:0;
-  box-shadow:0 0 0px 2px darkgreen inset;
+  box-shadow:0 0 0px 2px rgba(85,115,20,255) inset;
 }
 
 .played-square{
@@ -799,6 +819,7 @@ grid-gap: 1px;
   height: 5vh;
   border: 1px solid black;
   border-radius: 5px;
+  background-color:rgb(200,156,84);
 }
 
 /*.inner-lobby {

@@ -9,7 +9,6 @@ fs.readFile(path, 'utf8', function (err, data) {
   })
 
 const isWordValid = async (word) => {
-    console.log("path: " + path);
     var test = dataArray.includes(word);
     console.log(word + " : " + test);
     return test;
@@ -19,7 +18,6 @@ const isWordValid = async (word) => {
 const getEmptyGameBoard = async () => {
     //totally broken
     let emptyBoard = await game.getEmptyGrid();
-    console.log( "models -> " + emptyBoard);
     return emptyBoard;
 }
 

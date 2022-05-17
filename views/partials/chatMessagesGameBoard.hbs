@@ -1,29 +1,23 @@
 <section class="chat-messages-game">
-    
     {{> scoreboard }}
-  
-        <ul class="chat-logs-game" id="chat-logs-game">
-            {{#each this.messageArray}}
-            <div class="message-game">
-                <p class="message-header-game"> {{this.id}} | @ {{this.timestamp}} </p>
-                <p class="message-content-game"> {{this.content}} </p>
+    <ul class="chat-logs-game" id="chat-logs-game">
+        {{#each this.messageArray}}
+        <div class="message-game">
+            <p class="message-header-game"> {{this.id}} | @ {{this.timestamp}} </p>
+            <p class="message-content-game"> {{this.content}} </p>
+        </div>
+        <br class="message-break-game">
+        {{/each}}
+    </ul>
+    <div class="chat-incoming-game">
+        <div class="chat-outgoing-game">
+            <div class="chat-bar-game">
+                <input type="text" id="chat-text-input" class="chat-text-game" placeholder="Talk Trash Here">
+                </input>
             </div>
-
-            <br class="message-break-game">
-            {{/each}}
-        </ul>
-        <div class="chat-incoming-game">
-            <div class="chat-outgoing-game">
-                <div class="chat-bar-game">
-                    <input type="text" id="chat-text-input" class="chat-text-game" placeholder="Talk Trash Here">
-                    </input>
-                </div>
-                <div class="chat-send-game">
-                    <button id="send-text-game"> Send</button>
-                </div>
+            <div class="chat-send-game">
+                <button id="send-text-game"> Send</button>
             </div>
         </div>
- 
+    </div>
 </section>
-
-

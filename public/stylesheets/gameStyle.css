@@ -266,6 +266,7 @@ html{
     transform:translate(0%, 5%);
     background-color:rgb(149, 146, 146);
     border-radius: 5px;
+   
 }
 
 .scoreboard{
@@ -359,6 +360,7 @@ html{
     padding:auto;
     width:20vw;
     height:10vh;
+    
 }
   
 .message-break-game{
